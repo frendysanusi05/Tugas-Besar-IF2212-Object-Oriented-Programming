@@ -1,3 +1,4 @@
+package BahanMakanan;
 public class BahanMakanan {
     public String nama;
     public int harga;
