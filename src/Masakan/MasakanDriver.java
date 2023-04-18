@@ -1,24 +1,58 @@
 package Masakan;
-import java.util.Arrays;
+
 public class MasakanDriver {
     public static void main(String[] args) {
-        Masakan masakan1 = new Masakan("Nasi Ayam");
-        System.out.println("Nama Masakan: " + masakan1.getName());
-        System.out.println("Daftar Bahan Makanan: " + Arrays.toString(masakan1.getDaftarBahanMakanan()));
-        System.out.println("Kekenyangan: " + masakan1.getKekenyangan());
-        masakan1.addKekenyangan(5);
-        System.out.println("Kekenyangan setelah dimakan: " + masakan1.getKekenyangan());
+        try {
+            Masakan nasiAyam = new Masakan("Nasi Ayam");
+            System.out.println(nasiAyam.getName() + " memiliki kekenyangan " + nasiAyam.getKekenyangan());
+            System.out.println("Daftar bahan makanan:");
+            for (String bahan : nasiAyam.getDaftarBahanMakanan()) {
+                System.out.println("- " + bahan);
+            }
+            System.out.println();
 
-        Masakan masakan2 = new Masakan("Bistik");
-        System.out.println("Nama Masakan: " + masakan2.getName());
-        System.out.println("Daftar Bahan Makanan: " + Arrays.toString(masakan2.getDaftarBahanMakanan()));
-        System.out.println("Kekenyangan: " + masakan2.getKekenyangan());
-        masakan2.addKekenyangan(10);
-        System.out.println("Kekenyangan setelah dimakan: " + masakan2.getKekenyangan());
+            Masakan nasiKari = new Masakan("Nasi Kari");
+            System.out.println(nasiKari.getName() + " memiliki kekenyangan " + nasiKari.getKekenyangan());
+            System.out.println("Daftar bahan makanan:");
+            for (String bahan : nasiKari.getDaftarBahanMakanan()) {
+                System.out.println("- " + bahan);
+            }
+            System.out.println();
 
-        Masakan masakan3 = new Masakan("Sop Buntut");
-        System.out.println("Nama Masakan: " + masakan3.getName());
-        System.out.println("Daftar Bahan Makanan: " + Arrays.toString(masakan3.getDaftarBahanMakanan()));
-        System.out.println("Kekenyangan: " + masakan3.getKekenyangan());
+            Masakan susuKacang = new Masakan("Susu Kacang");
+            System.out.println(susuKacang.getName() + " memiliki kekenyangan " + susuKacang.getKekenyangan());
+            System.out.println("Daftar bahan makanan:");
+            for (String bahan : susuKacang.getDaftarBahanMakanan()) {
+                System.out.println("- " + bahan);
+            }
+            System.out.println();
+
+            Masakan tumisSayur = new Masakan("Tumis Sayur");
+            System.out.println(tumisSayur.getName() + " memiliki kekenyangan " + tumisSayur.getKekenyangan());
+            System.out.println("Daftar bahan makanan:");
+            for (String bahan : tumisSayur.getDaftarBahanMakanan()) {
+                System.out.println("- " + bahan);
+            }
+            System.out.println();
+
+            Masakan bistik = new Masakan("Bistik");
+            System.out.println(bistik.getName() + " memiliki kekenyangan " + bistik.getKekenyangan());
+            System.out.println("Daftar bahan makanan:");
+            for (String bahan : bistik.getDaftarBahanMakanan()) {
+                System.out.println("- " + bahan);
+            }
+            System.out.println();
+
+            Masakan tidakAda = new Masakan("Tidak Ada");
+            System.out.println(tidakAda.getName() + " memiliki kekenyangan " + tidakAda.getKekenyangan());
+            System.out.println("Daftar bahan makanan:");
+            for (String bahan : tidakAda.getDaftarBahanMakanan()) {
+                System.out.println("- " + bahan);
+            }
+            System.out.println();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
     }
 }

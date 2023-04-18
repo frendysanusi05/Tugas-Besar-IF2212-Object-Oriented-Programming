@@ -1,60 +1,70 @@
 package BahanMakanan;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.table.*;
 
 public class BahanMakananGUI extends JFrame {
-    private JLabel label;
-    private JPanel panel;
+    private JTable table;
+    private DefaultTableModel model;
     private JButton beliButton;
-    private JComboBox<String> bahanComboBox;
-    private JTextArea detailTextArea;
-
-    private BahanMakanan bahanMakanan;
+    private JLabel totalLabel;
+    private int total = 0;
 
     public BahanMakananGUI() {
-        super("Bahan Makanan");
+        // Set up the frame
+        setTitle("Daftar Bahan Makanan");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(400, 400);
+        setSize(500, 400);
 
-        label = new JLabel("Pilih bahan makanan:");
-        bahanComboBox = new JComboBox<>(new String[] {"Nasi", "Kentang", "Ayam", "Sapi", "Wortel", "Bayam", "Kacang", "Susu"});
-        detailTextArea = new JTextArea();
+        // Create the table model and add some columns
+        model = new DefaultTableModel();
+        model.addColumn("Nama");
+        model.addColumn("Harga");
+        model.addColumn("Kekenyangan");
+
+        // Add the rows to the table model
+        model.addRow(new Object[]{"Nasi", 5, 5});
+        model.addRow(new Object[]{"Kentang", 3, 4});
+        model.addRow(new Object[]{"Ayam", 10, 8});
+        model.addRow(new Object[]{"Sapi", 12, 15});
+        model.addRow(new Object[]{"Wortel", 3, 2});
+        model.addRow(new Object[]{"Bayam", 3, 2});
+        model.addRow(new Object[]{"Kacang", 2, 2});
+        model.addRow(new Object[]{"Susu", 2, 1});
+
+        // Create the table and add it to a scroll pane
+        table = new JTable(model);
+        JScrollPane scrollPane = new JScrollPane(table);
+
+        // Create the buy button and add an action listener
         beliButton = new JButton("Beli");
         beliButton.addActionListener(new ActionListener() {
-            @Override
             public void actionPerformed(ActionEvent e) {
-                beliBahanMakanan();
+                int[] selectedRows = table.getSelectedRows();
+                for (int i = 0; i < selectedRows.length; i++) {
+                    int harga = (int) model.getValueAt(selectedRows[i], 1);
+                    total += harga;
+                }
+                totalLabel.setText("Total: Rp " + total);
+                JOptionPane.showMessageDialog(null, "Terima kasih telah membeli!");
             }
         });
 
-        panel = new JPanel();
-        panel.setLayout(new BorderLayout());
-        panel.add(label, BorderLayout.NORTH);
-        panel.add(bahanComboBox, BorderLayout.CENTER);
-        panel.add(beliButton, BorderLayout.SOUTH);
+        // Create the total label
+        totalLabel = new JLabel("Total: Rp " + total);
 
-        add(panel, BorderLayout.NORTH);
-        add(detailTextArea, BorderLayout.CENTER);
+        // Add the components to the frame
+        add(scrollPane, BorderLayout.CENTER);
+        add(beliButton, BorderLayout.SOUTH);
+        add(totalLabel, BorderLayout.NORTH);
 
+        // Display the frame
         setVisible(true);
     }
 
-    private void beliBahanMakanan() {
-        String bahanMakananStr = (String) bahanComboBox.getSelectedItem();
-        bahanMakanan = new BahanMakanan(bahanMakananStr);
-
-        String detail = "Nama: " + bahanMakanan.getNama() + "\n"
-                + "Harga: " + bahanMakanan.getHarga() + "\n"
-                + "Kekenyangan: " + bahanMakanan.getKekenyangan() + "\n";
-        detailTextArea.setText(detail);
-
-        JOptionPane.showMessageDialog(null, "Terima kasih telah membeli " + bahanMakanan.getNama() + " seharga " + bahanMakanan.getHarga() + "!");
-    }
-
     public static void main(String[] args) {
-        BahanMakananGUI gui = new BahanMakananGUI();
+        new BahanMakananGUI();
     }
 }

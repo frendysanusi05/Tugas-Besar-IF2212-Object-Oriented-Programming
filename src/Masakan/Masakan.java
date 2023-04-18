@@ -1,12 +1,10 @@
-import Edible;
-
 package Masakan;
 public class Masakan implements Edible {
     public String nama;
     public String[] daftarBahanMakanan;
     public int kekenyangan;
 
-    public Masakan(String nama) {
+    public Masakan(String nama) throws Exception {
         this.nama = nama;
         switch (nama) {
             case "Nasi Ayam":
@@ -30,7 +28,7 @@ public class Masakan implements Edible {
                 this.kekenyangan = 22;
                 break;
             default:
-                throw new IllegalArgumentException("Masakan tidak ditemukan.");
+                throw new Exception("Masakan tidak ditemukan!");
         }
     }
 

@@ -4,7 +4,7 @@ public class BahanMakanan {
     public int harga;
     public int kekenyangan;
 
-    public BahanMakanan(String nama) {
+    public BahanMakanan(String nama) throws Exception{
         switch (nama) {
             case "Nasi":
                 this.nama = "Nasi";
@@ -47,8 +47,7 @@ public class BahanMakanan {
                 this.kekenyangan = 1;
                 break;
             default:
-                System.out.println("Bahan makanan tidak tersedia!");
-                break;
+                throw new Exception("Bahan Makanan tidak ditemukan!");
         }
     }
 
