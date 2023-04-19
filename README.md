@@ -22,7 +22,7 @@ Open ```Java Projects``` pada kiri bawah Visual Studio Code, lalu add file .jar 
 
 Setelah itu, klik ```run``` pada ```main``` file.
 
-<img width="162" alt="image" src="https://user-images.githubusercontent.com/92145413/232853939-3f5e25b2-b68f-403b-a615-618053232628.png">
+<img width="264" alt="image" src="https://user-images.githubusercontent.com/92145413/233000515-92a3b7c0-2e3e-41c2-9c31-0cab35d90fcc.png">
 
 ### Cara 2: Melalui Command Line (CMD) Windows
 ```
