@@ -1,4 +1,3 @@
-package Furniture;
 public class Furniture {
     public String nama;
     public int panjang;
