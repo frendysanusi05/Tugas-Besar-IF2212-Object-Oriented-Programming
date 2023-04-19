@@ -11,7 +11,7 @@ Tugas dibuat oleh kelompok 11:
 | 6. | Ananda Abdul Hafizh           | 18221167 |
 
 <br>
-Terdapat 2 cara menggunakan ```Save.java```: 
+Terdapat 2 cara menjalankan program: 
 
 <br>
 
@@ -26,10 +26,7 @@ Setelah itu, klik ```run``` pada ```main``` file.
 
 ### Cara 2: Melalui Command Line (CMD) Windows
 ```
-javac -cp lib/json-simple-1.1.1.jar src/Save.java
+javac -cp lib/gson-2.8.6.jar src/*.java
 
-java -classpath ".;D:\Tugas-Besar-IF2212-Object-Oriented-Programming\lib\json-simple-1.1.1.jar;src" Save
+java -classpath "lib\gson-2.8.6.jar;src" Main
 ```
-Saat melakukan ```javac``` kemungkinan akan muncul error seperti berikut. Dapat dihiraukan saja.
-
-<img width="853" alt="image" src="https://user-images.githubusercontent.com/92145413/232853366-a79430ee-e490-461d-9184-084a14fe09d0.png">
