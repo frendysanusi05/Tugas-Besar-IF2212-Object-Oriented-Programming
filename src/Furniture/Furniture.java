@@ -6,7 +6,7 @@ public class Furniture {
     public int harga;
     public String aksi;
     
-    public Furniture(String nama) {
+    public Furniture(String nama) throws Exception {
         switch(nama) {
             case "Kasur Single":
                 this.nama = "Kasur Single";
@@ -65,7 +65,7 @@ public class Furniture {
                 this.aksi = "Melihat Waktu";
                 break;
             default:
-                System.out.println("Objek " + nama + " tidak tersedia!");
+                throw new Exception("Furniture tidak tersedia!");
         }
     }
     
