@@ -1,25 +1,27 @@
-import java.io.FileWriter;
-import java.io.IOException;
-import org.json.simple.JSONObject;
+import java.io.Writer;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+
 public class Save {
-   public static void main(String args[]) {
-      //Creating a JSONObject object
-      JSONObject jsonObject = new JSONObject();
-      //Inserting key-value pairs into the json object
-      jsonObject.put("ID", "1");
-      jsonObject.put("First_Name", "Shikhar");
-      jsonObject.put("Last_Name", "Dhawan");
-      jsonObject.put("Date_Of_Birth", "1981-12-05");
-      jsonObject.put("Place_Of_Birth", "Delhi");
-      jsonObject.put("Country", "India");
-      try {
-         FileWriter file = new FileWriter("src/output.json");
-         file.write(jsonObject.toJSONString());
-         file.close();
-      } catch (IOException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      }
-      System.out.println("JSON file created: "+jsonObject);
-   }
+   	public void save(World world) {
+		String fileName = "data/save.json";
+		Path path = Paths.get(fileName);
+
+		try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+            JsonElement tree = gson.toJsonTree(world);
+            gson.toJson(tree, writer);
+			System.out.println("Berhasil melakukan save.");
+        }
+		catch (Exception e) {
+			System.out.println("Gagal melakukan save. Pesan error: " + e.getMessage());
+		}
+   	}
 }

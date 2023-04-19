@@ -1,6 +1,8 @@
 public class Main {
     public static void main(String[] args) {
         World world = new World();
+        Save save = new Save();
+
         Point titikRumah1 = new Point(3, 3);
         Rumah rumah1 = new Rumah(titikRumah1);
         Rumah rumah2 = new Rumah(new Point(30, 30));
@@ -13,5 +15,6 @@ public class Main {
         rumah1.printDaftarRuangan();
         rumah2.printDaftarRuangan();
         world.printDaftarRumah();
+        save.save(world);
     }
 }
