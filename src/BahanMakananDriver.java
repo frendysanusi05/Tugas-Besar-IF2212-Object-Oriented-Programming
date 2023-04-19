@@ -1,4 +1,3 @@
-package BahanMakanan;
 public class BahanMakananDriver {
     public static void main(String[] args) {
         try {

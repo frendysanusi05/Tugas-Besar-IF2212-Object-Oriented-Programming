@@ -1,4 +1,3 @@
-package Masakan;
 public class Masakan implements Edible {
     public String nama;
     public String[] daftarBahanMakanan;
