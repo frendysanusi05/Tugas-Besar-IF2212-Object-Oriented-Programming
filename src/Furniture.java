@@ -67,6 +67,9 @@ public class Furniture {
                 throw new Exception("Furniture tidak tersedia!");
         }
     }
+    public String getNama() {
+        return nama;
+    }
     
     public int getPanjang() {
         return panjang;
