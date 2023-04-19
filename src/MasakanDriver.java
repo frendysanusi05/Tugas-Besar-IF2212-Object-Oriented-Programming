@@ -1,5 +1,3 @@
-package Masakan;
-
 public class MasakanDriver {
     public static void main(String[] args) {
         try {

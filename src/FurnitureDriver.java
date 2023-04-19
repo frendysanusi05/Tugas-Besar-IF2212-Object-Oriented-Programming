@@ -1,4 +1,3 @@
-package Furniture;
 public class FurnitureDriver {
     public static void main(String[] args) {
         try {
