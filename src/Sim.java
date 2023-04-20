@@ -1,10 +1,12 @@
 import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.Scanner;
+import java.time.LocalTime;
 
 //mmaaf bagian perkerjaan sama kerja gue bingung
 
-public class Sim{
+public class Sim {
     private String nama;
     private String pekerjaan;
     private int uang;
@@ -14,8 +16,14 @@ public class Sim{
     private int kesehatan;
     private String status;
 
+    private volatile boolean isThreadFinished = false;
+    private volatile int durasi;
+
     private static final String[] PEKERJAAN = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
     
+    /* Scanner */
+    Scanner scan = new Scanner(System.in);
+
     public Sim(String nama) {
         this.nama = nama;
         this.uang = 100;
@@ -97,28 +105,98 @@ public class Sim{
     }
 
     public void kerja() {
-        kekenyangan -= 10;
-        mood -= 10;
+        System.out.print("Masukkan durasi kerja: ");
+        durasi = scan.nextInt();
+        while (durasi % 120 != 0) {
+            System.out.println("Durasi kerja harus merupakan kelipatan 120");
+            durasi = scan.nextInt();
+        }
+        System.out.println();
 
-        if (pekerjaan.equals("Badut Sulap")) 
-        {
-            addUang(15);
+        
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+                isThreadFinished = true;
+            }
+        });
+
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int timeInSeconds = LocalTime.now().toSecondOfDay();
+                int duration = 30;
+                
+                while (!isThreadFinished) {
+                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                        kekenyangan -= 10;
+                        mood -= 10;
+
+                        timeInSeconds = LocalTime.now().toSecondOfDay();
+                        try {
+                            Thread.sleep(1000);
+                        }
+                        catch (InterruptedException e) {
+
+                        }
+                    }
+                }
+            }
+        });
+
+        Thread t3 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int timeInSeconds = LocalTime.now().toSecondOfDay();
+                int duration = 4 * 60;
+
+                while (!isThreadFinished) {
+                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                        if (pekerjaan.equals("Badut Sulap")) 
+                        {
+                            addUang(15);
+                        }
+                        else if(pekerjaan.equals("Koki"))
+                        {
+                            addUang(30);
+                        }
+                        else if(pekerjaan.equals("Polisi"))
+                        {
+                            addUang(35);
+                        }
+                        else if(pekerjaan.equals("Programmer"))
+                        {
+                            addUang(45);
+                        }
+                        else if(pekerjaan.equals("Dokter"))
+                        {
+                            addUang(50);
+                        }
+
+                        timeInSeconds = LocalTime.now().toSecondOfDay();
+                        try {
+                            Thread.sleep(1000);
+                        }
+                        catch (InterruptedException e) {
+
+                        }
+                    }
+                }
+            }
+        });
+
+        t1.start();
+        t2.start();
+        t3.start();
+
+        try {
+            t1.join();
+            t2.join();
+            t2.join();
         }
-        else if(pekerjaan.equals("Koki"))
-        {
-            addUang(30);
-        }
-        else if(pekerjaan.equals("Polisi"))
-        {
-            addUang(35);
-        }
-        else if(pekerjaan.equals("Programmer"))
-        {
-            addUang(45);
-        }
-        else if(pekerjaan.equals("Dokter"))
-        {
-            addUang(50);
+        catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
@@ -173,5 +251,5 @@ public class Sim{
             kesehatan -= 5;
             mood -= 5;
         }
-    }   
+    }
 }
