@@ -198,6 +198,7 @@ public class Sim {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+        isThreadFinished = false;
     }
 
     public void olahraga() {
