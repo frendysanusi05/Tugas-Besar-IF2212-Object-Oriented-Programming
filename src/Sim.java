@@ -253,4 +253,38 @@ public class Sim {
             mood -= 5;
         }
     }
+
+    public void upgradeRumah(){
+        //menambah ruangan
+        //membutuhkan waktu sejumlah 18 menit
+    }
+
+    public void beliBarang(){
+        //mengisi rumahnya dengan barang-barang.
+        //waktu kedatangan barang tidak dapat dipastikan.
+        //durasi pengiriman barang akan selalu acak tetapi tetap dalam range waktu X menit.
+    }
+
+    public void pindahRuang(){
+        
+    }
+
+    public void lihatInventory(){
+        //berisi dengan makanan, barang-barang yang sedang tidak terpasang pada ruangan, dan objek-objek lainnya.
+    }
+
+    public void addInventory(){
+        //gatau ada di sheet spek tapi gaada di doc spesifikasi
+    }
+
+    public void pasangBarang(){
+        //Barang yang akan dipasang harus muat dalam ruanga
+    }
+
+    public void lihatWaktu(){
+        //membutuhkan objek Jam
+        //menunjukkan sisa waktu pada hari tersebut beserta sisa waktu yang masih ada untuk seluruh tindakan yang bisa ditinggal
+    }
+
+    //harus buat 7 aksi lain yang dapat berhubungan dengan objek sesuai dengan kreasi masing-masing.
 }
