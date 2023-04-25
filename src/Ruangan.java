@@ -16,8 +16,8 @@ public class Ruangan extends Rumah{
         this.titikRuangan = titikRuangan;
         this.capacity = 36;
 
-        for(int i=0; i<6; i++){
-            for(int j=0; j<6; j++){
+        for(int i=titikRuangan.getY() - 3; i< titikRuangan.getY() + 3; i++){
+            for(int j=titikRuangan.getX() - 3; j<titikRuangan.getX() + 3; j++){
                 isAvailable[j][i] = true;
             }
         }
@@ -26,6 +26,10 @@ public class Ruangan extends Rumah{
     //getter
     public String getIDRuangan(){
         return this.IDRuangan;
+    }
+
+    public Point getPosisi(){
+        return titikRuangan;
     }
 
     public int getXRuangan(){
@@ -69,6 +73,8 @@ public class Ruangan extends Rumah{
         System.out.println("Bagian bertanda 'X' adalah area yang terisi oleh furniture, adapun 'O' digunakan untuk menyatakan area yang masih kosong");
     }
 
+    //dipake buat ngecek penempatan barang pada koordinat yg diinput.
+
     public void insertObjectToRuangan(String namaBarang, Point koordinat /*koordinat barang yg mau disimpen*/, Ruangan ruangan) throws Exception{
         Furniture obj = new Furniture(namaBarang);
         int panjang = obj.getPanjang();
@@ -80,9 +86,9 @@ public class Ruangan extends Rumah{
             int tempX = koordinat.getX();
             int tempY = koordinat.getY();
             boolean found = false;
-            while(!found && tempX<tempX+panjang){
-                while(!found && tempY<tempY+lebar){
-                    if(isAvailable[tempY][tempX]){
+            while(!found && tempY<tempY+lebar){
+                while(!found && tempX<tempX+panjang){
+                    if(isAvailable[tempX][tempY]){
                         tempX++;
                         tempY++;
                     } else{
@@ -93,12 +99,12 @@ public class Ruangan extends Rumah{
             }
 
             if(!found){
-                //update Map Furniture pada Ruangan
+                //update Map Furniture pada Ruangan. Merubah bagian yang telah terisi objek menjadi false.
                 tempX = koordinat.getX();
                 tempY = koordinat.getY();
-                while(tempX<tempX+panjang){
-                    while(tempY<tempY+lebar){
-                        isAvailable[tempY][tempX] = false;
+                while(tempY<tempY+lebar){
+                    while(tempX<tempX+panjang){
+                        isAvailable[tempX][tempY] = false;
                     }
                 }
                 this.addObject(obj);
@@ -108,9 +114,9 @@ public class Ruangan extends Rumah{
             int tempX = koordinat.getX();
             int tempY = koordinat.getY();
             boolean found = false;
-            while(!found && tempX<tempX+lebar){
-                while(!found && tempY<tempY+panjang){
-                    if(isAvailable[tempY][tempX]){
+            while(!found && tempY<tempY+panjang){
+                while(!found && tempX<tempX+lebar){
+                    if(isAvailable[tempX][tempY]){
                         tempX++;
                         tempY++;
                     } else{
@@ -121,12 +127,12 @@ public class Ruangan extends Rumah{
             }
 
             if(!found){
-                //update Map Furniture pada Ruangan
+                //update Map Furniture pada Ruangan. Merubah bagian yang telah terisi objek menjadi false.
                 tempX = koordinat.getX();
                 tempY = koordinat.getY();
-                while(tempX<tempX+lebar){
-                    while(tempY<tempY+panjang){
-                        isAvailable[tempY][tempX] = false;
+                while(tempY<tempY+panjang){
+                    while(tempX<tempX+lebar){
+                        isAvailable[tempX][tempY] = false;
                     }
                 }
                 this.addObject(obj);
@@ -136,8 +142,5 @@ public class Ruangan extends Rumah{
         } else {
             System.out.println("Maaf, koordinat yang anda masukkan tidak memiliki cukup ruang pada Ruangan " + getIDRuangan());
         }
-    }
-
-    public void addObjectToList(Furniture furniture) {
     }
 }

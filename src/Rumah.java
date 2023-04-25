@@ -9,47 +9,27 @@ public class Rumah {
     private int jumlahRuangan;
 
 
-    //constructor
+    //constructor==
     public Rumah(Point posisi) throws Exception{
         this.posisi = posisi;
         jumlahRumah ++;
         jumlahRuangan = 1;
-        IDRumah = "R" + jumlahRumah;
+        IDRumah = "R" + jumlahRumah; //biar IDRuangan selalu punya nama yg berbeda
         Ruangan R1 = new Ruangan("Kamar", this, posisi);
+        tambahRuangan(R1); //inisiasi Ruangan pada Rumah
 
-        //Ruangan IDRumah = new Ruangan("IniPerluDiGenerateDlu" /*Perlu digenerate dlu gasi?*/, "Awal", IDRumah, posisi); //ini IDRuangannya mau digimanain? buat yg bagian awal. 
-
-        //inisiasi Ruangan pada Rumah
-        tambahRuangan(R1);
-
-        //tanya ke asisten, bisa dirandom atau dah pasti punya tipe kasur dll yg tetap?
-        //inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
-        Random rand = new Random();
-
-        List<String> givenList = new ArrayList<String>();
-        givenList.add("Kasur Single");
-        givenList.add("Kasur Queen Size");
-        givenList.add("Kasur King Size");
-        String randomElmt = givenList.get(rand.nextInt(givenList.size()));
-        R1.addObject(new Furniture(randomElmt));
-        R1.addObject(new Furniture("Toilet"));
+        //tanya ke asisten, bisa dirandom atau dah pasti punya tipe kasur,dll (furniture) yg tetap tiap kali ngebuat rumah?
         
-        List<String> givenList2 = new ArrayList<String>();
-        givenList2.add("Kompor Gas");
-        givenList2.add("Kompor Listrik");
-        randomElmt = givenList2.get(rand.nextInt(givenList2.size()));
-        R1.addObject(new Furniture(randomElmt));
-        R1.addObject(new Furniture("Meja dan Kursi"));
-        R1.addObject(new Furniture("Jam"));
+        //inisiasi masing2 furniture yg bakalan ada tiap kali ngekonstruksiin rumah
+        konstruksiR1(R1);
     }
 
-    //bikin the second option untuk konstruktor, biar di ruangan ga perlu nginput super berisi atribut.
+    //bikin the second options untuk konstruktor, biar di ruangan ga perlu nginput super berisi atribut.
     public Rumah(){}
 
-    //methods
+    //methods==
     public void printDaftarRuangan(){
         for (Ruangan ruangan : daftarRuangan){
-            //ini sbenernya gua masi kurang ngerti, konstruktor ruangan mau dibentuk kek gmn wkwk
             System.out.println("IDRuangan: " + ruangan.getIDRuangan() + ", Nama Ruangan: " + ruangan.getNamaRuangan());
         }
     }
@@ -59,7 +39,29 @@ public class Rumah {
         jumlahRuangan ++;
     }
 
-    //getter
+    //untuk mengotomasi pemasukan furniture ke Ruangan 1
+    public void konstruksiR1(Ruangan R1) throws Exception{
+        Random rand = new Random();
+
+        List<String> temp = new ArrayList<String>();
+        temp.add("Kasur Single");
+        temp.add("Kasur Queen Size");
+        temp.add("Kasur King Size");
+        String randomElmt = temp.get(rand.nextInt(temp.size()));
+        R1.insertObjectToRuangan(randomElmt, R1.getPosisi(), R1);
+
+        List<String> temp2 = new ArrayList<String>();
+        temp2.add("Kompor Gas");
+        temp2.add("Kompor Listrik");
+        randomElmt = temp2.get(rand.nextInt(temp2.size()));
+        R1.insertObjectToRuangan(randomElmt, R1.getPosisi(), R1);
+
+        R1.insertObjectToRuangan("Toilet", R1.getPosisi(), R1);
+        R1.insertObjectToRuangan("Meja dan Kursi", R1.getPosisi(), R1);
+        R1.insertObjectToRuangan("Jam", R1.getPosisi(), R1);
+    }
+
+    //getter==
     public String getIDRumah(){
         return this.IDRumah;
     }
@@ -87,5 +89,4 @@ public class Rumah {
     public Ruangan getFirstRuangan(){
         return R1;
     }
-
 }
