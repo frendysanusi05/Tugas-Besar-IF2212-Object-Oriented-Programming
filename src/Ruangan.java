@@ -1,4 +1,4 @@
-import java.util.*;
+//import java.util.*;
 
 public class Ruangan extends Rumah{
     private String IDRuangan;
@@ -6,21 +6,22 @@ public class Ruangan extends Rumah{
     private Point titikRuangan;
     private Furniture[] daftarObjek;
     private int capacity;
-    private Map<String, Point> sebelah = new HashMap<String, Point>();
+    //private Map<String, Point> sebelah = new HashMap<String, Point>();
 
     //constructor
-    public Ruangan(String IDRuangan, String namaRuangan, String IDRumah, Point Posisi){
-        super(IDRumah, Posisi);
-        this.IDRuangan = IDRuangan;
+    public Ruangan(String namaRuangan, Rumah rumah, Point titikRuangan){
+        //super(Posisi);
+        //this.IDRuangan = IDRuangan;
+        IDRuangan = rumah.getIDRumah() + "_" + rumah.getJumlahRuangan();
         this.namaRuangan = namaRuangan;
+        this.titikRuangan = titikRuangan;
         this.capacity = 36;
-        jumlahRuangan ++;
 
 
-        sebelah.put("Depan", new Point(super.getXRumah() + 6, super.getYRumah()));
-        sebelah.put("Belakang", new Point(super.getXRumah() - 6, super.getYRumah()));
-        sebelah.put("Kanan", new Point(super.getXRumah(), super.getYRumah() + 6));
-        sebelah.put("Kiri", new Point(super.getXRumah(), super.getYRumah() - 6));
+        // sebelah.put("Depan", new Point(super.getXRumah() + 6, super.getYRumah()));
+        // sebelah.put("Belakang", new Point(super.getXRumah() - 6, super.getYRumah()));
+        // sebelah.put("Kanan", new Point(super.getXRumah(), super.getYRumah() + 6));
+        // sebelah.put("Kiri", new Point(super.getXRumah(), super.getYRumah() - 6));
     }
 
     //getter
@@ -44,21 +45,21 @@ public class Ruangan extends Rumah{
         return this.namaRuangan;
     }
 
-    public Point getDepan(){
-        return sebelah.get("Depan");
-    }
+    // public Point getDepan(){
+    //     return sebelah.get("Depan");
+    // }
 
-    public Point getBelakang(){
-        return sebelah.get("Belakang");
-    }
+    // public Point getBelakang(){
+    //     return sebelah.get("Belakang");
+    // }
 
-    public Point getKanan(){
-        return sebelah.get("Kanan");
-    }
+    // public Point getKanan(){
+    //     return sebelah.get("Kanan");
+    // }
 
-    public Point getKiri(){
-        return sebelah.get("Kiri");
-    }
+    // public Point getKiri(){
+    //     return sebelah.get("Kiri");
+    // }
 
     //method
     public boolean isAvailable(Furniture barang){

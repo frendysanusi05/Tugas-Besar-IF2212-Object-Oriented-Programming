@@ -1,4 +1,4 @@
-public class Furniture {
+public class Furniture extends ObjectType<Furniture> implements Purchasable{
     public String nama;
     public int panjang;
     public int lebar;
@@ -6,6 +6,7 @@ public class Furniture {
     public String aksi;
     
     public Furniture(String nama) throws Exception {
+        super("Furniture");
         switch(nama) {
             case "Kasur Single":
                 this.nama = "Kasur Single";
@@ -83,4 +84,6 @@ public class Furniture {
     public String getAksi() {
         return aksi;
     }
+
+    public void addHarga() {}
 }

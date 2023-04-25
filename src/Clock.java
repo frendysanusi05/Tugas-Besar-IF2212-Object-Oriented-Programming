@@ -1,7 +1,7 @@
 import java.time.LocalTime;
 
 public class Clock {
-    public static void wait(int duration) {
+    public static void wait(double duration) {
         LocalTime localTime = LocalTime.now();
         int seconds = localTime.toSecondOfDay();
         
