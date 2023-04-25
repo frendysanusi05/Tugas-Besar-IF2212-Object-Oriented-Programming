@@ -9,7 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 
 public class Save {
-   	public void save(World world) {
+   	public static void save(World world) {
 		String fileName = "data/save.json";
 		Path path = Paths.get(fileName);
 

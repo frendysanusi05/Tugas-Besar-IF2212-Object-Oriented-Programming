@@ -5,7 +5,7 @@ import java.nio.file.Paths;
 import com.google.gson.Gson;
 
 public class Load {
-    public World load(String path) {
+    public static World load(String path) {
         World world = null;
         try {
             Gson gson = new Gson();
