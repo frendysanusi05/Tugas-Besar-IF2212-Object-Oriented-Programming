@@ -3,22 +3,26 @@ import java.util.*;
 public class Rumah {
     private String IDRumah;
     private Point posisi;
-    private Ruangan[] daftarRuangan;
+    private ArrayList<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
     private Ruangan R1;
-    public static int jumlahRuangan;
+    private static int jumlahRumah = 0; 
+    private int jumlahRuangan;
 
 
     //constructor
-    public Rumah(String IDRumah, Point posisi){
-        this.IDRumah = IDRumah;
+    public Rumah(Point posisi){
         this.posisi = posisi;
+        jumlahRumah ++;
+        jumlahRuangan = 1;
+        IDRumah = "R" + jumlahRumah;
+        Ruangan R1 = new Ruangan("Kamar", this, posisi);
 
-        Ruangan R1 = new Ruangan("IniPerluDiGenerateDlu" /*Perlu digenerate dlu gasi?*/, "Awal", IDRumah, posisi); //ini IDRuangannya mau digimanain? buat yg bagian awal. 
+        //Ruangan IDRumah = new Ruangan("IniPerluDiGenerateDlu" /*Perlu digenerate dlu gasi?*/, "Awal", IDRumah, posisi); //ini IDRuangannya mau digimanain? buat yg bagian awal. 
 
         //inisiasi Ruangan pada Rumah
         tambahRuangan(R1);
-        jumlahRuangan = 1;
 
+        //tanya ke asisten, bisa dirandom atau dah pasti punya tipe kasur dll yg tetap?
         //inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
         Random rand = new Random();
         List<String> givenList = new ArrayList<String>();
@@ -38,6 +42,9 @@ public class Rumah {
         R1.addObject("Jam");
     }
 
+    //bikin the second option untuk konstruktor, biar di ruangan ga perlu nginput super berisi atribut.
+    public Rumah(){}
+
     //methods
     public void printDaftarRuangan(){
         for (Ruangan ruangan : daftarRuangan){
@@ -46,9 +53,8 @@ public class Rumah {
         }
     }
 
-    //ini blom dikonekin sama #cek ruang kosong yg ada di class ruangan dan #cekposisi yg ada di world
     public void tambahRuangan(Ruangan newRoom){
-        this.daftarRuangan[daftarRuangan.length] = newRoom;
+        daftarRuangan.add(newRoom);
         jumlahRuangan ++;
     }
 
@@ -65,12 +71,16 @@ public class Rumah {
         return posisi.getY();
     }
 
-    public Ruangan[] getDaftarRuangan(){
+    public ArrayList<Ruangan> getDaftarRuangan(){
         return daftarRuangan;
     }
 
     public int getJumlahRuangan(){
         return jumlahRuangan;
+    }
+
+    public int getJumlahRumah(){
+        return jumlahRumah;
     }
 
     public Ruangan getFirstRuangan(){

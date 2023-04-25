@@ -4,23 +4,16 @@ public class Ruangan extends Rumah{
     private String IDRuangan;
     private String namaRuangan;
     private Point titikRuangan;
-    private Furniture[] daftarObjek;
+    private ArrayList<Furniture> daftarObjek;
     private int capacity;
-    private Map<String, Point> sebelah = new HashMap<String, Point>();
 
     //constructor
-    public Ruangan(String IDRuangan, String namaRuangan, String IDRumah, Point Posisi){
-        super(IDRumah, Posisi);
-        this.IDRuangan = IDRuangan;
+    public Ruangan(String namaRuangan, Rumah rumah, Point titikRuangan){
+        super();
+        IDRuangan = rumah.getIDRumah() + "_" + rumah.getJumlahRuangan();
         this.namaRuangan = namaRuangan;
+        this.titikRuangan = titikRuangan;
         this.capacity = 36;
-        jumlahRuangan ++;
-
-
-        sebelah.put("Depan", new Point(super.getXRumah() + 6, super.getYRumah()));
-        sebelah.put("Belakang", new Point(super.getXRumah() - 6, super.getYRumah()));
-        sebelah.put("Kanan", new Point(super.getXRumah(), super.getYRumah() + 6));
-        sebelah.put("Kiri", new Point(super.getXRumah(), super.getYRumah() - 6));
     }
 
     //getter
@@ -28,15 +21,19 @@ public class Ruangan extends Rumah{
         return this.IDRuangan;
     }
 
-    public Point getTitikRuangan(){
-        return titikRuangan;
+    public int getXRuangan(){
+        return titikRuangan.getX();
     }
 
-    public Furniture[] getDaftarObjek(){
+    public int getYRuangan(){
+        return titikRuangan.getY();
+    }
+
+    public ArrayList<Furniture> getDaftarObjek(){
         return this.daftarObjek;
     }
 
-    public int getCapacity(){
+    public int getRemainingCapacity(){
         return this.capacity;
     }
 
@@ -44,27 +41,12 @@ public class Ruangan extends Rumah{
         return this.namaRuangan;
     }
 
-    public Point getDepan(){
-        return sebelah.get("Depan");
-    }
-
-    public Point getBelakang(){
-        return sebelah.get("Belakang");
-    }
-
-    public Point getKanan(){
-        return sebelah.get("Kanan");
-    }
-
-    public Point getKiri(){
-        return sebelah.get("Kiri");
-    }
-
     //method
     public boolean isAvailable(Furniture barang){
         return (barang.getLebar() * barang.getPanjang() <= capacity);
     }
 
+    //pake arraylist (dalemnya furniture) -> identifikasinya di ruangan
     public void addObject(String namaBarang){
         try {
             Furniture barang = new Furniture(namaBarang);
