@@ -10,7 +10,7 @@ public class Rumah {
 
 
     //constructor
-    public Rumah(Point posisi){
+    public Rumah(Point posisi) throws Exception{
         this.posisi = posisi;
         jumlahRumah ++;
         jumlahRuangan = 1;
@@ -25,21 +25,22 @@ public class Rumah {
         //tanya ke asisten, bisa dirandom atau dah pasti punya tipe kasur dll yg tetap?
         //inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
         Random rand = new Random();
+
         List<String> givenList = new ArrayList<String>();
         givenList.add("Kasur Single");
         givenList.add("Kasur Queen Size");
         givenList.add("Kasur King Size");
         String randomElmt = givenList.get(rand.nextInt(givenList.size()));
-        R1.addObject(randomElmt);
-        R1.addObject("Toilet");
+        R1.addObject(new Furniture(randomElmt));
+        R1.addObject(new Furniture("Toilet"));
         
         List<String> givenList2 = new ArrayList<String>();
         givenList2.add("Kompor Gas");
         givenList2.add("Kompor Listrik");
         randomElmt = givenList2.get(rand.nextInt(givenList2.size()));
-        R1.addObject(randomElmt);
-        R1.addObject("Meja dan Kursi");
-        R1.addObject("Jam");
+        R1.addObject(new Furniture(randomElmt));
+        R1.addObject(new Furniture("Meja dan Kursi"));
+        R1.addObject(new Furniture("Jam"));
     }
 
     //bikin the second option untuk konstruktor, biar di ruangan ga perlu nginput super berisi atribut.

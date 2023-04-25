@@ -49,7 +49,7 @@ public class Ruangan extends Rumah{
     }
 
     //method
-    public void addObjectToList(Furniture obj){
+    public void addObject(Furniture obj){
         daftarObjek.add(obj);
     }
 
@@ -101,7 +101,7 @@ public class Ruangan extends Rumah{
                         isAvailable[tempY][tempX] = false;
                     }
                 }
-                this.addObjectToList(obj);
+                this.addObject(obj);
             }
 
         } else if (opsi2){
@@ -129,12 +129,15 @@ public class Ruangan extends Rumah{
                         isAvailable[tempY][tempX] = false;
                     }
                 }
-                this.addObjectToList(obj);
+                this.addObject(obj);
             }
 
 
         } else {
             System.out.println("Maaf, koordinat yang anda masukkan tidak memiliki cukup ruang pada Ruangan " + getIDRuangan());
         }
+    }
+
+    public void addObjectToList(Furniture furniture) {
     }
 }
