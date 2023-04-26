@@ -4,6 +4,7 @@ import java.time.Duration;
 
 public class Clock {
     private static int skip = 0; /* in seconds */
+    final static LocalTime startTime = LocalTime.now();
 
     public static void wait(int duration) {
         LocalTime localTime = getTime();
@@ -38,11 +39,11 @@ public class Clock {
         return time.plus(addSkip);
     }
 
-    public static LocalTime diffTime(LocalTime start) {
+    public static LocalTime diffTime() {
         /* return end - start */
         /* example output: 00:01:18 */
-        LocalTime end = getTime(); /* current local time */
-        Duration duration = Duration.between(start, end);
+        LocalTime endTime = getTime(); /* current local time */
+        Duration duration = Duration.between(startTime, endTime);
         return LocalTime.ofSecondOfDay(duration.getSeconds());
     }
 
