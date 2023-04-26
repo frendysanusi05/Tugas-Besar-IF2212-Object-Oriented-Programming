@@ -6,11 +6,7 @@ public class SimDriver {
         System.out.printf("Pekerjaan: %s\n", sim1.getPekerjaan());
         System.out.printf("Uang: %d\n", sim1.getUang());
         System.out.printf("Inventory: %s\n", sim1.getInventory());
-<<<<<<< Updated upstream
-        System.out.printf("Kekenyangan: %d\n", sim1.getKekenyanganSIM());
-=======
-        System.out.printf("Kekenyangan: %d\n", sim1.getKekenyanganSIM());
->>>>>>> Stashed changes
+        System.out.printf("Kekenyangan: %d\n", sim1.getKekenyangan());
         System.out.printf("Mood: %d\n", sim1.getMood());
         System.out.printf("Kesehatan: %d\n", sim1.getKesehatan());
         System.out.printf("Status: %s\n", sim1.getStatus());
@@ -21,11 +17,7 @@ public class SimDriver {
         System.out.printf("Pekerjaan: %s\n", sim1.getPekerjaan());
         System.out.printf("Uang: %d\n", sim1.getUang());
         System.out.printf("Inventory: %s\n", sim1.getInventory());
-<<<<<<< Updated upstream
         System.out.printf("Kekenyangan: %d\n", sim1.getKekenyangan());
-=======
-        System.out.printf("Kekenyangan: %d\n", sim1.getKekenyanganSIM());
->>>>>>> Stashed changes
         System.out.printf("Mood: %d\n", sim1.getMood());
         System.out.printf("Kesehatan: %d\n", sim1.getKesehatan());
         System.out.printf("Status: %s\n", sim1.getStatus());

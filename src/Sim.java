@@ -48,7 +48,7 @@ public class Sim {
         return inventory;
     }
 
-    public int getKekenyanganSIM() {
+    public int getKekenyangan() {
         return kekenyangan;
     }
 
