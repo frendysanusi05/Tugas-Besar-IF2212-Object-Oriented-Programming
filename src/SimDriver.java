@@ -7,7 +7,7 @@ public class SimDriver {
         System.out.printf("Uang: %d\n", sim1.getUang());
         System.out.printf("Inventory: %s\n", sim1.getInventory());
 <<<<<<< Updated upstream
-        System.out.printf("Kekenyangan: %d\n", sim1.getKekenyangan());
+        System.out.printf("Kekenyangan: %d\n", sim1.getKekenyanganSIM());
 =======
         System.out.printf("Kekenyangan: %d\n", sim1.getKekenyanganSIM());
 >>>>>>> Stashed changes

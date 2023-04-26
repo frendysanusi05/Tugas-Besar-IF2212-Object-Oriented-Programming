@@ -1,6 +1,4 @@
 import java.util.Random;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.time.LocalTime;
 
@@ -18,7 +16,7 @@ public class Sim {
 
     private volatile int durasi;
 
-    private static final String[] PEKERJAAN = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
+    private static final String[] listPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
     
     /* Scanner */
     Scanner scan = new Scanner(System.in);
