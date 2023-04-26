@@ -16,7 +16,6 @@ public class Sim {
     private int kesehatan;
     private String status;
 
-    private volatile boolean isThreadFinished = false;
     private volatile int durasi;
 
     private static final String[] PEKERJAAN = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
@@ -118,7 +117,6 @@ public class Sim {
             @Override
             public void run() {
                 Clock.wait(durasi);
-                isThreadFinished = true;
             }
         });
 
@@ -127,8 +125,6 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 30;
-                
-                while (!isThreadFinished) {
                     if (Clock.isEqualDuration(timeInSeconds, duration)) {
                         kekenyangan -= 10;
                         mood -= 10;
@@ -138,9 +134,7 @@ public class Sim {
                             Thread.sleep(1000);
                         }
                         catch (InterruptedException e) {
-
-                        }
-                    }
+                        }  
                 }
             }
         });
@@ -150,8 +144,7 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 4 * 60;
-
-                while (!isThreadFinished) {
+                
                     if (Clock.isEqualDuration(timeInSeconds, duration)) {
                         if (pekerjaan.equals("Badut Sulap")) 
                         {
@@ -183,7 +176,7 @@ public class Sim {
                         }
                     }
                 }
-            }
+            
         });
 
         t1.start();
@@ -198,13 +191,56 @@ public class Sim {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
-        isThreadFinished = false;
     }
 
     public void olahraga() {
-        kesehatan += 5;
-        kekenyangan -= 5;
-        mood += 10;
+        System.out.print("Masukkan durasi olahraga: ");
+        durasi = scan.nextInt();
+        while (durasi % 20 != 0) {
+            System.out.println("Durasi olahraga harus merupakan kelipatan 20");
+            durasi = scan.nextInt();
+        }
+        System.out.println();
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+            }
+        });
+
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int timeInSeconds = LocalTime.now().toSecondOfDay();
+                int duration = 20;
+                
+                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                        kesehatan += 5;
+                        kekenyangan -= 5;
+                        mood += 10;
+
+                        timeInSeconds = LocalTime.now().toSecondOfDay();
+                        try {
+                            Thread.sleep(1000);
+                        }
+                        catch (InterruptedException e) {
+
+                        }
+                    }
+            }
+        });
+
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public void tidur() {
