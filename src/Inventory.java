@@ -5,7 +5,6 @@ public class Inventory {
     private Map<String, Integer> items = new HashMap<String, Integer>();
 
     public Inventory() {
-        items = null;
     }
 
     public void addItem(String item) {
@@ -43,9 +42,33 @@ public class Inventory {
     public void printSpecificItem (String typeName) {
         //print specific item in item
         System.out.println("Item in inventory : ");
+        String[] daftarFurniture = {"Kasur Single", "Kasur Quuen Size", "Kasung King Size", "Toilet", "Kompor Gas", "Kompor Listrik", "Meja dan Kursi", "Jam"};
+        String[] daftarBahanMakanan = {"Nasi, Kentang, Ayam, Sapi, Wortel, Bayam, Kacang, Susu"};
+        String[] daftarMasakan = {"Nasi Ayam, Nasi Kari, Susu Kacang, Tumis Sayur, Bistik"};
+
+        int i = 1;
         for (Map.Entry<String, Integer> entry : items.entrySet()) {
-            if (entry.getKey().contains(typeName)) {
-                System.out.println(entry.getKey() + " : " + entry.getValue());
+            if (typeName == "Furniture") {
+                for (String furniture : daftarFurniture) {
+                    if (entry.getKey().equals(furniture)) {
+                        System.out.println(i + ". " + entry.getKey() + ", jumlah: " + entry.getValue());
+                        i++;
+                    }
+                }
+            } else if (typeName == "Bahan Makanan") {
+                for (String bahanMakanan : daftarBahanMakanan) {
+                    if (entry.getKey().equals(bahanMakanan)) {
+                        System.out.println(i + ". " + entry.getKey() + ", jumlah: " + entry.getValue());
+                        i++;
+                    }
+                }
+            } else if (typeName == "Masakan") {
+                for (String masakan : daftarMasakan) {
+                    if (entry.getKey().equals(masakan)) {
+                        System.out.println(i + ". " + entry.getKey() + ", jumlah: " + entry.getValue());
+                        i++;
+                    }
+                }
             }
         }
     } 
