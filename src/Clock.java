@@ -6,7 +6,7 @@ public class Clock {
         int seconds = localTime.toSecondOfDay();
         
         while (LocalTime.now().toSecondOfDay() - seconds != duration) {
-            // System.out.println(LocalTime.now().toSecondOfDay() - seconds);
+            //System.out.println(LocalTime.now().toSecondOfDay() - seconds);
         }
         System.out.println();
         System.out.println("Finished");
