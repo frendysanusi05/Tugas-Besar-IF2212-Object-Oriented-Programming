@@ -31,8 +31,8 @@ public class World {
 
     public void addCekPosisi(Rumah rumah) {
         for (Ruangan ruang : rumah.getDaftarRuangan()) {
-            for (int i = ruang.getTitikRuangan().getX() - 3; i < ruang.getTitikRuangan().getX() + 3; i++) {
-                for (int j = ruang.getTitikRuangan().getY() - 3; j < ruang.getTitikRuangan().getY() + 3; j++) {
+            for (int i = ruang.getXRuangan() - 3; i < ruang.getXRuangan() + 3; i++) {
+                for (int j = ruang.getYRuangan() - 3; j < ruang.getYRuangan() + 3; j++) {
                     cekPosisi[i][j] = true;
                 }
             }

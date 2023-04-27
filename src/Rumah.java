@@ -3,40 +3,50 @@ import java.util.*;
 public class Rumah {
     private String IDRumah;
     private Point posisi;
-    private Ruangan[] daftarRuangan;
-    private Ruangan R1;
-    public static int jumlahRuangan;
+    private ArrayList<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
+    //private Ruangan R1;
+    private int jumlahRuangan;
+    private static int jumlahRumah = 0;
 
 
     //constructor
-    public Rumah(String IDRumah, Point posisi){
-        this.IDRumah = IDRumah;
+    public Rumah(Point posisi) throws Exception {
+        jumlahRumah++;
+        IDRumah = "R" + jumlahRumah;
         this.posisi = posisi;
 
-        Ruangan R1 = new Ruangan("IniPerluDiGenerateDlu" /*Perlu digenerate dlu gasi?*/, "Awal", IDRumah, posisi); //ini IDRuangannya mau digimanain? buat yg bagian awal. 
-
         //inisiasi Ruangan pada Rumah
-        tambahRuangan(R1);
-        jumlahRuangan = 1;
+        jumlahRuangan++;
+        Ruangan kamar = new Ruangan("Kamar", this, posisi); 
 
-        //inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
-        Random rand = new Random();
-        List<String> givenList = new ArrayList<String>();
-        givenList.add("Kasur Single");
-        givenList.add("Kasur Queen Size");
-        givenList.add("Kasur King Size");
-        String randomElmt = givenList.get(rand.nextInt(givenList.size()));
-        R1.addObject(randomElmt);
-        R1.addObject("Toilet");
+        // daftarRuangan.add(R1);
+
+        // addRuangan(R1);
+        // inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
+        // Random rand = new Random();
+        // List<String> givenList = new ArrayList<String>();
+        // givenList.add("Kasur Single");
+        // givenList.add("Kasur Queen Size");
+        // givenList.add("Kasur King Size");
+        // String randomElmt = givenList.get(rand.nextInt(givenList.size()));
+        // R1.addObject(randomElmt);
+        // R1.addObject("Toilet");
         
-        List<String> givenList2 = new ArrayList<String>();
-        givenList2.add("Kompor Gas");
-        givenList2.add("Kompor Listrik");
-        randomElmt = givenList2.get(rand.nextInt(givenList2.size()));
-        R1.addObject(randomElmt);
-        R1.addObject("Meja dan Kursi");
-        R1.addObject("Jam");
+        // List<String> givenList2 = new ArrayList<String>();
+        // givenList2.add("Kompor Gas");
+        // givenList2.add("Kompor Listrik");
+        // randomElmt = givenList2.get(rand.nextInt(givenList2.size()));
+        // R1.addObject(randomElmt);
+        // R1.addObject("Meja dan Kursi");
+        // R1.addObject("Jam");
+
+        String[] furnitureStarter = {"Kasur Single", "Toilet", "Kompor Gas", "Meja dan Kursi", "Jam"};
+        for(String furniture : furnitureStarter) {
+            kamar.insertObjectRandomly(furniture);
+        }
     }
+
+    public Rumah() {}
 
     //methods
     public void printDaftarRuangan(){
@@ -48,9 +58,9 @@ public class Rumah {
 
     //ini blom dikonekin sama #cek ruang kosong yg ada di class ruangan dan #cekposisi yg ada di world
     public void tambahRuangan(Ruangan newRoom){
-        this.daftarRuangan[daftarRuangan.length] = newRoom;
-        jumlahRuangan ++;
-    }
+        jumlahRuangan++;
+        daftarRuangan.add(newRoom);
+    } 
 
     //getter
     public String getIDRumah(){
@@ -65,16 +75,33 @@ public class Rumah {
         return posisi.getY();
     }
 
-    public Ruangan[] getDaftarRuangan(){
+    public ArrayList<Ruangan> getDaftarRuangan(){
         return daftarRuangan;
+    }
+
+    public Ruangan getRuangan(String namaRuangan){
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getNamaRuangan().equals(namaRuangan)){
+                return ruangan;
+            }
+        }
+        return null;
+    }
+
+    public Ruangan getCurrentRuanganSim(Sim sim) {
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getXRuangan() == sim.getPosisiSim().getX() && ruangan.getYRuangan() == sim.getPosisiSim().getY()) {
+                return ruangan;
+            }
+        }
+        return null;
     }
 
     public int getJumlahRuangan(){
         return jumlahRuangan;
     }
 
-    public Ruangan getFirstRuangan(){
-        return R1;
+    public int getJumlahRumah(){
+        return jumlahRumah;
     }
-
 }

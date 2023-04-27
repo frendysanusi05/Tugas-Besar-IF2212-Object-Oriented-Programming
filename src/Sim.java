@@ -1,8 +1,11 @@
 import java.util.Random;
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.time.LocalTime;
+import java.util.Scanner;
+import java.util.*;
 
 //mmaaf bagian perkerjaan sama kerja gue bingung
 
@@ -10,15 +13,21 @@ public class Sim {
     private String nama;
     private String pekerjaan;
     private int uang;
-    private Inventory inventory; 
+    public Inventory inventory;
     private int kekenyangan;
     private int mood;
     private int kesehatan;
     private String status;
+    private Point posisiSim;
+    private List<String> daftarAksi = new ArrayList<String>();
 
+<<<<<<< HEAD
+=======
+    private volatile boolean isThreadFinished = false;
+>>>>>>> 3e509d5efcaecfd53ee30b5e8928632b7d2060e8
     private volatile double durasi;
 
-    private static final String[] listPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
+    private static final String[] daftarPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
     
     /* Scanner */
     Scanner scan = new Scanner(System.in);
@@ -30,8 +39,16 @@ public class Sim {
         this.mood = 80;
         this.kesehatan = 80;
         this.inventory = new Inventory();
-        this.pekerjaan = listPekerjaan[new Random().nextInt(listPekerjaan.length)];
-        this.status = null;
+        this.pekerjaan = daftarPekerjaan[new Random().nextInt(daftarPekerjaan.length)];
+        this.status = null; 
+        daftarAksi.add("Kerja");
+        daftarAksi.add("Olahraga");
+        daftarAksi.add("Berkunjung");
+        daftarAksi.add("Upgrade Rumah");
+        daftarAksi.add("Beli Barang");
+        daftarAksi.add("Pindah Ruang");
+        daftarAksi.add("Lihat Inventory");
+        daftarAksi.add("Pasang Barang");
     }
 
     public String getNama() {
@@ -66,51 +83,192 @@ public class Sim {
         return status;
     }
 
-    public void setStatus(String aksi) {
-        status = aksi;
+    public Point getPosisiSim() {
+        return posisiSim;
     }
 
-    //public void setPekerjaan(String pekerjaan) { this.pekerjaan = pekerjaan;//belum mikirin kalau dia masukkin belumsesuai yang ada di list}
+    public List<String> getDaftarAksi() {
+        return daftarAksi;
+    }
 
+
+    // Setter
     public void addUang(int uangTambahan) {
-        uang += uangTambahan;
-        if (uang > 100){
-            uang = 100;
-        }
+        this.uang = uang + uangTambahan;
     }
 
     public void addKekenyangan(int kekenyanganTambahan) {
-        kekenyangan += kekenyanganTambahan;
-        if (kekenyangan > 100){
-            kekenyangan = 100;
-        }
+        this.kekenyangan = kekenyangan + kekenyanganTambahan;
     }
 
     public void addMood(int moodTambahan) {
-        mood += moodTambahan;
-        if (mood > 100){
-            mood = 100;
-        }
+        this.mood = mood + moodTambahan;
     }
 
     public void addKesehatan(int kesehatanTambahan) {
-        this.kesehatan += kesehatanTambahan;
+        this.kesehatan = kesehatan + kesehatanTambahan;
     }
 
+    public void setStatus(String activity) {
+        status = activity;
+    }
+
+    public void setPosisiSim(Point posisiSim) {
+        this.posisiSim = posisiSim;
+    }
+    
+    public void addDaftarAksi(String aksi) {
+        daftarAksi.add(aksi);
+    }
+
+    public void removeElmtDaftarAksi(int index) {
+        daftarAksi.remove(index);
+    }
+
+    // Methods (Aksi)
+    public void printDaftarAksi() {
+        System.out.println("Daftar Aksi: ");
+        for (int i = 0; i < daftarAksi.size(); i++) {
+            System.out.println(i+1 + ". " + daftarAksi.get(i));
+        }
+    }
+
+    public void makan() {
+        // Gw coba ganti biar ngikutin speknya yaa - Ariq
+        System.out.println("Berikut ini adalah makanan yang ada di inventory: ");
+
+        System.out.println("Bahan Makanan: ");
+        inventory.printSpecificItem("Bahan Makanan");
+
+        System.out.println("Masakan: ");
+        inventory.printSpecificItem("Masakan");
+
+        // User Input
+        System.out.print("Masukkan nama makanan yang ingin dimakan: ");
+        
+        Scanner input = new Scanner(System.in);
+        String namaMakanan = input.nextLine();
+        input.close();
+
+        // Input Processing
+        if (inventory.containsItem(namaMakanan)) {
+
+            inventory.decreaseItem(namaMakanan, 1);
+            durasi = 30;
+            System.out.println();
+            
+            setStatus("Sedang Makan");
+
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Clock.wait(durasi);
+                    isThreadFinished = true;
+                }
+            });
+
+            Thread t2 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    /*
+                    +X kekenyangan / 1 siklus makan (30 detik), 
+                    X bergantung pada jenis makanan.
+                     */
+
+                    int timeInSeconds = LocalTime.now().toSecondOfDay();
+                    int duration = 30;
+                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                        switch(namaMakanan) {
+                            case "Nasi Ayam":
+                                addKekenyangan(16);
+                                break;
+                            case "Nasi Kari":
+                                addKekenyangan(30);
+                                break;
+                            case "Susu Kacang":
+                                addKekenyangan(5);
+                                break;
+                            case "Tumis Sayur":
+                                addKekenyangan(5);
+                                break;
+                            case "Bistik":
+                                addKekenyangan(22);
+                                break;
+                            case "Nasi":
+                                addKekenyangan(5);
+                                break;
+                            case "Kentang":
+                                addKekenyangan(4);
+                                break;
+                            case "Ayam":
+                                addKekenyangan(8);
+                                break;
+                            case "Sapi":
+                                addKekenyangan(15);
+                                break;
+                            case "Wortel":
+                                addKekenyangan(2);
+                                break;
+                            case "Bayam":
+                                addKekenyangan(2);
+                                break;
+                            case "Kacang":
+                                addKekenyangan(2);
+                                break;
+                            case "Susu":
+                                addKekenyangan(1);
+                                break;
+                        }
+                    }
+                    
+                }
+            });
+
+            t1.start();
+            t2.start();
+
+            try {
+                t1.join();
+                t2.join();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            isThreadFinished = false;
+            setStatus(null);
+            
+        } else {
+            System.out.println("Makanan tidak ditemukan");
+        }
+
+        
+    }
+    
     public void kerja() {
         System.out.print("Masukkan durasi kerja: ");
+<<<<<<< HEAD
         durasi = scan.nextDouble();
         while (durasi % 120 != 0) {
             System.out.println("Durasi kerja harus merupakan kelipatan 120");
             durasi = scan.nextDouble();
         }
+=======
+        durasi = scan.nextInt();
+        // while (durasi % 120 != 0) {
+        //     System.out.println("Durasi kerja harus merupakan kelipatan 120");
+        //     System.out.print("Masukkan durasi kerja: ");
+        //     durasi = scan.nextInt();
+        // }
+>>>>>>> 3e509d5efcaecfd53ee30b5e8928632b7d2060e8
         System.out.println();
-        setStatus("Kerja");
 
+        setStatus("Sedang Bekerja");
+        
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 Clock.wait(durasi);
+                isThreadFinished = true;
             }
         });
 
@@ -119,6 +277,13 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 30;
+                
+                while (!isThreadFinished) {
+                    /*
+                    -10 kekenyangan / 30 detik
+                    -10 mood / 30 detik
+                     */
+
                     if (Clock.isEqualDuration(timeInSeconds, duration)) {
                         kekenyangan -= 10;
                         mood -= 10;
@@ -128,7 +293,9 @@ public class Sim {
                             Thread.sleep(1000);
                         }
                         catch (InterruptedException e) {
-                        }  
+
+                        }
+                    }
                 }
             }
         });
@@ -138,7 +305,8 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 4 * 60;
-                
+
+                while (!isThreadFinished) {
                     if (Clock.isEqualDuration(timeInSeconds, duration)) {
                         if (pekerjaan.equals("Badut Sulap")) 
                         {
@@ -170,7 +338,7 @@ public class Sim {
                         }
                     }
                 }
-            
+            }
         });
 
         t1.start();
@@ -180,16 +348,19 @@ public class Sim {
         try {
             t1.join();
             t2.join();
-            t2.join();
+            t3.join();
         }
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+        isThreadFinished = false;
         setStatus(null);
     }
 
     public void olahraga() {
+        // Gw sesuaian sama spek yaa - Ariq
         System.out.print("Masukkan durasi olahraga: ");
+<<<<<<< HEAD
         durasi = scan.nextDouble();
         while (durasi % 20 != 0) {
             System.out.println("Durasi olahraga harus merupakan kelipatan 20");
@@ -250,11 +421,23 @@ public class Sim {
         }
         System.out.println();
         setStatus("Tidur");
+=======
+        durasi = scan.nextInt();
+        while (durasi != 20) {
+            System.out.println("Durasi olahraga harus kelipatan 20");
+            System.out.print("Masukkan durasi olahraga: ");
+            durasi = scan.nextInt();
+        }
+        System.out.println();
+>>>>>>> 3e509d5efcaecfd53ee30b5e8928632b7d2060e8
 
+        setStatus("Sedang Berolahraga");
+        
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 Clock.wait(durasi);
+                isThreadFinished = true;
             }
         });
 
@@ -264,9 +447,18 @@ public class Sim {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 240;
                 
+                while (!isThreadFinished) {
+                    /*
+                    +5 kesehatan/20 detik
+                    -5 kekenyangan/20 detik
+                    +10 mood/20 detik
+                    */
+
                     if (Clock.isEqualDuration(timeInSeconds, duration)) {
-                        addKesehatan(20);
-                        addMood(30);
+                        addKesehatan(5);
+                        addKekenyangan(-5);
+                        addMood(10);
+
                         timeInSeconds = LocalTime.now().toSecondOfDay();
                         try {
                             Thread.sleep(1000);
@@ -274,8 +466,10 @@ public class Sim {
                         catch (InterruptedException e) {
                         }
                     }
+                }
             }
         });
+
 
         t1.start();
         t2.start();
@@ -287,115 +481,88 @@ public class Sim {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+        isThreadFinished = false;
         setStatus(null);
     }
 
-    public void makan(Edible makanan) {
-    //mengambil makanan di Inventory
-        System.out.println("Berikut ini adalah makanan yang ada di inventory: ");
+    public void tidur() {
+    // bingung cek haru tidur 3 menit dalam 24 jam
+    //gatau ini bingung banget
 
-        System.out.println("Bahan Makanan : ");
-        inventory.printSpecificItem("Bahan Makanan");
+        // boolean sudahTidur = false;
 
-        System.out.println("Masakan : ");
-        inventory.printSpecificItem("Masakan");
-    
-    //memilih makanan 
-        System.out.print("Masukkan makanan yang ingin dimakan: ");
+        // if(sudahTidur){
+        //     kesehatan += 20;
+        //     mood += 30;
+        // }else{
+        //     kesehatan -= 5;
+        //     mood -= 5;
+        // }
+
+        System.out.print("Masukkan durasi tidur: ");
+        durasi = scan.nextInt();
+        while (durasi < 180) {
+            System.out.println("Durasi tidur harus lebih dari sama dengan 3 menit");
+            System.out.print("Masukkan durasi tidur: ");
+            durasi = scan.nextInt();
+        }
+        System.out.println();
+
+        setStatus("Sedang Tidur");
         
-        Scanner input = new Scanner(System.in);
-        String namaMakanan = input.nextLine();
-        input.close();
-    
-        //memastikan makanan ada di Inventor
-        if (inventory.containsItem(namaMakanan)) {
-            inventory.decreaseItem(namaMakanan, 1);
-            durasi = 30;
-            System.out.println();
-            
-            setStatus("Sedang Makan");
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+                isThreadFinished = true;
+            }
+        });
 
-            Thread t1 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Clock.wait(durasi);
-                }
-            });
-
-            Thread t2 = new Thread(new Runnable() {
-                @Override
-                public void run() {
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int timeInSeconds = LocalTime.now().toSecondOfDay();
+                int duration = 20;
+                
+                while (!isThreadFinished) {
                     /*
-                    +X kekenyangan / 1 siklus makan (30 detik), 
-                    X bergantung pada jenis makanan.
-                     */
+                    +30 mood / 4 menit
+                    +20 kesehatan / 4 menit
+                    */
 
-                    int timeInSeconds = LocalTime.now().toSecondOfDay();
-                    int duration = 30;
                     if (Clock.isEqualDuration(timeInSeconds, duration)) {
-                        switch(namaMakanan){
-                            case "Nasi" :
-                                addKekenyangan(5);
-                                break;
-                            case "Kentang" :
-                                addKekenyangan(4);
-                                break;
-                            case "Ayam" :
-                                addKekenyangan(8);
-                                break;
-                            case "Sapi" :
-                                addKekenyangan(15);
-                                break;
-                            case "Wortel" :
-                                addKekenyangan(2);
-                                break;
-                            case "Bayam" :
-                                addKekenyangan(2);
-                                break;
-                            case "Kacang" :
-                                addKekenyangan(2);
-                                break;
-                            case "Susu" :
-                                addKekenyangan(1);
-                                break;
-                            case "Nasi Ayam" :
-                                addKekenyangan(16);
-                                break;
-                            case "Nasi Kari" :
-                                addKekenyangan(30);
-                                break;
-                            case "Susu Kacang" :
-                                addKekenyangan(5);
-                                break;
-                            case "Tumis Sayur" :
-                                addKekenyangan(5);
-                                break;
-                            case "Bistik" :
-                                addKekenyangan(22);
-                                break;
+                        addKesehatan(20);
+                        addMood(30);
+
+                        timeInSeconds = LocalTime.now().toSecondOfDay();
+                        try {
+                            Thread.sleep(1000);
+                        }
+                        catch (InterruptedException e) {
                         }
                     }
                 }
-            });
-
-            t1.start();
-            t2.start();
-
-            try {
-                t1.join();
-                t2.join();
             }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            setStatus(null);
-        } else {
-            System.out.println("Makanan tidak ditemukan");
+        });
+
+
+        t1.start();
+        t2.start();
+
+        try {
+            t1.join();
+            t2.join();
         }
-    }    
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        isThreadFinished = false;
+        setStatus(null);
+    } 
 
-    public void memasak() {
-        //bingung pakai banget
+    public void memasak() throws Exception {
+        // print "Berikut ini adalah bahan makanan yang kamu miliki: " then shows the list of all items in the inventory
+        // execute 
         System.out.println("Berikut ini adalah bahan makanan yang kamu miliki:");
         inventory.printSpecificItem("Bahan Makanan");
         List<Masakan> listMasakan = new ArrayList<Masakan>();
@@ -442,7 +609,7 @@ public class Sim {
                     inventory.decreaseItem(bahan, 1);
                 }
 
-                durasi = (1.5 * masakanBaru.getKekenyangan());
+                durasi = 1.5 * masakanBaru.getKekenyangan();
                 System.out.println();
 
                 setStatus("Sedang Memasak");
@@ -451,7 +618,7 @@ public class Sim {
                     @Override
                     public void run() {
                         Clock.wait(durasi);
-                       
+                        isThreadFinished = true;
                     }
                 });
 
@@ -464,6 +631,7 @@ public class Sim {
                     e.printStackTrace();
                 }
 
+                isThreadFinished = false;
                 setStatus(null);
                 addMood(10);
 
@@ -478,64 +646,25 @@ public class Sim {
     public void berkunjung(Rumah rumahSim, Rumah rumahTemanSim){
         //semangat deh ngitung waktunya makai koordinat rumah
         // rumusnya sqrt(((x2-x1)^2) + ((y2-y1)^2))
-        double x1 = rumahSim.getXRumah();
-        double y1 = rumahSim.getYRumah();
-
-        double x2 = rumahTemanSim.getXRumah();
-        double y2 = rumahTemanSim.getYRumah();
-
-        double waktuBerkunjung = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
-
-        System.out.println();
-        setStatus("Berkunjung");
-
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Clock.wait(waktuBerkunjung);
-            }
-        });
-
-        Thread t2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int timeInSeconds = LocalTime.now().toSecondOfDay();
-                int duration = 30;
-                
-                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
-                        addMood(10);
-                        kekenyangan -= 10;
-                        timeInSeconds = LocalTime.now().toSecondOfDay();
-                        try {
-                            Thread.sleep(1000);
-                        }
-                        catch (InterruptedException e) {
-                        }
-                    }
-            }
-        });
-
-        t1.start();
-        t2.start();
-
-        try {
-            t1.join();
-            t2.join();
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        setStatus(null);
-    }
+        // x2 dan y2 adalah koordinat rumah yang akan dikunjungi
+        // x1 dan y1 adalah koordinat rumah Sim
+        mood += 10;
+        kekenyangan -= 10;
+    }   
 
     public void buangAir(){
     //kayak tidur bingungnya
     //buang air setidaknya 1 kali setiap habis makan. Apabila tidak dilakukan, maka mood dan kesehatan Sim akan berkurang.
 
-            kekenyangan -= 20;
-            addMood(10);
+        boolean sudahBA = false;
 
-        
+        if(sudahBA){
+            kekenyangan -= 20;
+            mood += 10;
+        }else{
+            kesehatan -= 5;
+            mood -= 5;
+        }
     }
 
     public void upgradeRumah(){
@@ -547,6 +676,7 @@ public class Sim {
         //mengisi rumahnya dengan barang-barang.
         //waktu kedatangan barang tidak dapat dipastikan.
         //durasi pengiriman barang akan selalu acak tetapi tetap dalam range waktu X menit.
+
     }
 
     public void pindahRuang(){
@@ -557,18 +687,127 @@ public class Sim {
         //berisi dengan makanan, barang-barang yang sedang tidak terpasang pada ruangan, dan objek-objek lainnya.
     }
 
-    public void addInventory(){
+    public void addInventory() {
         //gatau ada di sheet spek tapi gaada di doc spesifikasi
     }
 
-    public void pasangBarang(){
-        //Barang yang akan dipasang harus muat dalam ruanga
+    public void pasangBarang(Ruangan ruangan) throws Exception {
+
+        AtomicBoolean isFinished = new AtomicBoolean(false);
+        inventory.printSpecificItem("Furniture");
+        System.out.println("Masukkan nama furniture yang ingin dipasang (contoh: Meja Makan) ");
+        Scanner input = new Scanner(System.in);
+        String namaFurniture = input.nextLine();
+
+        while (!isFinished.get()) {
+            try {
+                if (!inventory.containsItem(namaFurniture)) {
+                    throw new Exception();
+                }
+                isFinished.set(true);
+            } catch (Exception e) {
+                System.out.println("Tidak ada furniture dengan nama tersebut di inventory");
+                System.out.println("Masukkan nama furniture yang ingin dipasang (contoh: Meja Makan) ");
+                namaFurniture = input.nextLine();
+                continue;
+            }
+        }
+        isFinished.set(false);
+
+        while (!isFinished.get()) {
+            //boolean isRotated = false;
+            Furniture barang = new Furniture(namaFurniture);
+            int x, y;
+            ruangan.printRuangan(this);
+            System.out.println("(Posisi yang dimasukkan akan menjadi titik terkiri-atas dari "+ namaFurniture + ") ");
+            try {
+                System.out.print("Masukkan posisi x furniture: ");
+                x = input.nextInt();
+                System.out.println();
+                System.out.print("Masukkan posisi y furniture: ");
+                y = input.nextInt();
+                System.out.println();
+
+                if (x < 0 || y < 0 || x > 5 || y > 5) {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                System.out.println("Input tidak valid!");
+                input.nextLine();
+                continue;
+            }
+
+            try {
+                System.out.print("Apakah ingin diputar? (y/n) ");
+                String jawaban = input.next();
+                if (jawaban.equals("y")) {
+                    barang.rotateFurniture();
+                } else if (!jawaban.equals("n")) {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                System.out.println("Input tidak valid!");
+                input.nextLine();
+                continue;
+            }
+            barang.setXFurniture(x + ruangan.getXRuangan() - 3);
+            barang.setYFurniture(y + ruangan.getYRuangan() - 3);
+            // try {
+            //     if (!ruangan.isFurniturePlacable(barang, isRotated)) {
+            //         throw new Exception();
+            //     }
+            // } catch (Exception e) {
+            //     System.out.println("Furniture tidak dapat ditempatkan di posisi tersebut!");
+            //     input.nextLine();
+            //     continue;
+            // }
+            ruangan.insertObjectToRuangan(namaFurniture, new Point(barang.getXFurniture(), barang.getYFurniture()), isFinished);
+            
+            // isInputValid = true;
+        }
+        input.close();
+        inventory.decreaseItem(namaFurniture, 1);
     }
 
-    public void lihatWaktu(){
+    public void lihatWaktu() {
         //membutuhkan objek Jam
         //menunjukkan sisa waktu pada hari tersebut beserta sisa waktu yang masih ada untuk seluruh tindakan yang bisa ditinggal
     }
 
+    public void moveTo(Point point) {
+        posisiSim.setX(point.getX());
+        posisiSim.setY(point.getY());
+    }
+
+    public void moveToFurniture(Ruangan ruangan) throws Exception {
+        System.out.print("Masukkan nama furniture yang ingin dituju: ");
+        Scanner input = new Scanner(System.in);
+        String namaFurniture = input.nextLine();
+        Furniture furniture = new Furniture(namaFurniture);
+
+        if (!ruangan.isFurnitureInRuangan(furniture)) {
+            System.out.println("Furniture tidak ada di ruangan!");
+        } else {
+            System.out.println("Bergerak menuju" + namaFurniture);
+            moveTo(new Point(furniture.getXFurniture(), furniture.getYFurniture()));
+        }
+    }
+
+    // public void checkFurniture(Ruangan ruangan) {
+    //     // remove element of daftaraksi from 8th index (daftarAksi index starts from 0), and then
+    //     // check the furniture near sim and get the aksi that can be done, put it inside daftarAksi
+    //     // if there is no furniture near sim, there will be no addition to daftarAksi
+        
+    //     if (daftarAksi.size() > 8) {
+    //         for (int i = 8; i < daftarAksi.size(); i++) {
+    //             daftarAksi.remove(i);
+    //         }
+    //     }
+
+        
+
+
+
+    // }
     //harus buat 7 aksi lain yang dapat berhubungan dengan objek sesuai dengan kreasi masing-masing.
 }
