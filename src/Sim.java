@@ -16,7 +16,7 @@ public class Sim {
     private int kesehatan;
     private String status;
 
-    private volatile int durasi;
+    private volatile Double durasi;
 
     private static final String[] listPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
     
@@ -99,10 +99,10 @@ public class Sim {
 
     public void kerja() {
         System.out.print("Masukkan durasi kerja: ");
-        durasi = scan.nextInt();
+        durasi = scan.nextDouble();
         while (durasi % 120 != 0) {
             System.out.println("Durasi kerja harus merupakan kelipatan 120");
-            durasi = scan.nextInt();
+            durasi = scan.nextDouble();
         }
         System.out.println();
         setStatus("Kerja");
@@ -190,10 +190,10 @@ public class Sim {
 
     public void olahraga() {
         System.out.print("Masukkan durasi olahraga: ");
-        durasi = scan.nextInt();
+        durasi = scan.nextDouble();
         while (durasi % 20 != 0) {
             System.out.println("Durasi olahraga harus merupakan kelipatan 20");
-            durasi = scan.nextInt();
+            durasi = scan.nextDouble();
         }
         System.out.println();
         setStatus("Olahraga");
@@ -242,11 +242,11 @@ public class Sim {
 
     public void tidur() {
         System.out.print("Masukkan durasi tidur (detik): ");
-        durasi = scan.nextInt();
+        durasi = scan.nextDouble();
         while (durasi < 180) {
             System.out.println("Durasi tidur harus lebih dari sama dengan 3 menit");
             System.out.print("Masukkan durasi tidur: ");
-            durasi = scan.nextInt();
+            durasi = scan.nextDouble();
         }
         System.out.println();
         setStatus("Tidur");
@@ -310,7 +310,7 @@ public class Sim {
         //memastikan makanan ada di Inventor
         if (inventory.containsItem(namaMakanan)) {
             inventory.decreaseItem(namaMakanan, 1);
-            durasi = 30;
+            durasi = (double) 30;
             System.out.println();
             
             setStatus("Sedang Makan");
