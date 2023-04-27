@@ -22,8 +22,8 @@ public class Clock {
             //     e.printStackTrace();
             // }
         }
-        System.out.println();
-        System.out.println("Finished");
+        // System.out.println();
+        // System.out.println("Finished");
     }
 
     /* Mengecek durasi waktu == duration */
