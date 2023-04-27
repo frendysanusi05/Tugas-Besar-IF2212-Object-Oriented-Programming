@@ -10,19 +10,19 @@ public class Rumah {
 
 
     //constructor
-    public Rumah(Point posisi){
+    public Rumah(Point posisi) throws Exception {
         jumlahRumah++;
         IDRumah = "R" + jumlahRumah;
         this.posisi = posisi;
 
-        jumlahRuangan++;
-        Ruangan R1 = new Ruangan("Kamar", this, posisi); 
-
         //inisiasi Ruangan pada Rumah
+        jumlahRuangan++;
+        Ruangan kamar = new Ruangan("Kamar", this, posisi); 
+
         // daftarRuangan.add(R1);
 
-        //addRuangan(R1);
-        //inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
+        // addRuangan(R1);
+        // inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
         // Random rand = new Random();
         // List<String> givenList = new ArrayList<String>();
         // givenList.add("Kasur Single");
@@ -39,6 +39,11 @@ public class Rumah {
         // R1.addObject(randomElmt);
         // R1.addObject("Meja dan Kursi");
         // R1.addObject("Jam");
+
+        String[] furnitureStarter = {"Kasur Single", "Toilet", "Kompor Gas", "Meja dan Kursi", "Jam"};
+        for(String furniture : furnitureStarter) {
+            kamar.insertObjectRandomly(furniture);
+        }
     }
 
     public Rumah() {}
@@ -99,9 +104,4 @@ public class Rumah {
     public int getJumlahRumah(){
         return jumlahRumah;
     }
-
-    // public Ruangan getFirstRuangan(){
-    //     return R1;
-    // }
-
 }

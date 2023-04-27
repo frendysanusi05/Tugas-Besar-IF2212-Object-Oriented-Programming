@@ -2,6 +2,7 @@ import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.time.LocalTime;
 import java.util.Scanner;
 import java.util.*;
@@ -18,6 +19,7 @@ public class Sim {
     private int kesehatan;
     private String status;
     private Point posisiSim;
+    private List<String> daftarAksi = new ArrayList<String>();
 
     private volatile boolean isThreadFinished = false;
     private volatile double durasi;
@@ -36,6 +38,14 @@ public class Sim {
         this.inventory = new Inventory();
         this.pekerjaan = daftarPekerjaan[new Random().nextInt(daftarPekerjaan.length)];
         this.status = null; 
+        daftarAksi.add("Kerja");
+        daftarAksi.add("Olahraga");
+        daftarAksi.add("Berkunjung");
+        daftarAksi.add("Upgrade Rumah");
+        daftarAksi.add("Beli Barang");
+        daftarAksi.add("Pindah Ruang");
+        daftarAksi.add("Lihat Inventory");
+        daftarAksi.add("Pasang Barang");
     }
 
     public String getNama() {
@@ -74,6 +84,12 @@ public class Sim {
         return posisiSim;
     }
 
+    public List<String> getDaftarAksi() {
+        return daftarAksi;
+    }
+
+
+    // Setter
     public void addUang(int uangTambahan) {
         this.uang = uang + uangTambahan;
     }
@@ -96,6 +112,22 @@ public class Sim {
 
     public void setPosisiSim(Point posisiSim) {
         this.posisiSim = posisiSim;
+    }
+    
+    public void addDaftarAksi(String aksi) {
+        daftarAksi.add(aksi);
+    }
+
+    public void removeElmtDaftarAksi(int index) {
+        daftarAksi.remove(index);
+    }
+
+    // Methods (Aksi)
+    public void printDaftarAksi() {
+        System.out.println("Daftar Aksi: ");
+        for (int i = 0; i < daftarAksi.size(); i++) {
+            System.out.println(i+1 + ". " + daftarAksi.get(i));
+        }
     }
 
     public void makan() {
@@ -586,89 +618,122 @@ public class Sim {
     }
 
     public void pasangBarang(Ruangan ruangan) throws Exception {
-        // ini gw comment dulu, mau diubah - Ariq 
 
-        // boolean isInputValid = false;
-        // inventory.printSpecificItem("Furniture");
-        // System.out.println("Masukkan nama furniture yang ingin dipasang (contoh: Meja Makan) ");
-        // Scanner input = new Scanner(System.in);
-        // String namaFurniture = input.nextLine();
-        // while (!isInputValid) {
-        //     try {
-        //         if (!inventory.containsItem(namaFurniture)) {
-        //             throw new Exception();
-        //         }
-        //         isInputValid = true;
-        //     } catch (Exception e) {
-        //         System.out.println("Tidak ada furniture dengan nama tersebut di inventory");
-        //         System.out.println("Masukkan nama furniture yang ingin dipasang (contoh: Meja Makan) ");
-        //         namaFurniture = input.nextLine();
-        //         continue;
-        //     }
-        // }
-        // isInputValid = false;
+        AtomicBoolean isFinished = new AtomicBoolean(false);
+        inventory.printSpecificItem("Furniture");
+        System.out.println("Masukkan nama furniture yang ingin dipasang (contoh: Meja Makan) ");
+        Scanner input = new Scanner(System.in);
+        String namaFurniture = input.nextLine();
 
-        // while (!isInputValid) {
-        //     boolean isRotated = false;
-        //     Furniture barang = new Furniture(namaFurniture);
-        //     int x, y;
-        //     ruangan.printRuangan(this);
-        //     System.out.println("(Posisi yang dimasukkan akan menjadi titik terkiri-atas dari "+ namaFurniture + ") ");
-        //     try {
-        //         System.out.print("Masukkan posisi x furniture: ");
-        //         x = input.nextInt();
-        //         System.out.println();
-        //         System.out.print("Masukkan posisi y furniture: ");
-        //         y = input.nextInt();
-        //         System.out.println();
+        while (!isFinished.get()) {
+            try {
+                if (!inventory.containsItem(namaFurniture)) {
+                    throw new Exception();
+                }
+                isFinished.set(true);
+            } catch (Exception e) {
+                System.out.println("Tidak ada furniture dengan nama tersebut di inventory");
+                System.out.println("Masukkan nama furniture yang ingin dipasang (contoh: Meja Makan) ");
+                namaFurniture = input.nextLine();
+                continue;
+            }
+        }
+        isFinished.set(false);
 
-        //         if (x < 0 || y < 0 || x > 5 || y > 5) {
-        //             throw new Exception();
-        //         }
-        //     } catch (Exception e) {
-        //         System.out.println("Input tidak valid!");
-        //         input.nextLine();
-        //         continue;
-        //     }
+        while (!isFinished.get()) {
+            //boolean isRotated = false;
+            Furniture barang = new Furniture(namaFurniture);
+            int x, y;
+            ruangan.printRuangan(this);
+            System.out.println("(Posisi yang dimasukkan akan menjadi titik terkiri-atas dari "+ namaFurniture + ") ");
+            try {
+                System.out.print("Masukkan posisi x furniture: ");
+                x = input.nextInt();
+                System.out.println();
+                System.out.print("Masukkan posisi y furniture: ");
+                y = input.nextInt();
+                System.out.println();
 
-        //     try {
-        //         System.out.print("Apakah ingin diputar? (y/n) ");
-        //         String jawaban = input.next();
-        //         if (jawaban.equals("y")) {
-        //             isRotated = true;
-        //         } else if (jawaban.equals("n")) {
-        //             isRotated = false;
-        //         } else {
-        //             throw new Exception();
-        //         }
-        //     } catch (Exception e) {
-        //         System.out.println("Input tidak valid!");
-        //         input.nextLine();
-        //         continue;
-        //     }
-        //     barang.setXFurniture(x);
-        //     barang.setYFurniture(y);
-        //     System.out.println("Posisi " + barang.getNama() + ": (" + barang.getPosisiFurniture().getX() + ", " + barang.getPosisiFurniture().getY() + ")");
-        //     try {
-        //         if (!ruangan.isFurniturePlacable(barang, isRotated)) {
-        //             throw new Exception();
-        //         }
-        //     } catch (Exception e) {
-        //         System.out.println("Furniture tidak dapat ditempatkan di posisi tersebut!");
-        //         input.nextLine();
-        //         continue;
-        //     }
-        //     ruangan.addFurniture(barang, this, isRotated);
-        //     isInputValid = true;
-        // }
-        // input.close();
-        // inventory.decreaseItem(namaFurniture, 1);
+                if (x < 0 || y < 0 || x > 5 || y > 5) {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                System.out.println("Input tidak valid!");
+                input.nextLine();
+                continue;
+            }
+
+            try {
+                System.out.print("Apakah ingin diputar? (y/n) ");
+                String jawaban = input.next();
+                if (jawaban.equals("y")) {
+                    barang.rotateFurniture();
+                } else if (!jawaban.equals("n")) {
+                    throw new Exception();
+                }
+            } catch (Exception e) {
+                System.out.println("Input tidak valid!");
+                input.nextLine();
+                continue;
+            }
+            barang.setXFurniture(x + ruangan.getXRuangan() - 3);
+            barang.setYFurniture(y + ruangan.getYRuangan() - 3);
+            // try {
+            //     if (!ruangan.isFurniturePlacable(barang, isRotated)) {
+            //         throw new Exception();
+            //     }
+            // } catch (Exception e) {
+            //     System.out.println("Furniture tidak dapat ditempatkan di posisi tersebut!");
+            //     input.nextLine();
+            //     continue;
+            // }
+            ruangan.insertObjectToRuangan(namaFurniture, new Point(barang.getXFurniture(), barang.getYFurniture()), isFinished);
+            
+            // isInputValid = true;
+        }
+        input.close();
+        inventory.decreaseItem(namaFurniture, 1);
     }
 
-    public void lihatWaktu(){
+    public void lihatWaktu() {
         //membutuhkan objek Jam
         //menunjukkan sisa waktu pada hari tersebut beserta sisa waktu yang masih ada untuk seluruh tindakan yang bisa ditinggal
     }
 
+    public void moveTo(Point point) {
+        posisiSim.setX(point.getX());
+        posisiSim.setY(point.getY());
+    }
+
+    public void moveToFurniture(Ruangan ruangan) throws Exception {
+        System.out.print("Masukkan nama furniture yang ingin dituju: ");
+        Scanner input = new Scanner(System.in);
+        String namaFurniture = input.nextLine();
+        Furniture furniture = new Furniture(namaFurniture);
+
+        if (!ruangan.isFurnitureInRuangan(furniture)) {
+            System.out.println("Furniture tidak ada di ruangan!");
+        } else {
+            System.out.println("Bergerak menuju" + namaFurniture);
+            moveTo(new Point(furniture.getXFurniture(), furniture.getYFurniture()));
+        }
+    }
+
+    // public void checkFurniture(Ruangan ruangan) {
+    //     // remove element of daftaraksi from 8th index (daftarAksi index starts from 0), and then
+    //     // check the furniture near sim and get the aksi that can be done, put it inside daftarAksi
+    //     // if there is no furniture near sim, there will be no addition to daftarAksi
+        
+    //     if (daftarAksi.size() > 8) {
+    //         for (int i = 8; i < daftarAksi.size(); i++) {
+    //             daftarAksi.remove(i);
+    //         }
+    //     }
+
+        
+
+
+
+    // }
     //harus buat 7 aksi lain yang dapat berhubungan dengan objek sesuai dengan kreasi masing-masing.
 }

@@ -14,10 +14,10 @@ public class SimRuanganDriver {
         sim.setPosisiSim(new Point(x, y));
         rumah.printDaftarRuangan();
         Ruangan kamar = rumah.getRuangan("Kamar");
-        Furniture item = new Furniture("Kasur Single");
-        sim.inventory.addItem(item.getNama());
-        sim.inventory.printSpecificItem("Furniture");
-        sim.pasangBarang(kamar);
+        // Furniture item = new Furniture("Kasur Single");
+        // sim.inventory.addItem(item.getNama());
+        // sim.inventory.printSpecificItem("Furniture");
+        //sim.pasangBarang(kamar);
         kamar.printRuangan(sim);
     }
 }

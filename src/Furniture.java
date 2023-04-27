@@ -91,8 +91,12 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
         return aksi;
     }
 
-    public Point getPosisiFurniture() {
-        return posisiFurniture;
+    public int getXFurniture() {
+        return posisiFurniture.getX();
+    }
+
+    public int getYFurniture() {
+        return posisiFurniture.getY();
     }
 
     public void setXFurniture(int x) {
@@ -101,5 +105,11 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
 
     public void setYFurniture(int y) {
         posisiFurniture.setY(y);
+    }
+
+    public void rotateFurniture() {
+        int temp = panjang;
+        panjang = lebar;
+        lebar = temp;
     }
 }
