@@ -94,6 +94,10 @@ public class Sim {
         this.uang = uang + uangTambahan;
     }
 
+    public void minUang(int uangTambahan) {
+        this.uang = uang - uangTambahan;
+    }
+
     public void addKekenyangan(int kekenyanganTambahan) {
         this.kekenyangan = kekenyangan + kekenyanganTambahan;
     }
@@ -671,12 +675,11 @@ public class Sim {
         
         int waktuUpgradeRumah = 18;
         int hargaUpgradeRumah = 1500;
-        int saldo = getUang();
 
         //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
-        if (World.getSpace() >= 1 && saldo >= hargaUpgradeRumah) {
+        if (World.getSpace() >= 1 && getUang() >= hargaUpgradeRumah) {
             //kurangin uangnya
-            setUang(saldo - hargaUpgradeRumah);
+            minUang(hargaUpgradeRumah);
             //tambahin ruangan
             World.setSpace(World.getSpace() - 1);
             //tambahin waktu
