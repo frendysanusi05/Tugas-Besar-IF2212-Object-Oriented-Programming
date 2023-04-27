@@ -1,3 +1,3 @@
 public interface Purchasable {
-    public void addHarga();
+    public int getHarga();
 }
