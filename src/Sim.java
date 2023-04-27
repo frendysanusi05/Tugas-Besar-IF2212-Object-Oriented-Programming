@@ -22,7 +22,7 @@ public class Sim {
     private List<String> daftarAksi = new ArrayList<String>();
 
     private volatile boolean isThreadFinished = false;
-    private volatile double durasi;
+    private volatile Double durasi;
 
     private static final String[] daftarPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
     
@@ -151,7 +151,7 @@ public class Sim {
         if (inventory.containsItem(namaMakanan)) {
 
             inventory.decreaseItem(namaMakanan, 1);
-            durasi = 30;
+            durasi = (double) 30;
             System.out.println();
             
             setStatus("Sedang Makan");
@@ -243,12 +243,11 @@ public class Sim {
     
     public void kerja() {
         System.out.print("Masukkan durasi kerja: ");
-        durasi = scan.nextInt();
-        // while (durasi % 120 != 0) {
-        //     System.out.println("Durasi kerja harus merupakan kelipatan 120");
-        //     System.out.print("Masukkan durasi kerja: ");
-        //     durasi = scan.nextInt();
-        // }
+        durasi = scan.nextDouble();
+        while (durasi % 120 != 0) {
+            System.out.println("Durasi kerja harus merupakan kelipatan 120");
+            durasi = scan.nextDouble();
+        }
         System.out.println();
 
         setStatus("Sedang Bekerja");
@@ -349,11 +348,10 @@ public class Sim {
     public void olahraga() {
         // Gw sesuaian sama spek yaa - Ariq
         System.out.print("Masukkan durasi olahraga: ");
-        durasi = scan.nextInt();
-        while (durasi != 20) {
-            System.out.println("Durasi olahraga harus kelipatan 20");
-            System.out.print("Masukkan durasi olahraga: ");
-            durasi = scan.nextInt();
+        durasi = scan.nextDouble();
+        while (durasi % 20 != 0) {
+            System.out.println("Durasi olahraga harus merupakan kelipatan 20");
+            durasi = scan.nextDouble();
         }
         System.out.println();
 
@@ -412,25 +410,12 @@ public class Sim {
     }
 
     public void tidur() {
-    // bingung cek haru tidur 3 menit dalam 24 jam
-    //gatau ini bingung banget
-
-        // boolean sudahTidur = false;
-
-        // if(sudahTidur){
-        //     kesehatan += 20;
-        //     mood += 30;
-        // }else{
-        //     kesehatan -= 5;
-        //     mood -= 5;
-        // }
-
-        System.out.print("Masukkan durasi tidur: ");
-        durasi = scan.nextInt();
+        System.out.print("Masukkan durasi tidur (detik): ");
+        durasi = scan.nextDouble();
         while (durasi < 180) {
             System.out.println("Durasi tidur harus lebih dari sama dengan 3 menit");
             System.out.print("Masukkan durasi tidur: ");
-            durasi = scan.nextInt();
+            durasi = scan.nextDouble();
         }
         System.out.println();
 
@@ -484,7 +469,100 @@ public class Sim {
         }
         isThreadFinished = false;
         setStatus(null);
-    } 
+    }
+
+    public void makan(Edible makanan) {
+    //mengambil makanan di Inventory
+        System.out.println("Berikut ini adalah makanan yang ada di inventory: ");
+
+        System.out.println("Bahan Makanan : ");
+        inventory.printSpecificItem("Bahan Makanan");
+
+        System.out.println("Masakan : ");
+        inventory.printSpecificItem("Masakan");
+    
+    //memilih makanan 
+        System.out.print("Masukkan makanan yang ingin dimakan: ");
+        
+        Scanner input = new Scanner(System.in);
+        String namaMakanan = input.nextLine();
+        input.close();
+    
+        //memastikan makanan ada di Inventor
+        if (inventory.containsItem(namaMakanan)) {
+            inventory.decreaseItem(namaMakanan, 1);
+            durasi = (double) 30;
+            System.out.println();
+            
+            setStatus("Sedang Makan");
+
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Clock.wait(durasi);
+                }
+            });
+
+            Thread t2 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    /*
+                    +X kekenyangan / 1 siklus makan (30 detik), 
+                    X bergantung pada jenis makanan.
+                     */
+
+                    int timeInSeconds = LocalTime.now().toSecondOfDay();
+                    int duration = 30;
+                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                        switch(namaMakanan){
+                            case "Nasi" :
+                                addKekenyangan(5);
+                                break;
+                            case "Kentang" :
+                                addKekenyangan(4);
+                                break;
+                            case "Ayam" :
+                                addKekenyangan(8);
+                                break;
+                            case "Sapi" :
+                                addKekenyangan(15);
+                                break;
+                            case "Wortel" :
+                                addKekenyangan(2);
+                                break;
+                            case "Bayam" :
+                                addKekenyangan(2);
+                                break;
+                            case "Kacang" :
+                                addKekenyangan(2);
+                                break;
+                            case "Susu" :
+                                addKekenyangan(1);
+                                break;
+                            case "Nasi Ayam" :
+                                addKekenyangan(16);
+                                break;
+                            case "Nasi Kari" :
+                                addKekenyangan(30);
+                                break;
+                            case "Susu Kacang" :
+                                addKekenyangan(5);
+                                break;
+                            case "Tumis Sayur" :
+                                addKekenyangan(5);
+                                break;
+                            case "Bistik" :
+                                addKekenyangan(22);
+                                break;
+                        }
+                    }
+                }
+            });
+
+            t1.start();
+            t2.start();
+        }
+    }
 
     public void memasak() throws Exception {
         // print "Berikut ini adalah bahan makanan yang kamu miliki: " then shows the list of all items in the inventory
@@ -582,15 +660,9 @@ public class Sim {
     //kayak tidur bingungnya
     //buang air setidaknya 1 kali setiap habis makan. Apabila tidak dilakukan, maka mood dan kesehatan Sim akan berkurang.
 
-        boolean sudahBA = false;
-
-        if(sudahBA){
             kekenyangan -= 20;
-            mood += 10;
-        }else{
-            kesehatan -= 5;
-            mood -= 5;
-        }
+            addMood(10);
+        
     }
 
     public void upgradeRumah(){
