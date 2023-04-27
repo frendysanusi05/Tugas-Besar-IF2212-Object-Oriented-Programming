@@ -9,7 +9,7 @@ public class Clock {
 
     /* Menjalankan durasi waktu */
     /* Jika ingin menjalankan 2 menit, maka gunakan Clock.wait(2*60) */
-    public static void wait(int duration) {
+    public static void wait(double duration) {
         LocalTime localTime = getTime();
         int seconds = localTime.toSecondOfDay();
         
