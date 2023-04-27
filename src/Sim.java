@@ -534,7 +534,6 @@ public class Sim {
 
             kekenyangan -= 20;
             addMood(10);
-
         
     }
 
