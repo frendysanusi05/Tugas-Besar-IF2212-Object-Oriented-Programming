@@ -7,7 +7,6 @@ public class SimDriver {
         System.out.printf("Uang: %d\n", sim1.getUang());
         System.out.printf("Inventory:\n");
         sim1.getInventory().printItem();
-        System.out.println();
         System.out.printf("Kekenyangan: %d\n", sim1.getKekenyangan());
         System.out.printf("Mood: %d\n", sim1.getMood());
         System.out.printf("Kesehatan: %d\n", sim1.getKesehatan());
@@ -21,7 +20,6 @@ public class SimDriver {
         System.out.printf("Uang: %d\n", sim1.getUang());
         System.out.printf("Inventory:\n");
         sim1.getInventory().printItem();
-        System.out.println();
         System.out.printf("Kekenyangan: %d\n", sim1.getKekenyangan());
         System.out.printf("Mood: %d\n", sim1.getMood());
         System.out.printf("Kesehatan: %d\n", sim1.getKesehatan());
