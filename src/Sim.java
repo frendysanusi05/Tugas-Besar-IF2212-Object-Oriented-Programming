@@ -1,6 +1,4 @@
 import java.util.Random;
-import java.util.Map;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.time.LocalTime;
 
@@ -10,7 +8,7 @@ public class Sim {
     private String nama;
     private String pekerjaan;
     private int uang;
-    private Map<String, Integer> inventory; //MASIH BINGUNG GIMANA INVENTORY
+    private Inventory inventory; //MASIH BINGUNG GIMANA INVENTORY
     private int kekenyangan;
     private int mood;
     private int kesehatan;
@@ -18,7 +16,7 @@ public class Sim {
 
     private volatile int durasi;
 
-    private static final String[] PEKERJAAN = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
+    private static final String[] listPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
     
     /* Scanner */
     Scanner scan = new Scanner(System.in);
@@ -29,9 +27,9 @@ public class Sim {
         this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
-        this.inventory = new HashMap<String, Integer>();
-        this.pekerjaan = PEKERJAAN[new Random().nextInt(PEKERJAAN.length)]; // bingung cara biar random, ini cara chatgpt
-        this.status = "Tidak sedang melakukan apa-apa"; //gimana kosonginnya?
+        this.inventory = new Inventory();
+        this.pekerjaan = listPekerjaan[new Random().nextInt(listPekerjaan.length)];
+        this.status = null;
     }
 
     public String getNama() {
@@ -46,7 +44,7 @@ public class Sim {
         return uang;
     }
 
-    public Map<String, Integer>  getInventory() {
+    public Inventory getInventory() {
         return inventory;
     }
 
@@ -66,41 +64,35 @@ public class Sim {
         return status;
     }
 
-    public void setPekerjaan(String pekerjaan) {
-        this.pekerjaan = pekerjaan;//belum mikirin kalau dia masukkin belumsesuai yang ada di list
+    public void setStatus(String aksi) {
+        status = aksi;
     }
 
+    //public void setPekerjaan(String pekerjaan) { this.pekerjaan = pekerjaan;//belum mikirin kalau dia masukkin belumsesuai yang ada di list}
+
     public void addUang(int uangTambahan) {
-        this.uang = uang + uangTambahan;
+        uang += uangTambahan;
+        if (uang > 100){
+            uang = 100;
+        }
     }
 
     public void addKekenyangan(int kekenyanganTambahan) {
-        this.kekenyangan = kekenyangan + kekenyanganTambahan;
+        kekenyangan += kekenyanganTambahan;
+        if (kekenyangan > 100){
+            kekenyangan = 100;
+        }
     }
 
     public void addMood(int moodTambahan) {
-        this.mood = mood + moodTambahan;
+        mood += moodTambahan;
+        if (mood > 100){
+            mood = 100;
+        }
     }
 
     public void addKesehatan(int kesehatanTambahan) {
-        this.kesehatan = kesehatan + kesehatanTambahan;
-    }
-
-    public void makan() {
-        if (kekenyangan < 100) {
-            kekenyangan += 10;
-            if (kekenyangan > 100) {
-                kekenyangan = 100;
-            }
-            mood += 5;
-            if (mood > 100) {
-                mood = 100;
-            }
-            uang -= 5;
-            status = "Sedang makan";
-        } else {
-            status = "Sudah kenyang";
-        }
+        this.kesehatan += kesehatanTambahan;
     }
 
     public void kerja() {
@@ -250,8 +242,8 @@ public class Sim {
         boolean sudahTidur = false;
 
         if(sudahTidur){
-            kesehatan += 20;
-            mood += 30;
+            addKesehatan(20);
+            addMood(30);
         }else{
             kesehatan -= 5;
             mood -= 5;
@@ -259,9 +251,107 @@ public class Sim {
     }
 
     public void makan(Edible makanan) {
-        //cara ambil makanan di Inventory gimana?
-        //ngurangin makanan di inventory 
-        addKekenyangan(makanan.getKekenyangan());   
+    //mengambil makanan di Inventory
+        System.out.println("Berikut ini adalah makanan yang ada di inventory: ");
+
+        System.out.println("Bahan Makanan : ");
+        inventory.printSpecificItem("Bahan Makanan");
+
+        System.out.println("Masakan : ");
+        inventory.printSpecificItem("Masakan");
+    
+    //memilih makanan 
+        System.out.print("Masukkan makanan yang ingin dimakan: ");
+        
+        Scanner input = new Scanner(System.in);
+        String namaMakanan = input.nextLine();
+        input.close();
+    
+        //memastikan makanan ada di Inventor
+        if (inventory.containsItem(namaMakanan)) {
+            inventory.decreaseItem(namaMakanan, 1);
+            durasi = 30;
+            System.out.println();
+            
+            setStatus("Sedang Makan");
+
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Clock.wait(durasi);
+                }
+            });
+
+            Thread t2 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    /*
+                    +X kekenyangan / 1 siklus makan (30 detik), 
+                    X bergantung pada jenis makanan.
+                     */
+
+                    int timeInSeconds = LocalTime.now().toSecondOfDay();
+                    int duration = 30;
+                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                        switch(namaMakanan){
+                            case "Nasi" :
+                                addKekenyangan(5);
+                                break;
+                            case "Kentang" :
+                                addKekenyangan(4);
+                                break;
+                            case "Ayam" :
+                                addKekenyangan(8);
+                                break;
+                            case "Sapi" :
+                                addKekenyangan(15);
+                                break;
+                            case "Wortel" :
+                                addKekenyangan(2);
+                                break;
+                            case "Bayam" :
+                                addKekenyangan(2);
+                                break;
+                            case "Kacang" :
+                                addKekenyangan(2);
+                                break;
+                            case "Susu" :
+                                addKekenyangan(1);
+                                break;
+                            case "Nasi Ayam" :
+                                addKekenyangan(16);
+                                break;
+                            case "Nasi Kari" :
+                                addKekenyangan(30);
+                                break;
+                            case "Susu Kacang" :
+                                addKekenyangan(5);
+                                break;
+                            case "Tumis Sayur" :
+                                addKekenyangan(5);
+                                break;
+                            case "Bistik" :
+                                addKekenyangan(22);
+                                break;
+                        }
+                    }
+                }
+            });
+
+            t1.start();
+            t2.start();
+
+            try {
+                t1.join();
+                t2.join();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            setStatus(null);
+        } else {
+            System.out.println("Makanan tidak ditemukan");
+        }
     }    
 
     public void memasak() {
@@ -271,7 +361,7 @@ public class Sim {
     public void berkunjung(){
         //semangat deh ngitung waktunya makai koordinat rumah
         // rumusnya sqrt(((x2-x1)^2) + ((y2-y1)^2))
-        mood += 10;
+        addMood(10);
         kekenyangan -= 10;
     }   
 
@@ -283,7 +373,7 @@ public class Sim {
 
         if(sudahBA){
             kekenyangan -= 20;
-            mood += 10;
+            addMood(10);
         }else{
             kesehatan -= 5;
             mood -= 5;

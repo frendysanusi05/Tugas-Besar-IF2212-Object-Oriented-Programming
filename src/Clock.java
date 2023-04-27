@@ -1,18 +1,53 @@
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.Duration;
 
 public class Clock {
+    private static int skip = 0; /* in seconds */
+    final static LocalTime startTime = LocalTime.now();
+
     public static void wait(int duration) {
-        LocalTime localTime = LocalTime.now();
+        LocalTime localTime = getTime();
         int seconds = localTime.toSecondOfDay();
         
-        while (LocalTime.now().toSecondOfDay() - seconds != duration) {
-            // System.out.println(LocalTime.now().toSecondOfDay() - seconds);
+        while (convertToSeconds(getTime()) - seconds < duration) {
+            /*** for debugging ***/
+            // System.out.println(getTime().toSecondOfDay() - seconds);
+            // try {
+            //     Thread.sleep(1000);
+            // } catch (InterruptedException e) {
+            //     e.printStackTrace();
+            // }
         }
         System.out.println();
         System.out.println("Finished");
     }
 
     public static boolean isEqualDuration(int timeInSeconds, int duration) {
-        return LocalTime.now().toSecondOfDay() - timeInSeconds == duration;
+        return getTime().toSecondOfDay() - timeInSeconds == duration;
+    }
+
+    private static int convertToSeconds(LocalTime time) {
+        return time.toSecondOfDay();
+    }
+
+    public static LocalTime getTime() {
+        LocalTime time = LocalTime.now();
+        Duration addSkip = Duration.ofSeconds(skip);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+        time = LocalTime.parse(time.format(formatter));
+        return time.plus(addSkip);
+    }
+
+    public static LocalTime diffTime() {
+        /* return end - start */
+        /* example output: 00:01:18 */
+        LocalTime endTime = getTime(); /* current local time */
+        Duration duration = Duration.between(startTime, endTime);
+        return LocalTime.ofSecondOfDay(duration.getSeconds());
+    }
+
+    public static void skipTime(int seconds) {
+        skip += seconds;
     }
 }
