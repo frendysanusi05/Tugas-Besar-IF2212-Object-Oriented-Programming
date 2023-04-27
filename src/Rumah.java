@@ -13,7 +13,6 @@ public class Rumah {
     public Rumah(Point posisi){
         jumlahRumah++;
         IDRumah = "R" + jumlahRumah;
-        //this.IDRumah = IDRumah;
         this.posisi = posisi;
 
         jumlahRuangan++;
@@ -22,24 +21,24 @@ public class Rumah {
         //inisiasi Ruangan pada Rumah
         // daftarRuangan.add(R1);
 
-        addRuangan(R1);
+        //addRuangan(R1);
         //inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
-        Random rand = new Random();
-        List<String> givenList = new ArrayList<String>();
-        givenList.add("Kasur Single");
-        givenList.add("Kasur Queen Size");
-        givenList.add("Kasur King Size");
-        String randomElmt = givenList.get(rand.nextInt(givenList.size()));
-        R1.addObject(randomElmt);
-        R1.addObject("Toilet");
+        // Random rand = new Random();
+        // List<String> givenList = new ArrayList<String>();
+        // givenList.add("Kasur Single");
+        // givenList.add("Kasur Queen Size");
+        // givenList.add("Kasur King Size");
+        // String randomElmt = givenList.get(rand.nextInt(givenList.size()));
+        // R1.addObject(randomElmt);
+        // R1.addObject("Toilet");
         
-        List<String> givenList2 = new ArrayList<String>();
-        givenList2.add("Kompor Gas");
-        givenList2.add("Kompor Listrik");
-        randomElmt = givenList2.get(rand.nextInt(givenList2.size()));
-        R1.addObject(randomElmt);
-        R1.addObject("Meja dan Kursi");
-        R1.addObject("Jam");
+        // List<String> givenList2 = new ArrayList<String>();
+        // givenList2.add("Kompor Gas");
+        // givenList2.add("Kompor Listrik");
+        // randomElmt = givenList2.get(rand.nextInt(givenList2.size()));
+        // R1.addObject(randomElmt);
+        // R1.addObject("Meja dan Kursi");
+        // R1.addObject("Jam");
     }
 
     public Rumah() {}
@@ -53,10 +52,10 @@ public class Rumah {
     }
 
     //ini blom dikonekin sama #cek ruang kosong yg ada di class ruangan dan #cekposisi yg ada di world
-    public void addRuangan(Ruangan newRoom){
+    public void tambahRuangan(Ruangan newRoom){
         jumlahRuangan++;
         daftarRuangan.add(newRoom);
-    }
+    } 
 
     //getter
     public String getIDRumah(){
@@ -73,6 +72,24 @@ public class Rumah {
 
     public ArrayList<Ruangan> getDaftarRuangan(){
         return daftarRuangan;
+    }
+
+    public Ruangan getRuangan(String namaRuangan){
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getNamaRuangan().equals(namaRuangan)){
+                return ruangan;
+            }
+        }
+        return null;
+    }
+
+    public Ruangan getCurrentRuanganSim(Sim sim) {
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getXRuangan() == sim.getPosisiSim().getX() && ruangan.getYRuangan() == sim.getPosisiSim().getY()) {
+                return ruangan;
+            }
+        }
+        return null;
     }
 
     public int getJumlahRuangan(){

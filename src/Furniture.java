@@ -1,9 +1,11 @@
 public class Furniture extends ObjectType<Furniture> implements Purchasable{
-    public String nama;
-    public int panjang;
-    public int lebar;
-    public int harga;
-    public String aksi;
+    private String nama;
+    private int panjang;
+    private int lebar;
+    private int harga;
+    private String aksi;
+    private Point posisiFurniture = new Point();
+    //atribut nya gw ubah jadi private yakk
     
     public Furniture(String nama) throws Exception {
         super("Furniture");
@@ -69,6 +71,10 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
         }
     }
     
+    public String getNama() {
+        return nama;
+    }
+
     public int getPanjang() {
         return panjang;
     }
@@ -85,5 +91,15 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
         return aksi;
     }
 
-    public void addHarga() {}
+    public Point getPosisiFurniture() {
+        return posisiFurniture;
+    }
+
+    public void setXFurniture(int x) {
+        posisiFurniture.setX(x);
+    }
+
+    public void setYFurniture(int y) {
+        posisiFurniture.setY(y);
+    }
 }

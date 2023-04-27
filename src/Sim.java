@@ -12,11 +12,12 @@ public class Sim {
     private String nama;
     private String pekerjaan;
     private int uang;
-    private Inventory inventory;
+    public Inventory inventory;
     private int kekenyangan;
     private int mood;
     private int kesehatan;
     private String status;
+    private Point posisiSim;
 
     private volatile boolean isThreadFinished = false;
     private volatile double durasi;
@@ -33,9 +34,8 @@ public class Sim {
         this.mood = 80;
         this.kesehatan = 80;
         this.inventory = new Inventory();
-        this.pekerjaan = daftarPekerjaan[new Random().nextInt(daftarPekerjaan.length)]; // bingung cara biar random, ini cara chatgpt - Vina
-                                                                                        // kayanya ini udah bener caranya - Ariq
-        this.status = null; //status yang kosong dikasih "null" aja - Ariq
+        this.pekerjaan = daftarPekerjaan[new Random().nextInt(daftarPekerjaan.length)];
+        this.status = null; 
     }
 
     public String getNama() {
@@ -70,10 +70,9 @@ public class Sim {
         return status;
     }
 
-    // setPekerjaan kayanya gaperlu karena bakalan permanen 
-    // public void setPekerjaan(String pekerjaan) {
-    //     this.pekerjaan = pekerjaan;//belum mikirin kalau dia masukkin belumsesuai yang ada di list
-    // }
+    public Point getPosisiSim() {
+        return posisiSim;
+    }
 
     public void addUang(int uangTambahan) {
         this.uang = uang + uangTambahan;
@@ -93,6 +92,10 @@ public class Sim {
 
     public void setStatus(String activity) {
         status = activity;
+    }
+
+    public void setPosisiSim(Point posisiSim) {
+        this.posisiSim = posisiSim;
     }
 
     public void makan() {
@@ -198,21 +201,22 @@ public class Sim {
             }
             isThreadFinished = false;
             setStatus(null);
+            
         } else {
             System.out.println("Makanan tidak ditemukan");
         }
 
         
     }
-
+    
     public void kerja() {
         System.out.print("Masukkan durasi kerja: ");
         durasi = scan.nextInt();
-        while (durasi % 120 != 0) {
-            System.out.println("Durasi kerja harus merupakan kelipatan 120");
-            System.out.print("Masukkan durasi kerja: ");
-            durasi = scan.nextInt();
-        }
+        // while (durasi % 120 != 0) {
+        //     System.out.println("Durasi kerja harus merupakan kelipatan 120");
+        //     System.out.print("Masukkan durasi kerja: ");
+        //     durasi = scan.nextInt();
+        // }
         System.out.println();
 
         setStatus("Sedang Bekerja");
@@ -474,7 +478,6 @@ public class Sim {
         }
 
         System.out.print("Masukkan nama masakan yang ingin dimasak: ");
-
         Scanner input = new Scanner(System.in);
         String namaMasakan = input.nextLine();
         input.close();
@@ -525,7 +528,7 @@ public class Sim {
                 isThreadFinished = false;
                 setStatus(null);
                 addMood(10);
-                
+
                 // Add the masakan to the inventory
                 inventory.addItem(masakanBaru.getName());
             } else {
@@ -534,9 +537,11 @@ public class Sim {
         }
     }   
 
-    public void berkunjung(){
+    public void berkunjung(Rumah rumahSim, Rumah rumahTemanSim){
         //semangat deh ngitung waktunya makai koordinat rumah
         // rumusnya sqrt(((x2-x1)^2) + ((y2-y1)^2))
+        // x2 dan y2 adalah koordinat rumah yang akan dikunjungi
+        // x1 dan y1 adalah koordinat rumah Sim
         mood += 10;
         kekenyangan -= 10;
     }   
@@ -545,7 +550,7 @@ public class Sim {
     //kayak tidur bingungnya
     //buang air setidaknya 1 kali setiap habis makan. Apabila tidak dilakukan, maka mood dan kesehatan Sim akan berkurang.
 
-    boolean sudahBA = false;
+        boolean sudahBA = false;
 
         if(sudahBA){
             kekenyangan -= 20;
@@ -565,6 +570,7 @@ public class Sim {
         //mengisi rumahnya dengan barang-barang.
         //waktu kedatangan barang tidak dapat dipastikan.
         //durasi pengiriman barang akan selalu acak tetapi tetap dalam range waktu X menit.
+
     }
 
     public void pindahRuang(){
@@ -575,12 +581,88 @@ public class Sim {
         //berisi dengan makanan, barang-barang yang sedang tidak terpasang pada ruangan, dan objek-objek lainnya.
     }
 
-    public void addInventory(){
+    public void addInventory() {
         //gatau ada di sheet spek tapi gaada di doc spesifikasi
     }
 
-    public void pasangBarang(){
-        //Barang yang akan dipasang harus muat dalam ruanga
+    public void pasangBarang(Ruangan ruangan) throws Exception {
+        // ini gw comment dulu, mau diubah - Ariq 
+
+        // boolean isInputValid = false;
+        // inventory.printSpecificItem("Furniture");
+        // System.out.println("Masukkan nama furniture yang ingin dipasang (contoh: Meja Makan) ");
+        // Scanner input = new Scanner(System.in);
+        // String namaFurniture = input.nextLine();
+        // while (!isInputValid) {
+        //     try {
+        //         if (!inventory.containsItem(namaFurniture)) {
+        //             throw new Exception();
+        //         }
+        //         isInputValid = true;
+        //     } catch (Exception e) {
+        //         System.out.println("Tidak ada furniture dengan nama tersebut di inventory");
+        //         System.out.println("Masukkan nama furniture yang ingin dipasang (contoh: Meja Makan) ");
+        //         namaFurniture = input.nextLine();
+        //         continue;
+        //     }
+        // }
+        // isInputValid = false;
+
+        // while (!isInputValid) {
+        //     boolean isRotated = false;
+        //     Furniture barang = new Furniture(namaFurniture);
+        //     int x, y;
+        //     ruangan.printRuangan(this);
+        //     System.out.println("(Posisi yang dimasukkan akan menjadi titik terkiri-atas dari "+ namaFurniture + ") ");
+        //     try {
+        //         System.out.print("Masukkan posisi x furniture: ");
+        //         x = input.nextInt();
+        //         System.out.println();
+        //         System.out.print("Masukkan posisi y furniture: ");
+        //         y = input.nextInt();
+        //         System.out.println();
+
+        //         if (x < 0 || y < 0 || x > 5 || y > 5) {
+        //             throw new Exception();
+        //         }
+        //     } catch (Exception e) {
+        //         System.out.println("Input tidak valid!");
+        //         input.nextLine();
+        //         continue;
+        //     }
+
+        //     try {
+        //         System.out.print("Apakah ingin diputar? (y/n) ");
+        //         String jawaban = input.next();
+        //         if (jawaban.equals("y")) {
+        //             isRotated = true;
+        //         } else if (jawaban.equals("n")) {
+        //             isRotated = false;
+        //         } else {
+        //             throw new Exception();
+        //         }
+        //     } catch (Exception e) {
+        //         System.out.println("Input tidak valid!");
+        //         input.nextLine();
+        //         continue;
+        //     }
+        //     barang.setXFurniture(x);
+        //     barang.setYFurniture(y);
+        //     System.out.println("Posisi " + barang.getNama() + ": (" + barang.getPosisiFurniture().getX() + ", " + barang.getPosisiFurniture().getY() + ")");
+        //     try {
+        //         if (!ruangan.isFurniturePlacable(barang, isRotated)) {
+        //             throw new Exception();
+        //         }
+        //     } catch (Exception e) {
+        //         System.out.println("Furniture tidak dapat ditempatkan di posisi tersebut!");
+        //         input.nextLine();
+        //         continue;
+        //     }
+        //     ruangan.addFurniture(barang, this, isRotated);
+        //     isInputValid = true;
+        // }
+        // input.close();
+        // inventory.decreaseItem(namaFurniture, 1);
     }
 
     public void lihatWaktu(){
