@@ -1,42 +1,61 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Rumah {
     private String IDRumah;
     private Point posisi;
-    private Ruangan[] daftarRuangan;
-    private Ruangan R1;
-    public static int jumlahRuangan;
+    private ArrayList<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
+    //private Ruangan R1;
+    private int jumlahRuangan;
+    private static int jumlahRumah = 0;
 
 
     //constructor
-    public Rumah(String IDRumah, Point posisi){
-        this.IDRumah = IDRumah;
+    public Rumah(Point posisi) throws Exception {
+        jumlahRumah++;
+        IDRumah = "R" + jumlahRumah;
         this.posisi = posisi;
 
-        Ruangan R1 = new Ruangan("IniPerluDiGenerateDlu" /*Perlu digenerate dlu gasi?*/, "Awal", IDRumah, posisi); //ini IDRuangannya mau digimanain? buat yg bagian awal. 
-
         //inisiasi Ruangan pada Rumah
-        tambahRuangan(R1);
-        jumlahRuangan = 1;
+        jumlahRuangan++;
+        Ruangan kamar = new Ruangan("Kamar", this, posisi); 
 
-        //inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
-        Random rand = new Random();
-        List<String> givenList = new ArrayList<String>();
-        givenList.add("Kasur Single");
-        givenList.add("Kasur Queen Size");
-        givenList.add("Kasur King Size");
-        String randomElmt = givenList.get(rand.nextInt(givenList.size()));
-        R1.addObject(randomElmt);
-        R1.addObject("Toilet");
-        
-        List<String> givenList2 = new ArrayList<String>();
-        givenList2.add("Kompor Gas");
-        givenList2.add("Kompor Listrik");
-        randomElmt = givenList2.get(rand.nextInt(givenList2.size()));
-        R1.addObject(randomElmt);
-        R1.addObject("Meja dan Kursi");
-        R1.addObject("Jam");
+        Furniture kasurSingle = new Furniture("Kasur Single");
+        Furniture toilet = new Furniture("Toilet");
+        Furniture komporGas = new Furniture("Kompor Gas");
+        Furniture mejaDanKursi = new Furniture("Meja dan Kursi");
+        Furniture jam = new Furniture("Jam");
+
+        kamar.addDaftarFurniture(kasurSingle);
+        kamar.addDaftarFurniture(toilet);
+        kamar.addDaftarFurniture(komporGas);
+        kamar.addDaftarFurniture(mejaDanKursi);
+        kamar.addDaftarFurniture(jam);
+
+        int xKamar = kamar.getXRuangan();
+        int yKamar = kamar.getYRuangan();
+        kamar.insertObjectToRuangan("Kasur Single", new Point (xKamar - 3, yKamar - 3), new AtomicBoolean(false));
+        kasurSingle.setXFurniture(xKamar - 3);
+        kasurSingle.setYFurniture(yKamar - 3);
+
+        kamar.insertObjectToRuangan("Toilet", new Point (xKamar + 2, yKamar + 2), new AtomicBoolean(false));
+        toilet.setXFurniture(xKamar + 2);
+        toilet.setYFurniture(yKamar + 2);
+
+        kamar.insertObjectToRuangan("Kompor Gas", new Point (xKamar - 3, yKamar + 2), new AtomicBoolean(false));
+        komporGas.setXFurniture(xKamar - 3);
+        komporGas.setYFurniture(yKamar + 2);
+
+        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (xKamar - 3, yKamar - 2), new AtomicBoolean(false));
+        mejaDanKursi.setXFurniture(xKamar - 3);
+        mejaDanKursi.setYFurniture(yKamar - 2);
+
+        kamar.insertObjectToRuangan("Jam", new Point (xKamar + 2, yKamar - 2), new AtomicBoolean(false));
+        jam.setXFurniture(xKamar + 2);
+        jam.setYFurniture(yKamar - 2);
     }
+
+    public Rumah() {}
 
     //methods
     public void printDaftarRuangan(){
@@ -48,9 +67,9 @@ public class Rumah {
 
     //ini blom dikonekin sama #cek ruang kosong yg ada di class ruangan dan #cekposisi yg ada di world
     public void tambahRuangan(Ruangan newRoom){
-        this.daftarRuangan[daftarRuangan.length] = newRoom;
-        jumlahRuangan ++;
-    }
+        jumlahRuangan++;
+        daftarRuangan.add(newRoom);
+    } 
 
     //getter
     public String getIDRumah(){
@@ -65,16 +84,33 @@ public class Rumah {
         return posisi.getY();
     }
 
-    public Ruangan[] getDaftarRuangan(){
+    public ArrayList<Ruangan> getDaftarRuangan(){
         return daftarRuangan;
+    }
+
+    public Ruangan getRuangan(String namaRuangan){
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getNamaRuangan().equals(namaRuangan)){
+                return ruangan;
+            }
+        }
+        return null;
+    }
+
+    public Ruangan getCurrentRuanganSim(Sim sim) {
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getXRuangan() == sim.getXSim() && ruangan.getYRuangan() == sim.getYSim()) {
+                return ruangan;
+            }
+        }
+        return null;
     }
 
     public int getJumlahRuangan(){
         return jumlahRuangan;
     }
 
-    public Ruangan getFirstRuangan(){
-        return R1;
+    public int getJumlahRumah(){
+        return jumlahRumah;
     }
-
 }
