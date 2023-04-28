@@ -862,12 +862,13 @@ public class Sim {
         System.out.print("Masukkan nama furniture yang ingin dituju: ");
         Scanner input = new Scanner(System.in);
         String namaFurniture = input.nextLine();
-        Furniture furniture = new Furniture(namaFurniture);
+        // Furniture furniture = new Furniture(namaFurniture);
 
-        if (!ruangan.isFurnitureInRuangan(furniture)) {
+        if (!ruangan.isFurnitureInRuangan(namaFurniture)) {
             System.out.println("Furniture tidak ada di ruangan!");
         } else {
-            System.out.println("Bergerak menuju" + namaFurniture);
+            Furniture furniture = ruangan.getFurniture(namaFurniture);
+            System.out.println("Bergerak menuju " + namaFurniture);
             moveTo(new Point(furniture.getXFurniture(), furniture.getYFurniture()));
         }
     }
@@ -875,8 +876,9 @@ public class Sim {
     public void checkFurniture(Ruangan ruangan) {
         List<Furniture> daftarFurniture = ruangan.getDaftarFurniture();
         if (daftarAksi.size() > 8) {
-            for (int i = 8; i < daftarAksi.size(); i++) {
-                daftarAksi.remove(i);
+            int size = daftarAksi.size();
+            for (int i = 8; i < size; i++) {
+                daftarAksi.remove(8);
             }
         }
 
