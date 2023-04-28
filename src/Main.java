@@ -56,9 +56,6 @@ public class Main {
                     break;
             }
         }
-
-        
-        
     }
 
     public static void newGameSim () throws Exception {
@@ -107,6 +104,9 @@ public class Main {
 
         boolean exitGame = false;
         
+        // while (!exitGame) {
+        //     System.out.print
+        // }
         
     }
 }

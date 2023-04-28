@@ -19,5 +19,21 @@ public class SimRuanganDriver {
         // sim.inventory.printSpecificItem("Furniture");
         //sim.pasangBarang(kamar);
         kamar.printRuangan(sim);
+
+        sim.moveToFurniture(kamar);
+        kamar.printRuangan(sim);
+        sim.checkFurniture(kamar);
+
+        List<String> daftarAksi = sim.getDaftarAksi();
+
+        while(true) {
+            System.out.println("\nDaftar Aksi:");
+            for (int i = 0; i < daftarAksi.size(); i++) {
+                System.out.println(i+1 + ". " + daftarAksi.get(i));
+            }
+            sim.moveToFurniture(kamar);
+            kamar.printRuangan(sim);
+            sim.checkFurniture(kamar);
+        }
     }
 }

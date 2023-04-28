@@ -1,10 +1,10 @@
 import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.time.LocalTime;
-import java.util.Scanner;
 import java.util.*;
 
 //mmaaf bagian perkerjaan sama kerja gue bingung
@@ -80,8 +80,12 @@ public class Sim {
         return status;
     }
 
-    public Point getPosisiSim() {
-        return posisiSim;
+    public int getXSim() {
+        return posisiSim.getX();
+    }
+
+    public int getYSim() {
+        return posisiSim.getY();
     }
 
     public List<String> getDaftarAksi() {
@@ -92,6 +96,10 @@ public class Sim {
     // Setter
     public void addUang(int uangTambahan) {
         this.uang = uang + uangTambahan;
+    }
+
+    public void minUang(int uangTambahan) {
+        this.uang = uang - uangTambahan;
     }
 
     public void addKekenyangan(int kekenyanganTambahan) {
@@ -668,13 +676,128 @@ public class Sim {
     public void upgradeRumah(){
         //menambah ruangan
         //membutuhkan waktu sejumlah 18 menit
+        
+        int waktuUpgradeRumah = 18;
+        int hargaUpgradeRumah = 1500;
+
+        //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
+        if (World.getSpace() >= 1 && getUang() >= hargaUpgradeRumah) {
+            //kurangin uangnya
+            minUang(hargaUpgradeRumah);
+            //tambahin ruangan
+            World.setSpace(World.getSpace() - 1);
+            //tambahin waktu
+            Thread.sleep(waktuUpgradeRumah * 60 * 1000);
+            //ubah status
+            setStatus("Sedang Upgrade Rumah");
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Clock.wait(durasi);
+                    isThreadFinished = true;
+                }
+            });
+
+            t1.start();
+
+            try {
+                t1.join();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            isThreadFinished = false;
+            setStatus(null);
+        } else {
+            System.out.println("Space di world tidak cukup atau saldo tidak cukup");
+        }
     }
 
     public void beliBarang(){
         //mengisi rumahnya dengan barang-barang.
         //waktu kedatangan barang tidak dapat dipastikan.
         //durasi pengiriman barang akan selalu acak tetapi tetap dalam range waktu X menit.
+        ArrayList<String> furniture = new ArrayList<String>() {{
+            add("Kasur Single");
+            add("Kasur Queen Size");
+            add("Kasur King Size");
+            add("Toilet");
+            add("Kompor Gas");
+            add("Kompor Listrik");
+            add("Meja dan Kursi");
+            add("Jam");
+        }};
 
+        ArrayList<String> bahanMakanan = new ArrayList<String>() {{
+            add("Nasi");
+            add("Kentang");
+            add("Ayam");
+            add("Sapi");
+            add("Wortel");
+            add("Bayam");
+            add("Kacang");
+            add("Susu");
+        }};
+
+        System.out.println("""
+        Berikut ini adalah barang yang bisa dibeli:\n
+            +-----------------------------------------------+
+            |     |                 Kategori                |
+            | No. |-----------------------------------------+
+            |     |      Furniture      |   Bahan Makanan   |
+            +-----+-----------------------------------------+
+            |  1. | Kasur Single        | Nasi              |
+            |  2. | Kasur Queen Size    | Kentang           |
+            |  3. | Kasur King Size     | Ayam              |
+            |  4. | Toilet              | Sapi              |
+            |  5. | Kompor Gas          | Wortel            |
+            |  6. | Kompor Listrik      | Bayam             |
+            |  7. | Meja dan Kursi      | Kacang            |
+            |  8. | Jam                 | Susu              |
+            +-----+-----------------------------------------+
+        """);
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Masukkan nama barang yang ingin dibeli: ");
+        String item = scan.nextLine();
+        System.out.println();
+        
+        while (!furniture.contains(item) && !bahanMakanan.contains(item)) {
+            System.out.println("Masukan invalid! Masukan harus ada di tabel.");
+            System.out.print("Masukkan nama barang yang ingin dibeli: ");
+            item = scan.nextLine();
+            System.out.println();
+        }
+        
+        int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
+        System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
+        Clock.wait((double)durasi);
+        System.out.printf("%s telah diterima\n", item);
+
+        Object barang = new Object();
+
+        if (furniture.contains(item)) {
+            try {
+                barang = new Furniture(item);
+            }
+            catch (Exception e) {
+
+            }
+        }
+        else if (bahanMakanan.contains(item)) {
+            try {
+                barang = new BahanMakanan(item);
+            }
+            catch (Exception e) {
+                
+            }
+        }
+
+        if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
+        else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
+
+        inventory.addItem(item);
     }
 
     public void pindahRuang(){
@@ -683,10 +806,7 @@ public class Sim {
 
     public void lihatInventory(){
         //berisi dengan makanan, barang-barang yang sedang tidak terpasang pada ruangan, dan objek-objek lainnya.
-    }
-
-    public void addInventory() {
-        //gatau ada di sheet spek tapi gaada di doc spesifikasi
+        inventory.printItem();
     }
 
     public void pasangBarang(Ruangan ruangan) throws Exception {
@@ -770,6 +890,7 @@ public class Sim {
     public void lihatWaktu() {
         //membutuhkan objek Jam
         //menunjukkan sisa waktu pada hari tersebut beserta sisa waktu yang masih ada untuk seluruh tindakan yang bisa ditinggal
+        Clock.getTime();
     }
 
     public void moveTo(Point point) {
@@ -781,31 +902,64 @@ public class Sim {
         System.out.print("Masukkan nama furniture yang ingin dituju: ");
         Scanner input = new Scanner(System.in);
         String namaFurniture = input.nextLine();
-        Furniture furniture = new Furniture(namaFurniture);
+        // Furniture furniture = new Furniture(namaFurniture);
 
-        if (!ruangan.isFurnitureInRuangan(furniture)) {
+        if (!ruangan.isFurnitureInRuangan(namaFurniture)) {
             System.out.println("Furniture tidak ada di ruangan!");
         } else {
-            System.out.println("Bergerak menuju" + namaFurniture);
+            Furniture furniture = ruangan.getFurniture(namaFurniture);
+            System.out.println("Bergerak menuju " + namaFurniture);
             moveTo(new Point(furniture.getXFurniture(), furniture.getYFurniture()));
         }
     }
 
-    // public void checkFurniture(Ruangan ruangan) {
-    //     // remove element of daftaraksi from 8th index (daftarAksi index starts from 0), and then
-    //     // check the furniture near sim and get the aksi that can be done, put it inside daftarAksi
-    //     // if there is no furniture near sim, there will be no addition to daftarAksi
-        
-    //     if (daftarAksi.size() > 8) {
-    //         for (int i = 8; i < daftarAksi.size(); i++) {
-    //             daftarAksi.remove(i);
-    //         }
-    //     }
+    public void checkFurniture(Ruangan ruangan) {
+        List<Furniture> daftarFurniture = ruangan.getDaftarFurniture();
+        if (daftarAksi.size() > 8) {
+            int size = daftarAksi.size();
+            for (int i = 8; i < size; i++) {
+                daftarAksi.remove(8);
+            }
+        }
 
-        
+        for (Furniture furniture : daftarFurniture) {
+            if (furniture.isNearSim(posisiSim)) {
+                daftarAksi.add(furniture.getAksi());
+            }
+        }
+    }
 
-
-
-    // }
     //harus buat 7 aksi lain yang dapat berhubungan dengan objek sesuai dengan kreasi masing-masing.
+    public void medicalCheckUp() {
+        // kesehatan bertambah 10 setiap 1 siklus (60 detik)
+    }
+
+    public void ibadah() {
+        // mood bertambah 20 setiap 1 siklus (60 detik)
+    }
+
+    public void bersihRumah() {
+        // kesehatan bertambah 30 setiap 1 siklus (120 detik)
+    }
+
+    public void belajarCoding() {
+        // mood bertambah 10 setiap 30 detik
+        // kesehatan berkurang 10 setiap 30 detik
+        // (asumsi belajarnya di HP jadi ga perlu objek Komputer)
+    } 
+
+    public void bukaSosmed() {
+        // mood bertambah 20 setiap 30 detik
+        // kesehatan berkurang 5 setiap 30 detik
+    }
+
+    public void nontonNetflix() {
+        // mood bertambah 15 setiap 30 detik
+        // kasih daftar rekomendasi film, durasinya 30/60/90 detik ajaa
+        // (asumsi nonton di HP jadi ga perlu objek TV)
+    }
+
+    public void ikutUndianBerhadiah() {
+        // uang nambah 5/10/15 atau ga dapet samsek (di-random)
+    }
 }

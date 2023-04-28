@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Rumah {
     private String IDRumah;
@@ -19,31 +20,39 @@ public class Rumah {
         jumlahRuangan++;
         Ruangan kamar = new Ruangan("Kamar", this, posisi); 
 
-        // daftarRuangan.add(R1);
+        Furniture kasurSingle = new Furniture("Kasur Single");
+        Furniture toilet = new Furniture("Toilet");
+        Furniture komporGas = new Furniture("Kompor Gas");
+        Furniture mejaDanKursi = new Furniture("Meja dan Kursi");
+        Furniture jam = new Furniture("Jam");
 
-        // addRuangan(R1);
-        // inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
-        // Random rand = new Random();
-        // List<String> givenList = new ArrayList<String>();
-        // givenList.add("Kasur Single");
-        // givenList.add("Kasur Queen Size");
-        // givenList.add("Kasur King Size");
-        // String randomElmt = givenList.get(rand.nextInt(givenList.size()));
-        // R1.addObject(randomElmt);
-        // R1.addObject("Toilet");
-        
-        // List<String> givenList2 = new ArrayList<String>();
-        // givenList2.add("Kompor Gas");
-        // givenList2.add("Kompor Listrik");
-        // randomElmt = givenList2.get(rand.nextInt(givenList2.size()));
-        // R1.addObject(randomElmt);
-        // R1.addObject("Meja dan Kursi");
-        // R1.addObject("Jam");
+        kamar.addDaftarFurniture(kasurSingle);
+        kamar.addDaftarFurniture(toilet);
+        kamar.addDaftarFurniture(komporGas);
+        kamar.addDaftarFurniture(mejaDanKursi);
+        kamar.addDaftarFurniture(jam);
 
-        String[] furnitureStarter = {"Kasur Single", "Toilet", "Kompor Gas", "Meja dan Kursi", "Jam"};
-        for(String furniture : furnitureStarter) {
-            kamar.insertObjectRandomly(furniture);
-        }
+        int xKamar = kamar.getXRuangan();
+        int yKamar = kamar.getYRuangan();
+        kamar.insertObjectToRuangan("Kasur Single", new Point (xKamar - 3, yKamar - 3), new AtomicBoolean(false));
+        kasurSingle.setXFurniture(xKamar - 3);
+        kasurSingle.setYFurniture(yKamar - 3);
+
+        kamar.insertObjectToRuangan("Toilet", new Point (xKamar + 2, yKamar + 2), new AtomicBoolean(false));
+        toilet.setXFurniture(xKamar + 2);
+        toilet.setYFurniture(yKamar + 2);
+
+        kamar.insertObjectToRuangan("Kompor Gas", new Point (xKamar - 3, yKamar + 2), new AtomicBoolean(false));
+        komporGas.setXFurniture(xKamar - 3);
+        komporGas.setYFurniture(yKamar + 2);
+
+        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (xKamar - 3, yKamar - 2), new AtomicBoolean(false));
+        mejaDanKursi.setXFurniture(xKamar - 3);
+        mejaDanKursi.setYFurniture(yKamar - 2);
+
+        kamar.insertObjectToRuangan("Jam", new Point (xKamar + 2, yKamar - 2), new AtomicBoolean(false));
+        jam.setXFurniture(xKamar + 2);
+        jam.setYFurniture(yKamar - 2);
     }
 
     public Rumah() {}
@@ -90,7 +99,7 @@ public class Rumah {
 
     public Ruangan getCurrentRuanganSim(Sim sim) {
         for (Ruangan ruangan : daftarRuangan) {
-            if (ruangan.getXRuangan() == sim.getPosisiSim().getX() && ruangan.getYRuangan() == sim.getPosisiSim().getY()) {
+            if (ruangan.getXRuangan() == sim.getXSim() && ruangan.getYRuangan() == sim.getYSim()) {
                 return ruangan;
             }
         }

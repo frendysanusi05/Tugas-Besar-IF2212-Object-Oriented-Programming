@@ -70,6 +70,9 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
                 throw new Exception("Furniture tidak tersedia!");
         }
     }
+    public String getNama() {
+        return nama;
+    }
     
     public String getNama() {
         return nama;
@@ -111,5 +114,9 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
         int temp = panjang;
         panjang = lebar;
         lebar = temp;
+    }
+
+    public boolean isNearSim(Point posisiSim) {
+        return (Math.abs(posisiSim.getX() - posisiFurniture.getX()) <= 1 && Math.abs(posisiSim.getY() - posisiFurniture.getY()) <= 1);
     }
 }
