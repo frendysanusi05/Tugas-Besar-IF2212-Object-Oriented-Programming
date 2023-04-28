@@ -19,7 +19,7 @@ public class Main {
         // rumah1.printDaftarRuangan();
         // world.printDaftarRumah();
         // save.save(world);
-
+        World world = new World();
         System.out.println("Welcome to Sim-Plicity!");
         System.out.println("1. New Game");
         System.out.println("2. Load Game");
@@ -58,8 +58,8 @@ public class Main {
         }
     }
 
-    public static void newGameSim () throws Exception {
-        World world = new World();
+    public static void generateSim (World world) throws Exception {
+        // World world = new World();
         System.out.print("Masukkan nama pemain: ");
         Scanner input = new Scanner(System.in);
 
@@ -75,8 +75,13 @@ public class Main {
         world.addCekPosisi(rumah);
 
         Thread.sleep(3000);
-        System.out.println("Selamat datang, " + namaSim + "!");
+        System.out.println("Halo, " + namaSim + "!");
         playSim(world);
+    }
+
+    public static void newGameSim() throws Exception {
+        World world = new World();
+        generateSim(world);
     }
 
     public static void playSim(World world) {

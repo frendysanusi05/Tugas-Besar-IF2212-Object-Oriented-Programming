@@ -24,16 +24,16 @@ public class SimRuanganDriver {
         kamar.printRuangan(sim);
         sim.checkFurniture(kamar);
 
-        List<String> daftarAksi = sim.getDaftarAksi();
+        // List<String> daftarAksi = sim.getDaftarAksi();
 
-        while(true) {
-            System.out.println("\nDaftar Aksi:");
-            for (int i = 0; i < daftarAksi.size(); i++) {
-                System.out.println(i+1 + ". " + daftarAksi.get(i));
-            }
-            sim.moveToFurniture(kamar);
-            kamar.printRuangan(sim);
-            sim.checkFurniture(kamar);
-        }
+        // while(true) {
+        //     System.out.println("\nDaftar Aksi:");
+        //     for (int i = 0; i < daftarAksi.size(); i++) {
+        //         System.out.println(i+1 + ". " + daftarAksi.get(i));
+        //     }
+        //     sim.moveToFurniture(kamar);
+        //     kamar.printRuangan(sim);
+        //     sim.checkFurniture(kamar);
+        // }
     }
 }
