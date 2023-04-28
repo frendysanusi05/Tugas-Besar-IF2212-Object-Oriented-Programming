@@ -90,11 +90,11 @@ public class Main {
         generateSim(world);
     }
 
-    public static void playSim(World world) {
-        Sim currentSim;
+    public static void playSim(World world) throws Exception {
+        Sim sim;
         //if there's only 1 sim, then play that sim
         if (world.getDaftarSim().size() == 1) {
-            currentSim = world.getDaftarSim().get(0);
+            sim = world.getDaftarSim().get(0);
         } else {
             //if there's more than 1 sim, then ask which sim to play
             System.out.println("Pilih sim yang ingin dimainkan (masukkan angka) ");
@@ -109,24 +109,25 @@ public class Main {
                 System.out.print("Pilihan: ");
                 pilihan = input.nextInt();
             }
-            currentSim = world.getDaftarSim().get(pilihan-1);
+            sim = world.getDaftarSim().get(pilihan-1);
         }
-
         boolean exitGame = false;
         
         while (!exitGame) {
-            currentSim.printCurrentSimRoom(world);
-            System.out.println("\nKamu Bermain Sebagai " + currentSim.getNama());
+            Rumah rumah = world.getRumahSim(sim);
+            Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
+            sim.printCurrentSimRoom(world);
+            System.out.println("\nKamu Bermain Sebagai " + sim.getNama());
             //print daftar aksi
-            for (int i = 0; i < currentSim.getDaftarAksi().size(); i++) {
-                System.out.println("-> " + currentSim.getDaftarAksi().get(i));
+            for (int i = 0; i < sim.getDaftarAksi().size(); i++) {
+                System.out.println("-> " + sim.getDaftarAksi().get(i));
             }
             System.out.print("Apa yang ingin kamu lakukan? ");
             Scanner input = new Scanner(System.in);
             String aksi = input.nextLine().toLowerCase();
             //turn the first letter to upper case
             aksi = aksi.substring(0, 1).toUpperCase() + aksi.substring(1);
-            while (!currentSim.getDaftarAksi().contains(aksi)) {
+            while (!sim.getDaftarAksi().contains(aksi)) {
                 System.out.println("Aksi tidak tersedia!");
                 System.out.print("Apa yang ingin kamu lakukan? ");
                 aksi = input.nextLine().toLowerCase();
@@ -135,14 +136,29 @@ public class Main {
             
             switch (aksi) {
                 case "Kerja" :
-                    currentSim.kerja();
+                    sim.kerja();
                     break;
                 case "Olahraga" :
-                    currentSim.olahraga();
+                    sim.olahraga();
                     break;
                 case "Berkunjung" :
 
                     // currentSim.berkunjung(w);
+                    break;
+                case "Upgrade Rumah":
+                    sim.upgradeRumah(world, rumah);
+                    break;
+                case "Beli Barang" :
+                    sim.beliBarang();
+                    break;
+                case "Pindah Ruang" :
+                    sim.pindahRuang();
+                    break;
+                case "Lihat Inventory" :
+                    sim.lihatInventory();
+                    break;
+                case "Pasang Barang" :
+                    sim.pasangBarang(ruangan);
                     break;
             }
             break;

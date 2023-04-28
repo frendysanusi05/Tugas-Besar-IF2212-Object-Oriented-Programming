@@ -4,11 +4,9 @@
 // import java.util.ArrayList;
 // import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
-//import java.security.KeyStore.Entry;
+import java.security.KeyStore.Entry;
 import java.time.LocalTime;
 import java.util.*;
-
-//mmaaf bagian perkerjaan sama kerja gue bingung
 
 public class Sim {
     private String nama;
