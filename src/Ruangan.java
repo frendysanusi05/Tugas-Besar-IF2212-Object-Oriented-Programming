@@ -296,4 +296,3 @@ public class Ruangan extends Rumah{
     //     }     
     // }
 }
-
