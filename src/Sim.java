@@ -118,7 +118,22 @@ public class Sim {
     public void setStatus(String activity) {
         status = activity;
     }
+    public void setKekenyangan(int kekenyangan) {
+        this.kekenyangan = kekenyangan;
+    }
+    
+    public void setMood(int mood) {
+        this.mood = mood;
+    }
 
+    public void setKesehatan(int kesehatan) {
+        this.kesehatan = kesehatan;
+    }
+
+    public void setUang(int uang) {
+        this.uang = uang;
+    }
+    
     public void setPosisiSim(Point posisiSim) {
         this.posisiSim = posisiSim;
     }
@@ -950,36 +965,121 @@ public class Sim {
     }
 
     //harus buat 7 aksi lain yang dapat berhubungan dengan objek sesuai dengan kreasi masing-masing.
-    public void medicalCheckUp() {
+    public void medicalCheckUp(int lamaMedicalCheckUp) {
         // kesehatan bertambah 10 setiap 1 siklus (60 detik)
+        if (lamaMedicalCheckUp % 10 != 0) {
+            System.out.println("Durasi medical check up harus kelipatan 10");
+            return;
+        }
+
+        kesehatan += (lamaMedicalCheckUp / 10) * 3;
+        setKesehatan(kesehatan);
     }
 
-    public void ibadah() {
-        // mood bertambah 20 setiap 1 siklus (60 detik)
+    public void ibadah(int lamaIbadah) {
+        // mood bertambah 20 dan kekenyang berkurang 20 setiap 1 siklus (60 detik)
+        if (lamaIbadah % 20 != 0) {
+            System.out.println("Durasi ibadah harus kelipatan 15");
+            return;
+        }
+
+        mood += (lamaIbadah / 20) * 3;
+        setMood(mood);
+        kekenyangan -= (lamaIbadah / 20) * 3;
+        setKekenyangan(kekenyangan);
     }
 
-    public void bersihRumah() {
-        // kesehatan bertambah 30 setiap 1 siklus (120 detik)
+    public void bersihRumah(int lamaBersihRumah) {
+        // kesehatan bertambah 30 dan kekenyangan berkurang 30 setiap 1 siklus (120 detik)
+        if (lamaBersihRumah % 30 != 0) {
+            System.out.println("Durasi bersih rumah harus kelipatan 30");
+            return;
+        }
+
+        kesehatan += (lamaBersihRumah / 30) * 3;
+        setKesehatan(kesehatan);
+        kekenyangan -= (lamaBersihRumah / 30) * 3;
+        setKekenyangan(kekenyangan);    
     }
 
-    public void belajarCoding() {
+    public void belajarCoding(int lamaBelajarCoding) {
         // mood bertambah 10 setiap 30 detik
         // kesehatan berkurang 10 setiap 30 detik
         // (asumsi belajarnya di HP jadi ga perlu objek Komputer)
+        if (lamaBelajarCoding % 10 != 0) {
+            System.out.println("Durasi belajar coding harus kelipatan 10");
+            return;
+        }
+
+        kesehatan -= (lamaBelajarCoding / 10) * 3;
+        setKesehatan(kesehatan);
+        mood += (lamaBelajarCoding / 10) * 3;
+        setMood(mood);
     } 
 
-    public void bukaSosmed() {
+    public void bukaSosmed(int lamaBukaSosmed) {
         // mood bertambah 20 setiap 30 detik
         // kesehatan berkurang 5 setiap 30 detik
+        if (lamaBukaSosmed % 20 != 0) {
+            System.out.println("Durasi buka sosmed harus kelipatan 20");
+            return;
+        }
+
+        kesehatan -= (lamaBukaSosmed / 20) * 3;
+        setKesehatan(kesehatan);
+        mood += (lamaBukaSosmed / 20) * 3;
+        setMood(mood);    
     }
 
-    public void nontonNetflix() {
+    public void nontonNetflix(int lamaNonton) {
         // mood bertambah 15 setiap 30 detik
         // kasih daftar rekomendasi film, durasinya 30/60/90 detik ajaa
         // (asumsi nonton di HP jadi ga perlu objek TV)
+        if (lamaNonton % 15 != 0) {
+            System.out.println("Durasi nonton Netflix harus kelipatan 15");
+            return;
+        }
+
+        System.out.println("Daftar rekomendasi film:");
+        System.out.println("1. Ada Apa Dengan Tubes? "); // 30 detik
+        System.out.println("2. Cek Kelompok Sebelah "); // 60 detik
+        System.out.println("3. Pengabdi Tubes 3 "); // 90 detik
+        System.out.print("Pilih film yang ingin ditonton: ");
+        Scanner input = new Scanner(System.in);
+        int pilihan = input.nextInt();
+        input.close();
+
+        if (pilihan == 1) {
+            mood += (lamaNonton / 15) * 3;
+            setMood(mood);
+        } else if (pilihan == 2) {
+            mood += (lamaNonton / 15) * 3;
+            setMood(mood);
+        } else if (pilihan == 3) {
+            mood += (lamaNonton / 15) * 3;
+            setMood(mood);
+        } else {
+            System.out.println("Pilihan tidak valid");
+            return;
+        }
     }
 
     public void ikutUndianBerhadiah() {
         // uang nambah 5/10/15 atau ga dapet samsek (di-random)
+        Random rand = new Random();
+        int random = rand.nextInt(4);
+
+        if (random == 0) {
+            uang += 5;
+            setUang(uang);
+        } else if (random == 1) {
+            uang += 10;
+            setUang(uang);
+        } else if (random == 2) {
+            uang += 15;
+            setUang(uang);
+        } else {
+            setUang(uang);
+        }
     }
 }
