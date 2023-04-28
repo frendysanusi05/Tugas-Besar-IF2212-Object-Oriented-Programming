@@ -98,6 +98,10 @@ public class Sim {
         this.uang = uang + uangTambahan;
     }
 
+    public void minUang(int uangTambahan) {
+        this.uang = uang - uangTambahan;
+    }
+
     public void addKekenyangan(int kekenyanganTambahan) {
         this.kekenyangan = kekenyangan + kekenyanganTambahan;
     }
@@ -672,6 +676,42 @@ public class Sim {
     public void upgradeRumah(){
         //menambah ruangan
         //membutuhkan waktu sejumlah 18 menit
+        
+        int waktuUpgradeRumah = 18;
+        int hargaUpgradeRumah = 1500;
+
+        //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
+        if (World.getSpace() >= 1 && getUang() >= hargaUpgradeRumah) {
+            //kurangin uangnya
+            minUang(hargaUpgradeRumah);
+            //tambahin ruangan
+            World.setSpace(World.getSpace() - 1);
+            //tambahin waktu
+            Thread.sleep(waktuUpgradeRumah * 60 * 1000);
+            //ubah status
+            setStatus("Sedang Upgrade Rumah");
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Clock.wait(durasi);
+                    isThreadFinished = true;
+                }
+            });
+
+            t1.start();
+
+            try {
+                t1.join();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            isThreadFinished = false;
+            setStatus(null);
+        } else {
+            System.out.println("Space di world tidak cukup atau saldo tidak cukup");
+        }
     }
 
     public void beliBarang(){
