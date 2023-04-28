@@ -1,10 +1,10 @@
 import java.util.Random;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.time.LocalTime;
-import java.util.Scanner;
 import java.util.*;
 
 //mmaaf bagian perkerjaan sama kerja gue bingung
@@ -714,7 +714,86 @@ public class Sim {
         //mengisi rumahnya dengan barang-barang.
         //waktu kedatangan barang tidak dapat dipastikan.
         //durasi pengiriman barang akan selalu acak tetapi tetap dalam range waktu X menit.
+        ArrayList<String> furniture = new ArrayList<String>() {{
+            add("Kasur Single");
+            add("Kasur Queen Size");
+            add("Kasur King Size");
+            add("Toilet");
+            add("Kompor Gas");
+            add("Kompor Listrik");
+            add("Meja dan Kursi");
+            add("Jam");
+        }};
 
+        ArrayList<String> bahanMakanan = new ArrayList<String>() {{
+            add("Nasi");
+            add("Kentang");
+            add("Ayam");
+            add("Sapi");
+            add("Wortel");
+            add("Bayam");
+            add("Kacang");
+            add("Susu");
+        }};
+
+        System.out.println("""
+        Berikut ini adalah barang yang bisa dibeli:\n
+            +-----------------------------------------------+
+            |     |                 Kategori                |
+            | No. |-----------------------------------------+
+            |     |      Furniture      |   Bahan Makanan   |
+            +-----+-----------------------------------------+
+            |  1. | Kasur Single        | Nasi              |
+            |  2. | Kasur Queen Size    | Kentang           |
+            |  3. | Kasur King Size     | Ayam              |
+            |  4. | Toilet              | Sapi              |
+            |  5. | Kompor Gas          | Wortel            |
+            |  6. | Kompor Listrik      | Bayam             |
+            |  7. | Meja dan Kursi      | Kacang            |
+            |  8. | Jam                 | Susu              |
+            +-----+-----------------------------------------+
+        """);
+
+        Scanner scan = new Scanner(System.in);
+        System.out.print("Masukkan nama barang yang ingin dibeli: ");
+        String item = scan.nextLine();
+        System.out.println();
+        
+        while (!furniture.contains(item) && !bahanMakanan.contains(item)) {
+            System.out.println("Masukan invalid! Masukan harus ada di tabel.");
+            System.out.print("Masukkan nama barang yang ingin dibeli: ");
+            item = scan.nextLine();
+            System.out.println();
+        }
+        
+        int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
+        System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
+        Clock.wait((double)durasi);
+        System.out.printf("%s telah diterima\n", item);
+
+        Object barang = new Object();
+
+        if (furniture.contains(item)) {
+            try {
+                barang = new Furniture(item);
+            }
+            catch (Exception e) {
+
+            }
+        }
+        else if (bahanMakanan.contains(item)) {
+            try {
+                barang = new BahanMakanan(item);
+            }
+            catch (Exception e) {
+                
+            }
+        }
+
+        if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
+        else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
+
+        inventory.addItem(item);
     }
 
     public void pindahRuang(){

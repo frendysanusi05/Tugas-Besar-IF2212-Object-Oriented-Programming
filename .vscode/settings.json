@@ -1,5 +1,5 @@
 {
-    "githubPullRequests.ignoredPullRequestBranches": [
-        "main"
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
     ]
 }

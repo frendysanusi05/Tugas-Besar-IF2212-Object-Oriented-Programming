@@ -1,9 +1,10 @@
-public class Masakan implements Edible {
+public class Masakan extends ObjectType<Masakan> implements Edible {
     public String nama;
     public String[] daftarBahanMakanan;
     public int kekenyangan;
 
     public Masakan(String nama) throws Exception {
+        super("Masakan");
         this.nama = nama;
         switch (nama) {
             case "Nasi Ayam":
@@ -43,6 +44,13 @@ public class Masakan implements Edible {
 
     public String[] getDaftarBahanMakanan() {
         return this.daftarBahanMakanan;
+    }
+
+    public void printDaftarBahanMakanan() {
+        System.out.println("Daftar Bahan Makanan:");
+        for (String bahanMakanan : this.daftarBahanMakanan) {
+            System.out.println(bahanMakanan);
+        }
     }
 
     public void addKekenyangan(int kekenyangan) {

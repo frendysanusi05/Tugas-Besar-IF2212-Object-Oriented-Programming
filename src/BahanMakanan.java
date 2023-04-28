@@ -1,9 +1,10 @@
-public class BahanMakanan {
+public class BahanMakanan extends ObjectType<BahanMakanan> implements Edible, Purchasable {
     public String nama;
     public int harga;
     public int kekenyangan;
 
     public BahanMakanan(String nama) throws Exception{
+        super("BahanMakanan");
         switch (nama) {
             case "Nasi":
                 this.nama = "Nasi";
@@ -54,7 +55,7 @@ public class BahanMakanan {
         return kekenyangan;
     }
 
-    public String getNama() {
+    public String getName() {
         return nama;
     }
 
@@ -64,5 +65,8 @@ public class BahanMakanan {
 
     public void addKekenyangan(int kekenyangan) {
         this.kekenyangan += kekenyangan;
+    }
+
+    public void addHarga() {
     }
 }
