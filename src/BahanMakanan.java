@@ -66,7 +66,4 @@ public class BahanMakanan extends ObjectType<BahanMakanan> implements Edible, Pu
     public void addKekenyangan(int kekenyangan) {
         this.kekenyangan += kekenyangan;
     }
-
-    public void addHarga() {
-    }
 }
