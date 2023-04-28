@@ -762,11 +762,14 @@ public class Sim {
 
     public void lihatInventory(){
         //berisi dengan makanan, barang-barang yang sedang tidak terpasang pada ruangan, dan objek-objek lainnya.
+        inventory.printItem();
     }
 
-    public void addInventory() {
-        //gatau ada di sheet spek tapi gaada di doc spesifikasi
-    }
+    // udah ada inventory.additem jadi kayanya gaperlu ini - Ariq
+    // public void addInventory() {
+    //     //gatau ada di sheet spek tapi gaada di doc spesifikasi
+
+    // }
 
     public void pasangBarang(Ruangan ruangan) throws Exception {
 

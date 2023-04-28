@@ -33,7 +33,7 @@ public class Inventory {
 
     public void printItem() {
         //print item in item
-        System.out.println("Item in inventory : ");
+        System.out.println("Item di dalam inventory : ");
         for (Map.Entry<String, Integer> entry : items.entrySet()) {
             System.out.println(entry.getKey() + " : " + entry.getValue());
         }
@@ -42,7 +42,7 @@ public class Inventory {
 
     public void printSpecificItem (String typeName) {
         //print specific item in item
-        System.out.printf("Item %s in inventory:\n", typeName);
+        System.out.printf("Item %s di dalam inventory:\n", typeName);
         String[] daftarFurniture = {"Kasur Single", "Kasur Quuen Size", "Kasung King Size", "Toilet", "Kompor Gas", "Kompor Listrik", "Meja dan Kursi", "Jam"};
         String[] daftarBahanMakanan = {"Nasi", "Kentang", "Ayam", "Sapi", "Wortel", "Bayam", "Kacang", "Susu"};
         String[] daftarMasakan = {"Nasi Ayam", "Nasi Kari", "Susu Kacang", "Tumis Sayur", "Bistik"};
