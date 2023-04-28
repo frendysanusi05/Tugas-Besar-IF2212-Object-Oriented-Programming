@@ -90,7 +90,7 @@ public class Rumah {
 
     public Ruangan getCurrentRuanganSim(Sim sim) {
         for (Ruangan ruangan : daftarRuangan) {
-            if (ruangan.getXRuangan() == sim.getPosisiSim().getX() && ruangan.getYRuangan() == sim.getPosisiSim().getY()) {
+            if (ruangan.getXRuangan() == sim.getXSim() && ruangan.getYRuangan() == sim.getYSim()) {
                 return ruangan;
             }
         }

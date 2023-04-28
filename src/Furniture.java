@@ -112,4 +112,8 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
         panjang = lebar;
         lebar = temp;
     }
+
+    public boolean isNearSim(Point posisiSim) {
+        return (Math.abs(posisiSim.getX() - posisiFurniture.getX()) <= 1 && Math.abs(posisiSim.getY() - posisiFurniture.getY()) <= 1);
+    }
 }
