@@ -113,4 +113,6 @@ public class Rumah {
     public int getJumlahRumah(){
         return jumlahRumah;
     }
+
+    
 }

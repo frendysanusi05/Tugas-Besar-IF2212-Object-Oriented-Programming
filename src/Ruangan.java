@@ -58,8 +58,7 @@ public class Ruangan extends Rumah{
 
     //method
     public void printRuangan(Sim sim) {
-        //print x and y of theRuangan
-        System.out.println("X: " + getXRuangan() + ", Y: " + getYRuangan());
+        //System.out.println("X: " + getXRuangan() + ", Y: " + getYRuangan());
         int x = getXRuangan() - 3;
         int y = getYRuangan() + 2;
         System.out.println();
@@ -92,12 +91,12 @@ public class Ruangan extends Rumah{
             x++;
         }
         System.out.println();
-        // print daftar furniture and their coordinates
-        System.out.println("Daftar furniture yang ada di ruangan ini:");
-        for (Furniture furniture : daftarFurniture) {
-            System.out.println(furniture.getNama() + " (" + furniture.getPanjang() + " x " + furniture.getLebar() + ") : " + furniture.getXFurniture() + ", " + furniture.getYFurniture());
-        }
-        //System.out.println("X adalah area yang terisi oleh furniture, adapun 'O' digunakan untuk menyatakan area yang masih kosong");
+        // // print daftar furniture and their coordinates
+        // System.out.println("Daftar furniture yang ada di ruangan ini:");
+        // for (Furniture furniture : daftarFurniture) {
+        //     System.out.println(furniture.getNama() + " (" + furniture.getPanjang() + " x " + furniture.getLebar() + ") : " + furniture.getXFurniture() + ", " + furniture.getYFurniture());
+        // }
+        // //System.out.println("X adalah area yang terisi oleh furniture, adapun 'O' digunakan untuk menyatakan area yang masih kosong");
     }
 
     public boolean isFurnitureInRuangan (String namaFurniture) {
@@ -162,7 +161,7 @@ public class Ruangan extends Rumah{
                 }
             }
             isPlaced.set(true);
-            System.out.println("Berhasil menaruh barang");
+            // System.out.println("Berhasil menaruh barang");
             
         } else if (opsi2){
             // int tempX = koordinat.getX();
@@ -202,7 +201,7 @@ public class Ruangan extends Rumah{
                 }
             }
             isPlaced.set(true);
-            System.out.println("Berhasil menaruh barang");
+            // System.out.println("Berhasil menaruh barang");
 
 
         } else {

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.security.KeyStore.Entry;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -677,41 +678,41 @@ public class Sim {
         //menambah ruangan
         //membutuhkan waktu sejumlah 18 menit
         
-        int waktuUpgradeRumah = 18;
-        int hargaUpgradeRumah = 1500;
+        // int waktuUpgradeRumah = 18;
+        // int hargaUpgradeRumah = 1500;
 
-        //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
-        if (World.getSpace() >= 1 && getUang() >= hargaUpgradeRumah) {
-            //kurangin uangnya
-            minUang(hargaUpgradeRumah);
-            //tambahin ruangan
-            World.setSpace(World.getSpace() - 1);
-            //tambahin waktu
-            Thread.sleep(waktuUpgradeRumah * 60 * 1000);
-            //ubah status
-            setStatus("Sedang Upgrade Rumah");
-            Thread t1 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Clock.wait(durasi);
-                    isThreadFinished = true;
-                }
-            });
+        // //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
+        // if (World.getSpace() >= 1 && getUang() >= hargaUpgradeRumah) {
+        //     //kurangin uangnya
+        //     minUang(hargaUpgradeRumah);
+        //     //tambahin ruangan
+        //     World.setSpace(World.getSpace() - 1);
+        //     //tambahin waktu
+        //     Thread.sleep(waktuUpgradeRumah * 60 * 1000);
+        //     //ubah status
+        //     setStatus("Sedang Upgrade Rumah");
+        //     Thread t1 = new Thread(new Runnable() {
+        //         @Override
+        //         public void run() {
+        //             Clock.wait(durasi);
+        //             isThreadFinished = true;
+        //         }
+        //     });
 
-            t1.start();
+        //     t1.start();
 
-            try {
-                t1.join();
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+        //     try {
+        //         t1.join();
+        //     }
+        //     catch (InterruptedException e) {
+        //         e.printStackTrace();
+        //     }
 
-            isThreadFinished = false;
-            setStatus(null);
-        } else {
-            System.out.println("Space di world tidak cukup atau saldo tidak cukup");
-        }
+        //     isThreadFinished = false;
+        //     setStatus(null);
+        // } else {
+        //     System.out.println("Space di world tidak cukup atau saldo tidak cukup");
+        // }
     }
 
     public void beliBarang(){
@@ -925,6 +926,25 @@ public class Sim {
         for (Furniture furniture : daftarFurniture) {
             if (furniture.isNearSim(posisiSim)) {
                 daftarAksi.add(furniture.getAksi());
+            }
+        }
+    }
+
+    public void printCurrentSimRoom(World world) {
+        // the sim can either be in his/her house or in his/her neighbor's house,
+        // locate the sim by checking every house and every room in that house
+        Rumah rumah;
+        Ruangan ruangan = null;
+        ArrayList<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
+        Map <Rumah, Sim> daftarRumah = world.getDaftarRumah();
+        for (Map.Entry<Rumah, Sim> entry : daftarRumah.entrySet()) {
+            rumah = entry.getKey();
+            daftarRuangan = rumah.getDaftarRuangan();
+            ruangan = rumah.getCurrentRuanganSim(this);
+            if (ruangan != null) {
+                ruangan.printRuangan(this);
+                System.out.println("\nRuang " + ruangan.getNamaRuangan() + " (Rumah " + entry.getValue().getNama() + ")");
+                break;
             }
         }
     }
