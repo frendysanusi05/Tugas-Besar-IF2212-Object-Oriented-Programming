@@ -1,11 +1,14 @@
-public class Furniture {
-    public String nama;
-    public int panjang;
-    public int lebar;
-    public int harga;
-    public String aksi;
+public class Furniture extends ObjectType<Furniture> implements Purchasable{
+    private String nama;
+    private int panjang;
+    private int lebar;
+    private int harga;
+    private String aksi;
+    private Point posisiFurniture = new Point();
+    //atribut nya gw ubah jadi private yakk
     
     public Furniture(String nama) throws Exception {
+        super("Furniture");
         switch(nama) {
             case "Kasur Single":
                 this.nama = "Kasur Single";
@@ -67,7 +70,14 @@ public class Furniture {
                 throw new Exception("Furniture tidak tersedia!");
         }
     }
+    public String getNama() {
+        return nama;
+    }
     
+    public String getNama() {
+        return nama;
+    }
+
     public int getPanjang() {
         return panjang;
     }
@@ -82,5 +92,31 @@ public class Furniture {
     
     public String getAksi() {
         return aksi;
+    }
+
+    public int getXFurniture() {
+        return posisiFurniture.getX();
+    }
+
+    public int getYFurniture() {
+        return posisiFurniture.getY();
+    }
+
+    public void setXFurniture(int x) {
+        posisiFurniture.setX(x);
+    }
+
+    public void setYFurniture(int y) {
+        posisiFurniture.setY(y);
+    }
+
+    public void rotateFurniture() {
+        int temp = panjang;
+        panjang = lebar;
+        lebar = temp;
+    }
+
+    public boolean isNearSim(Point posisiSim) {
+        return (Math.abs(posisiSim.getX() - posisiFurniture.getX()) <= 1 && Math.abs(posisiSim.getY() - posisiFurniture.getY()) <= 1);
     }
 }

@@ -1,7 +1,7 @@
 {
   "daftarRumah": {
-    "R2": "Sim",
-    "R1": "Sim"
+    "R2": "Vina",
+    "R1": "Ariq"
   },
   "cekPosisi": [
     [
@@ -797,12 +797,12 @@
       false
     ],
     [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
       false,
       false,
       false,
@@ -863,12 +863,12 @@
       false
     ],
     [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
       false,
       false,
       false,
@@ -929,12 +929,12 @@
       false
     ],
     [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
       false,
       false,
       false,
@@ -995,12 +995,12 @@
       false
     ],
     [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
       false,
       false,
       false,
@@ -1061,12 +1061,12 @@
       false
     ],
     [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
       false,
       false,
       false,
@@ -1127,12 +1127,12 @@
       false
     ],
     [
-      false,
-      false,
-      false,
-      false,
-      false,
-      false,
+      true,
+      true,
+      true,
+      true,
+      true,
+      true,
       false,
       false,
       false,

@@ -1,24 +1,23 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Ruangan extends Rumah{
     private String IDRuangan;
     private String namaRuangan;
     private Point titikRuangan;
-    private ArrayList<Furniture> daftarObjek;
-    private int capacity;
+    private List<Furniture> daftarFurniture = new ArrayList<Furniture>();
     private boolean[][] isAvailable = new boolean[6][6];
+    //
 
     //constructor
     public Ruangan(String namaRuangan, Rumah rumah, Point titikRuangan){
-        super();
         IDRuangan = rumah.getIDRumah() + "_" + rumah.getJumlahRuangan();
         this.namaRuangan = namaRuangan;
         this.titikRuangan = titikRuangan;
-        this.capacity = 36;
-
-        for(int i=titikRuangan.getY() - 3; i< titikRuangan.getY() + 3; i++){
-            for(int j=titikRuangan.getX() - 3; j<titikRuangan.getX() + 3; j++){
-                isAvailable[j][i] = true;
+        rumah.tambahRuangan(this);
+        for (int i = 0; i < 6; i++) {
+            for (int j = 0; j < 6; j++) {
+                isAvailable[i][j] = true;
             }
         }
     }
@@ -26,10 +25,6 @@ public class Ruangan extends Rumah{
     //getter
     public String getIDRuangan(){
         return this.IDRuangan;
-    }
-
-    public Point getPosisi(){
-        return titikRuangan;
     }
 
     public int getXRuangan(){
@@ -40,107 +35,264 @@ public class Ruangan extends Rumah{
         return titikRuangan.getY();
     }
 
-    public ArrayList<Furniture> getDaftarObjek(){
-        return this.daftarObjek;
-    }
-
-    public int getRemainingCapacity(){
-        return this.capacity;
-    }
-
     public String getNamaRuangan(){
         return this.namaRuangan;
     }
 
-    //method
-    public void addObject(Furniture obj){
-        daftarObjek.add(obj);
+    public List<Furniture> getDaftarFurniture(){
+        return daftarFurniture;
     }
 
-    //dipake buat mempermudah user untuk memilih daerah yg mau diisi (?)
-    //user bakalan lbh tergambarkan kondisi buat mau nambahin atau engga furniture di ruangan itu kalo dikasi gambaran kek gini gasi (?)
-    public void printRuangan(){
-        for(int i = 0; i < 6; i++){
-            for(int j = 0; j < 6; j++){
-                if(isAvailable[j][i]){
-                    System.out.print("O");
-                }else{
-                    System.out.print("X");
+    public boolean[][] getIsAvailable(){
+        return isAvailable;
+    }
+
+    public Furniture getFurniture(String namaFurniture){
+        for (Furniture furniture : daftarFurniture) {
+            if (furniture.getNama().equals(namaFurniture)) {
+                return furniture;
+            }
+        }
+        return null;
+    }
+
+    //method
+    public void printRuangan(Sim sim) {
+        //print x and y of theRuangan
+        System.out.println("X: " + getXRuangan() + ", Y: " + getYRuangan());
+        int x = getXRuangan() - 3;
+        int y = getYRuangan() + 2;
+        System.out.println();
+        System.out.print("   +---+---+---+---+---+---+\n");
+        for (int j = 5; j >= 0; j--) {
+            System.out.print(y + " ");
+            y--;
+            System.out.print("| ");
+            for (int i = 0; i < 6; i++)  {
+                if (i == sim.getXSim() - titikRuangan.getX() + 3 && j == sim.getYSim() - titikRuangan.getY() + 3) {
+                    System.out.print("𖨆 | ");
+                } else if (isAvailable[i][j]) {
+                    System.out.print("  | ");
+                } else {
+                    System.out.print("X | ");
+                }
+                if (i == 5) {
+                    System.out.print("\n   +---+---+---+---+---+---+");
                 }
             }
             System.out.println();
         }
-        System.out.println("Bagian bertanda 'X' adalah area yang terisi oleh furniture, adapun 'O' digunakan untuk menyatakan area yang masih kosong");
+        System.out.print("     ");
+        for (int i = 0; i < 6; i++) {
+            if (x > 9) {
+                System.out.print(x + "  ");
+            } else {
+                System.out.print(x + "   ");
+            }
+            x++;
+        }
+        System.out.println();
+        // print daftar furniture and their coordinates
+        System.out.println("Daftar furniture yang ada di ruangan ini:");
+        for (Furniture furniture : daftarFurniture) {
+            System.out.println(furniture.getNama() + " (" + furniture.getPanjang() + " x " + furniture.getLebar() + ") : " + furniture.getXFurniture() + ", " + furniture.getYFurniture());
+        }
+        //System.out.println("X adalah area yang terisi oleh furniture, adapun 'O' digunakan untuk menyatakan area yang masih kosong");
     }
 
-    //dipake buat ngecek penempatan barang pada koordinat yg diinput.
+    public boolean isFurnitureInRuangan (String namaFurniture) {
+        boolean found = false;
+        int i = 0;
+        while (!found && i < daftarFurniture.size()) {
+            if (daftarFurniture.get(i).getNama().equals(namaFurniture)) {
+                found = true;
+            }
+            i++;
+        }
+        return found;
+    }
 
-    public void insertObjectToRuangan(String namaBarang, Point koordinat /*koordinat barang yg mau disimpen*/, Ruangan ruangan) throws Exception{
+    public void addDaftarFurniture (Furniture furniture) {
+        daftarFurniture.add(furniture);
+    }
+
+    public void insertObjectToRuangan(String namaBarang, Point koordinat /*koordinat barang yg mau disimpen*/, AtomicBoolean isPlaced) throws Exception{
         Furniture obj = new Furniture(namaBarang);
         int panjang = obj.getPanjang();
         int lebar = obj.getLebar();
-        boolean opsi1 = (koordinat.getX() >= ruangan.getXRuangan() - 3 && koordinat.getY() >= ruangan.getYRuangan() - 3 && koordinat.getX() + panjang <= 3 + ruangan.getXRuangan() && koordinat.getY() + lebar <= 3 + ruangan.getYRuangan());
-        boolean opsi2 = (koordinat.getX() >= ruangan.getXRuangan() - 3 && koordinat.getY() >= ruangan.getYRuangan() - 3 && koordinat.getX() + lebar <= 3 + ruangan.getXRuangan() && koordinat.getY() + panjang <= 3 + ruangan.getYRuangan());
+        boolean opsi1 = (koordinat.getX() >= getXRuangan() - 3 && koordinat.getY() >= getYRuangan() - 3 && koordinat.getX() + panjang <= 3 + getXRuangan() && koordinat.getY() + lebar <= 3 + getYRuangan());
+        boolean opsi2 = (koordinat.getX() >= getXRuangan() - 3 && koordinat.getY() >= getYRuangan() - 3 && koordinat.getX() + lebar <= 3 + getXRuangan() && koordinat.getY() + panjang <= 3 + getYRuangan());
         
         if(opsi1){
-            int tempX = koordinat.getX();
-            int tempY = koordinat.getY();
-            boolean found = false;
-            while(!found && tempY<tempY+lebar){
-                while(!found && tempX<tempX+panjang){
-                    if(isAvailable[tempX][tempY]){
-                        tempX++;
-                        tempY++;
-                    } else{
-                        found = true;
-                    }
+            // int tempX = koordinat.getX();
+            // int tempY = koordinat.getY();
+            int tempX = koordinat.getX() - getXRuangan() + 3;
+            int tempY = koordinat.getY() - getYRuangan() + 3;
+            // boolean found = false;
+            // while(!found && tempX<tempX+panjang){
+            //     while(!found && tempY<tempY+lebar){
+            //         if(isAvailable[tempY][tempX]){
+            //             tempX++;
+            //             tempY++;
+            //         } else{
+            //             found = true;
+            //         }
                     
+            //     }
+            // }
+
+            // if(!found){
+            //     //update Map Furniture pada Ruangan
+            //     // tempX = koordinat.getX();
+            //     // tempY = koordinat.getY();
+            //     tempX = koordinat.getX() - getXRuangan() + 3;
+            //     tempY = koordinat.getY() - getYRuangan() + 3;
+            //     while(tempX<tempX+panjang){
+            //         while(tempY<tempY+lebar){
+            //             isAvailable[tempY][tempX] = false;
+            //         }
+            //     }
+            //     addDaftarFurniture(obj);
+            //     isPlaced = true;
+            // }
+
+            for (int i = tempX; i < tempX + obj.getPanjang(); i++) {
+                for (int j = tempY; j < tempY + obj.getLebar(); j++) {
+                    isAvailable[i][j] = false;
                 }
             }
-
-            if(!found){
-                //update Map Furniture pada Ruangan. Merubah bagian yang telah terisi objek menjadi false.
-                tempX = koordinat.getX();
-                tempY = koordinat.getY();
-                while(tempY<tempY+lebar){
-                    while(tempX<tempX+panjang){
-                        isAvailable[tempX][tempY] = false;
-                    }
-                }
-                this.addObject(obj);
-            }
-
+            isPlaced.set(true);
+            System.out.println("Berhasil menaruh barang");
+            
         } else if (opsi2){
-            int tempX = koordinat.getX();
-            int tempY = koordinat.getY();
-            boolean found = false;
-            while(!found && tempY<tempY+panjang){
-                while(!found && tempX<tempX+lebar){
-                    if(isAvailable[tempX][tempY]){
-                        tempX++;
-                        tempY++;
-                    } else{
-                        found = true;
-                    }
-                    
-                }
-            }
+            // int tempX = koordinat.getX();
+            // int tempY = koordinat.getY();
+            int tempX = koordinat.getX() - getXRuangan() + 3;
+            int tempY = koordinat.getY() - getYRuangan() + 3;
+            // boolean found = false;
+            // while(!found && tempX<tempX+lebar){
+            //     while(!found && tempY<tempY+panjang){
+            //         if(isAvailable[tempY][tempX]){
+            //             tempX++;
+            //             tempY++;
+            //         } else{
+            //             found = true;
+            //         }
+            //     }
+            // }
 
-            if(!found){
-                //update Map Furniture pada Ruangan. Merubah bagian yang telah terisi objek menjadi false.
-                tempX = koordinat.getX();
-                tempY = koordinat.getY();
-                while(tempY<tempY+panjang){
-                    while(tempX<tempX+lebar){
-                        isAvailable[tempX][tempY] = false;
-                    }
+            // if(!found){
+            //     //update Map Furniture pada Ruangan
+            //     // tempX = koordinat.getX();
+            //     // tempY = koordinat.getY();
+            //     tempX = koordinat.getX() - getXRuangan() + 3;
+            //     tempY = koordinat.getY() - getYRuangan() + 3;
+            //     while(tempX<tempX+lebar){
+            //         while(tempY<tempY+panjang){
+            //             isAvailable[tempY][tempX] = false;
+            //         }
+            //     }
+            //     addDaftarFurniture(obj); 
+            //     isPlaced = true;
+            // }
+
+            for (int i = tempX; i < tempX + obj.getLebar(); i++) {
+                for (int j = tempY; j < tempY + obj.getPanjang(); j++) {
+                    isAvailable[i][j] = false;
                 }
-                this.addObject(obj);
             }
+            isPlaced.set(true);
+            System.out.println("Berhasil menaruh barang");
 
 
         } else {
-            System.out.println("Maaf, koordinat yang anda masukkan tidak memiliki cukup ruang pada Ruangan " + getIDRuangan());
+            System.out.println("Maaf, koordinat yang anda masukkan tidak memiliki cukup ruang pada Ruangan " + getNamaRuangan());
         }
     }
+
+    public void printDaftarFurniture() {
+        // System.out.println("Daftar Furniture yang ada di Ruangan " + getNamaRuangan() + " :");
+        int i = 1;
+        for (Furniture furniture : daftarFurniture) {
+            System.out.println(i + ". " + furniture.getNama());
+            i++;
+        }
+    }
+
+    // public boolean isFurniturePlacable(Furniture barang, boolean isRotated) {
+    //     // int x = barang.getXFurniture() - getXRuangan() + 3; 
+    //     // int y = barang.getYFurniture() - getYRuangan() + 3;
+    //     int panjang = barang.getPanjang();
+    //     int lebar = barang.getLebar();
+    //     if (isRotated) {
+    //         // if (x + barang.getLebar() > 6 || y + barang.getPanjang() > 6) {
+    //         //     return false;
+    //         // } else {
+    //         //     for (int i = x; i < x + barang.getLebar(); i++) {
+    //         //         for (int j = y; j < y + barang.getPanjang(); j++) {
+    //         //             if (!isAvailable[i][j]) {
+    //         //                 return false;
+    //         //             }
+    //         //         }
+    //         //     }
+    //         // }
+    //         return (barang.getXFurniture() >= getXRuangan() - 3 && barang.getYFurniture() >= getYRuangan() - 3 && barang.getXFurniture() + lebar <= 3 + getXRuangan() && barang.getYFurniture() + panjang <= 3 + getYRuangan());
+    //     } else {
+    //         // if (x + barang.getPanjang() > 6 || y + barang.getLebar() > 6) {
+    //         //     return false;
+    //         // } else {
+    //         //     for (int i = x; i < x + barang.getPanjang(); i++) {
+    //         //         for (int j = y; j < y + barang.getLebar(); j++) {
+    //         //             if (!isAvailable[i][j]) {
+    //         //                 return false;
+    //         //             }
+    //         //         }
+    //         //     }
+    //         // }
+    //         return (barang.getXFurniture() >= getXRuangan() - 3 && barang.getYFurniture() >= getYRuangan() - 3 && barang.getXFurniture() + panjang <= 3 + getXRuangan() && barang.getYFurniture() + lebar <= 3 + getYRuangan());
+    //     }
+    //     // return true;
+    // }
+
+    // public void insertObjectRandomly(String namaBarang) throws Exception {
+    //     System.out.println("Nama Barang: " + namaBarang);
+    //     Furniture barang = new Furniture(namaBarang);
+    //     System.out.println("Panjang = " + barang.getPanjang() + ", Lebar = " + barang.getLebar());
+    //     Random rand = new Random();
+    //     int x = rand.nextInt(6) + getXRuangan() - 3;
+    //     int y = rand.nextInt(6) + getYRuangan() - 3;
+    //     barang.setXFurniture(x);
+    //     barang.setYFurniture(y);
+    //     while(!isFurniturePlacable(barang, false)) {
+    //         // barang.rotateFurniture();
+    //         // if (!isFurniturePlacable(barang, true)) {
+    //         //     barang.rotateFurniture();
+    //         //     x++;
+    //         //     if (x > getXRuangan()) {
+    //         //         x = 0;
+    //         //         y++;
+    //         //     }
+    //         //     barang.setXFurniture(x);
+    //         //     barang.setYFurniture(y);
+    //         // }
+    //         System.out.println("x = " + x + " y = " + y);
+    //         barang.rotateFurniture();
+    //         if (!isFurniturePlacable(barang, true)) {
+    //             System.out.println("x = " + x + " y = " + y);
+    //             barang.rotateFurniture();
+    //             x = rand.nextInt(6) + getXRuangan() - 3;
+    //             y = rand.nextInt(6) + getYRuangan() - 3;
+    //             barang.setXFurniture(x);
+    //             barang.setYFurniture(y);
+    //         }
+    //     }
+    //     System.out.println("x = " + x + " y = " + y);
+
+    //     //ini jaga2 kalo dia udah ditaro di semua sudut tapi gabisa
+    //     if (x >= getXRuangan() +  3 && y >= getYRuangan() + 3) {
+    //         System.out.println("Tidak bisa ditaruh di manapun!");
+    //     } else {
+    //         insertObjectToRuangan(namaBarang, new Point(x, y), new AtomicBoolean(false));
+    //     }     
+    // }
 }

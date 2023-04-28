@@ -1,67 +1,77 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Rumah {
     private String IDRumah;
     private Point posisi;
     private ArrayList<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
-    private Ruangan R1;
-    private static int jumlahRumah = 0; 
+    //private Ruangan R1;
     private int jumlahRuangan;
+    private static int jumlahRumah = 0;
 
 
-    //constructor==
-    public Rumah(Point posisi) throws Exception{
+    //constructor
+    public Rumah(Point posisi) throws Exception {
+        jumlahRumah++;
+        IDRumah = "R" + jumlahRumah;
         this.posisi = posisi;
-        jumlahRumah ++;
-        jumlahRuangan = 1;
-        IDRumah = "R" + jumlahRumah; //biar IDRuangan selalu punya nama yg berbeda
-        Ruangan R1 = new Ruangan("Kamar", this, posisi);
-        tambahRuangan(R1); //inisiasi Ruangan pada Rumah
 
-        //tanya ke asisten, bisa dirandom atau dah pasti punya tipe kasur,dll (furniture) yg tetap tiap kali ngebuat rumah?
-        
-        //inisiasi masing2 furniture yg bakalan ada tiap kali ngekonstruksiin rumah
-        konstruksiR1(R1);
+        //inisiasi Ruangan pada Rumah
+        jumlahRuangan++;
+        Ruangan kamar = new Ruangan("Kamar", this, posisi); 
+
+        Furniture kasurSingle = new Furniture("Kasur Single");
+        Furniture toilet = new Furniture("Toilet");
+        Furniture komporGas = new Furniture("Kompor Gas");
+        Furniture mejaDanKursi = new Furniture("Meja dan Kursi");
+        Furniture jam = new Furniture("Jam");
+
+        kamar.addDaftarFurniture(kasurSingle);
+        kamar.addDaftarFurniture(toilet);
+        kamar.addDaftarFurniture(komporGas);
+        kamar.addDaftarFurniture(mejaDanKursi);
+        kamar.addDaftarFurniture(jam);
+
+        int xKamar = kamar.getXRuangan();
+        int yKamar = kamar.getYRuangan();
+        kamar.insertObjectToRuangan("Kasur Single", new Point (xKamar - 3, yKamar - 3), new AtomicBoolean(false));
+        kasurSingle.setXFurniture(xKamar - 3);
+        kasurSingle.setYFurniture(yKamar - 3);
+
+        kamar.insertObjectToRuangan("Toilet", new Point (xKamar + 2, yKamar + 2), new AtomicBoolean(false));
+        toilet.setXFurniture(xKamar + 2);
+        toilet.setYFurniture(yKamar + 2);
+
+        kamar.insertObjectToRuangan("Kompor Gas", new Point (xKamar - 3, yKamar + 2), new AtomicBoolean(false));
+        komporGas.setXFurniture(xKamar - 3);
+        komporGas.setYFurniture(yKamar + 2);
+
+        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (xKamar - 3, yKamar - 2), new AtomicBoolean(false));
+        mejaDanKursi.setXFurniture(xKamar - 3);
+        mejaDanKursi.setYFurniture(yKamar - 2);
+
+        kamar.insertObjectToRuangan("Jam", new Point (xKamar + 2, yKamar - 2), new AtomicBoolean(false));
+        jam.setXFurniture(xKamar + 2);
+        jam.setYFurniture(yKamar - 2);
     }
 
-    //bikin the second options untuk konstruktor, biar di ruangan ga perlu nginput super berisi atribut.
-    public Rumah(){}
+    public Rumah() {}
 
-    //methods==
+    //methods
     public void printDaftarRuangan(){
         for (Ruangan ruangan : daftarRuangan){
+            //ini sbenernya gua masi kurang ngerti, konstruktor ruangan mau dibentuk kek gmn wkwk
             System.out.println("IDRuangan: " + ruangan.getIDRuangan() + ", Nama Ruangan: " + ruangan.getNamaRuangan());
         }
     }
 
+    //ini blom dikonekin sama #cek ruang kosong yg ada di class ruangan dan #cekposisi yg ada di world
     public void tambahRuangan(Ruangan newRoom){
+        jumlahRuangan++;
         daftarRuangan.add(newRoom);
-        jumlahRuangan ++;
-    }
+    } 
 
-    //untuk mengotomasi pemasukan furniture ke Ruangan 1
-    public void konstruksiR1(Ruangan R1) throws Exception{
-        Random rand = new Random();
-
-        List<String> temp = new ArrayList<String>();
-        temp.add("Kasur Single");
-        temp.add("Kasur Queen Size");
-        temp.add("Kasur King Size");
-        String randomElmt = temp.get(rand.nextInt(temp.size()));
-        R1.insertObjectToRuangan(randomElmt, R1.getPosisi(), R1);
-
-        List<String> temp2 = new ArrayList<String>();
-        temp2.add("Kompor Gas");
-        temp2.add("Kompor Listrik");
-        randomElmt = temp2.get(rand.nextInt(temp2.size()));
-        R1.insertObjectToRuangan(randomElmt, R1.getPosisi(), R1);
-
-        R1.insertObjectToRuangan("Toilet", R1.getPosisi(), R1);
-        R1.insertObjectToRuangan("Meja dan Kursi", R1.getPosisi(), R1);
-        R1.insertObjectToRuangan("Jam", R1.getPosisi(), R1);
-    }
-
-    //getter==
+    //getter
     public String getIDRumah(){
         return this.IDRumah;
     }
@@ -78,15 +88,29 @@ public class Rumah {
         return daftarRuangan;
     }
 
+    public Ruangan getRuangan(String namaRuangan){
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getNamaRuangan().equals(namaRuangan)){
+                return ruangan;
+            }
+        }
+        return null;
+    }
+
+    public Ruangan getCurrentRuanganSim(Sim sim) {
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getXRuangan() == sim.getXSim() && ruangan.getYRuangan() == sim.getYSim()) {
+                return ruangan;
+            }
+        }
+        return null;
+    }
+
     public int getJumlahRuangan(){
         return jumlahRuangan;
     }
 
     public int getJumlahRumah(){
         return jumlahRumah;
-    }
-
-    public Ruangan getFirstRuangan(){
-        return R1;
     }
 }
