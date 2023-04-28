@@ -73,10 +73,6 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
     public String getNama() {
         return nama;
     }
-    
-    public String getNama() {
-        return nama;
-    }
 
     public int getPanjang() {
         return panjang;
