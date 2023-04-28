@@ -70,6 +70,9 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
                 throw new Exception("Furniture tidak tersedia!");
         }
     }
+    public String getNama() {
+        return nama;
+    }
     
     public String getNama() {
         return nama;
