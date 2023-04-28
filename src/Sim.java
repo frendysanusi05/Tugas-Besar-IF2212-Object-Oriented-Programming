@@ -1,10 +1,10 @@
-import java.util.Random;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.ArrayList;
-import java.util.Scanner;
+// import java.util.Random;
+// import java.util.Map;
+// import java.util.HashMap;
+// import java.util.ArrayList;
+// import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.security.KeyStore.Entry;
+//import java.security.KeyStore.Entry;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -589,8 +589,6 @@ public class Sim {
     }
 
     public void memasak() throws Exception {
-        // print "Berikut ini adalah bahan makanan yang kamu miliki: " then shows the list of all items in the inventory
-        // execute 
         System.out.println("Berikut ini adalah bahan makanan yang kamu miliki:");
         inventory.printSpecificItem("Bahan Makanan");
         List<Masakan> listMasakan = new ArrayList<Masakan>();
@@ -616,13 +614,11 @@ public class Sim {
         String namaMasakan = input.nextLine();
         input.close();
 
-        // Make the first character of every word in the namaMasakan is upper case, and the rest is lower case
         namaMasakan = namaMasakan.toLowerCase();
         namaMasakan = namaMasakan.substring(0, 1).toUpperCase() + namaMasakan.substring(1);
 
         Masakan masakanBaru = new Masakan(namaMasakan);
         if (masakanBaru.getName() != null) {
-            // Check if the ingredients of masakanBaru are in the inventory
             boolean isAllIngredientsAvailable = true;
             for (String bahan : masakanBaru.getDaftarBahanMakanan()) {
                 if (!inventory.containsItem(bahan)) {
@@ -632,7 +628,6 @@ public class Sim {
             }
 
             if (isAllIngredientsAvailable) {
-                // Remove the ingredients from the inventory
                 for (String bahan : masakanBaru.getDaftarBahanMakanan()) {
                     inventory.decreaseItem(bahan, 1);
                 }
@@ -663,7 +658,6 @@ public class Sim {
                 setStatus(null);
                 addMood(10);
 
-                // Add the masakan to the inventory
                 inventory.addItem(masakanBaru.getName());
             } else {
                 System.out.println("Bahan makanan tidak cukup");
@@ -681,53 +675,80 @@ public class Sim {
     }   
 
     public void buangAir(){
-    //kayak tidur bingungnya
-    //buang air setidaknya 1 kali setiap habis makan. Apabila tidak dilakukan, maka mood dan kesehatan Sim akan berkurang.
-
-            kekenyangan -= 20;
-            addMood(10);
-        
+        kekenyangan -= 20;
+        addMood(10);
     }
 
-    public void upgradeRumah(){
+    public void upgradeRumah(World world, Rumah rumah) throws Exception{
         //menambah ruangan
         //membutuhkan waktu sejumlah 18 menit
         
-        // int waktuUpgradeRumah = 18;
-        // int hargaUpgradeRumah = 1500;
+        int waktuUpgradeRumah = 18;
+        int hargaUpgradeRumah = 1500;
+        List<Point> available = world.checkAvailable(rumah);
 
-        // //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
-        // if (World.getSpace() >= 1 && getUang() >= hargaUpgradeRumah) {
-        //     //kurangin uangnya
-        //     minUang(hargaUpgradeRumah);
-        //     //tambahin ruangan
-        //     World.setSpace(World.getSpace() - 1);
-        //     //tambahin waktu
-        //     Thread.sleep(waktuUpgradeRumah * 60 * 1000);
-        //     //ubah status
-        //     setStatus("Sedang Upgrade Rumah");
-        //     Thread t1 = new Thread(new Runnable() {
-        //         @Override
-        //         public void run() {
-        //             Clock.wait(durasi);
-        //             isThreadFinished = true;
-        //         }
-        //     });
+        //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
+        if (available.size() > 0 && getUang() >= hargaUpgradeRumah) {
+            System.out.println("Berikut ini adalah titik yang kamu bisa pilih untuk memperluas rumah kamu");
+            int i = 1;
+            for (Point point : available) {
+                System.out.println(i + ". (" + point.getX() + ", " + point.getY() + ")");
+                i++;
+            }
+            System.out.print("Pilih salah satu titik di atas (masukkan angka 1 sampai " + available.size() + " saja): ");
+            Scanner input = new Scanner(System.in);
+            int pilihan = input.nextInt();
 
-        //     t1.start();
+            while (pilihan < 1 || pilihan > available.size()) {
+                System.out.println("Pilihan tidak valid");
+                System.out.print("Pilih salah satu titik di atas (masukkan angka 1 sampai " + available.size() + " saja): ");
+                input = new Scanner(System.in);
+                pilihan = input.nextInt();
+            }
 
-        //     try {
-        //         t1.join();
-        //     }
-        //     catch (InterruptedException e) {
-        //         e.printStackTrace();
-        //     }
+            System.out.print("Apa nama ruangan baru itu? ");
+            input = new Scanner(System.in);
+            String namaRuangan = input.nextLine();
 
-        //     isThreadFinished = false;
-        //     setStatus(null);
-        // } else {
-        //     System.out.println("Space di world tidak cukup atau saldo tidak cukup");
-        // }
+            Point point = available.get(pilihan - 1);
+
+
+            Ruangan newRoom = new Ruangan(namaRuangan, rumah, point);
+
+            System.out.println("Mengupgrade rumah...");
+            //ubah status
+            setStatus("Sedang Upgrade Rumah");
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Clock.wait(durasi);
+                    isThreadFinished = true;
+                }
+            });
+
+            t1.start();
+
+            try {
+                t1.join();
+            }
+            catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            isThreadFinished = false;
+            setStatus(null);
+            
+
+            //kurangin uangnya
+            minUang(hargaUpgradeRumah);
+            world.addCekPosisi(rumah);
+        } else {
+            if (available.size() == 0) {
+                System.out.println("Space di world tidak cukup");
+            } else {
+                System.out.println("Saldo tidak cukup");
+            }
+        }
     }
 
     public void beliBarang(){
@@ -786,6 +807,7 @@ public class Sim {
             System.out.println();
         }
         
+        scan.close();
         int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
         System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
         Clock.wait((double)durasi);
@@ -886,26 +908,13 @@ public class Sim {
             }
             barang.setXFurniture(x + ruangan.getXRuangan() - 3);
             barang.setYFurniture(y + ruangan.getYRuangan() - 3);
-            // try {
-            //     if (!ruangan.isFurniturePlacable(barang, isRotated)) {
-            //         throw new Exception();
-            //     }
-            // } catch (Exception e) {
-            //     System.out.println("Furniture tidak dapat ditempatkan di posisi tersebut!");
-            //     input.nextLine();
-            //     continue;
-            // }
             ruangan.insertObjectToRuangan(namaFurniture, new Point(barang.getXFurniture(), barang.getYFurniture()), isFinished);
-            
-            // isInputValid = true;
         }
         input.close();
         inventory.decreaseItem(namaFurniture, 1);
     }
 
     public void lihatWaktu() {
-        //membutuhkan objek Jam
-        //menunjukkan sisa waktu pada hari tersebut beserta sisa waktu yang masih ada untuk seluruh tindakan yang bisa ditinggal
         Clock.getTime();
     }
 
@@ -918,7 +927,7 @@ public class Sim {
         System.out.print("Masukkan nama furniture yang ingin dituju: ");
         Scanner input = new Scanner(System.in);
         String namaFurniture = input.nextLine();
-        // Furniture furniture = new Furniture(namaFurniture);
+        input.close();
 
         if (!ruangan.isFurnitureInRuangan(namaFurniture)) {
             System.out.println("Furniture tidak ada di ruangan!");
@@ -946,16 +955,10 @@ public class Sim {
     }
 
     public void printCurrentSimRoom(World world) {
-        // the sim can either be in his/her house or in his/her neighbor's house,
-        // locate the sim by checking every house and every room in that house
-        Rumah rumah;
-        Ruangan ruangan = null;
-        ArrayList<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
         Map <Rumah, Sim> daftarRumah = world.getDaftarRumah();
         for (Map.Entry<Rumah, Sim> entry : daftarRumah.entrySet()) {
-            rumah = entry.getKey();
-            daftarRuangan = rumah.getDaftarRuangan();
-            ruangan = rumah.getCurrentRuanganSim(this);
+            Rumah rumah = entry.getKey();
+            Ruangan ruangan = rumah.getCurrentRuanganSim(this);
             if (ruangan != null) {
                 ruangan.printRuangan(this);
                 System.out.println("\nRuang " + ruangan.getNamaRuangan() + " (Rumah " + entry.getValue().getNama() + ")");
@@ -965,6 +968,8 @@ public class Sim {
     }
 
     //harus buat 7 aksi lain yang dapat berhubungan dengan objek sesuai dengan kreasi masing-masing.
+
+    // ini pake thread harusnya wkwkwk - ariq
     public void medicalCheckUp(int lamaMedicalCheckUp) {
         // kesehatan bertambah 10 setiap 1 siklus (60 detik)
         if (lamaMedicalCheckUp % 10 != 0) {

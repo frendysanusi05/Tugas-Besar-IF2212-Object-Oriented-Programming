@@ -58,7 +58,6 @@ public class Ruangan extends Rumah{
 
     //method
     public void printRuangan(Sim sim) {
-        //System.out.println("X: " + getXRuangan() + ", Y: " + getYRuangan());
         int x = getXRuangan() - 3;
         int y = getYRuangan() + 2;
         System.out.println();
@@ -91,12 +90,6 @@ public class Ruangan extends Rumah{
             x++;
         }
         System.out.println();
-        // // print daftar furniture and their coordinates
-        // System.out.println("Daftar furniture yang ada di ruangan ini:");
-        // for (Furniture furniture : daftarFurniture) {
-        //     System.out.println(furniture.getNama() + " (" + furniture.getPanjang() + " x " + furniture.getLebar() + ") : " + furniture.getXFurniture() + ", " + furniture.getYFurniture());
-        // }
-        // //System.out.println("X adalah area yang terisi oleh furniture, adapun 'O' digunakan untuk menyatakan area yang masih kosong");
     }
 
     public boolean isFurnitureInRuangan (String namaFurniture) {
@@ -123,37 +116,8 @@ public class Ruangan extends Rumah{
         boolean opsi2 = (koordinat.getX() >= getXRuangan() - 3 && koordinat.getY() >= getYRuangan() - 3 && koordinat.getX() + lebar <= 3 + getXRuangan() && koordinat.getY() + panjang <= 3 + getYRuangan());
         
         if(opsi1){
-            // int tempX = koordinat.getX();
-            // int tempY = koordinat.getY();
             int tempX = koordinat.getX() - getXRuangan() + 3;
             int tempY = koordinat.getY() - getYRuangan() + 3;
-            // boolean found = false;
-            // while(!found && tempX<tempX+panjang){
-            //     while(!found && tempY<tempY+lebar){
-            //         if(isAvailable[tempY][tempX]){
-            //             tempX++;
-            //             tempY++;
-            //         } else{
-            //             found = true;
-            //         }
-                    
-            //     }
-            // }
-
-            // if(!found){
-            //     //update Map Furniture pada Ruangan
-            //     // tempX = koordinat.getX();
-            //     // tempY = koordinat.getY();
-            //     tempX = koordinat.getX() - getXRuangan() + 3;
-            //     tempY = koordinat.getY() - getYRuangan() + 3;
-            //     while(tempX<tempX+panjang){
-            //         while(tempY<tempY+lebar){
-            //             isAvailable[tempY][tempX] = false;
-            //         }
-            //     }
-            //     addDaftarFurniture(obj);
-            //     isPlaced = true;
-            // }
 
             for (int i = tempX; i < tempX + obj.getPanjang(); i++) {
                 for (int j = tempY; j < tempY + obj.getLebar(); j++) {
@@ -161,40 +125,10 @@ public class Ruangan extends Rumah{
                 }
             }
             isPlaced.set(true);
-            // System.out.println("Berhasil menaruh barang");
             
         } else if (opsi2){
-            // int tempX = koordinat.getX();
-            // int tempY = koordinat.getY();
             int tempX = koordinat.getX() - getXRuangan() + 3;
             int tempY = koordinat.getY() - getYRuangan() + 3;
-            // boolean found = false;
-            // while(!found && tempX<tempX+lebar){
-            //     while(!found && tempY<tempY+panjang){
-            //         if(isAvailable[tempY][tempX]){
-            //             tempX++;
-            //             tempY++;
-            //         } else{
-            //             found = true;
-            //         }
-            //     }
-            // }
-
-            // if(!found){
-            //     //update Map Furniture pada Ruangan
-            //     // tempX = koordinat.getX();
-            //     // tempY = koordinat.getY();
-            //     tempX = koordinat.getX() - getXRuangan() + 3;
-            //     tempY = koordinat.getY() - getYRuangan() + 3;
-            //     while(tempX<tempX+lebar){
-            //         while(tempY<tempY+panjang){
-            //             isAvailable[tempY][tempX] = false;
-            //         }
-            //     }
-            //     addDaftarFurniture(obj); 
-            //     isPlaced = true;
-            // }
-
             for (int i = tempX; i < tempX + obj.getLebar(); i++) {
                 for (int j = tempY; j < tempY + obj.getPanjang(); j++) {
                     isAvailable[i][j] = false;
@@ -217,81 +151,4 @@ public class Ruangan extends Rumah{
             i++;
         }
     }
-
-    // public boolean isFurniturePlacable(Furniture barang, boolean isRotated) {
-    //     // int x = barang.getXFurniture() - getXRuangan() + 3; 
-    //     // int y = barang.getYFurniture() - getYRuangan() + 3;
-    //     int panjang = barang.getPanjang();
-    //     int lebar = barang.getLebar();
-    //     if (isRotated) {
-    //         // if (x + barang.getLebar() > 6 || y + barang.getPanjang() > 6) {
-    //         //     return false;
-    //         // } else {
-    //         //     for (int i = x; i < x + barang.getLebar(); i++) {
-    //         //         for (int j = y; j < y + barang.getPanjang(); j++) {
-    //         //             if (!isAvailable[i][j]) {
-    //         //                 return false;
-    //         //             }
-    //         //         }
-    //         //     }
-    //         // }
-    //         return (barang.getXFurniture() >= getXRuangan() - 3 && barang.getYFurniture() >= getYRuangan() - 3 && barang.getXFurniture() + lebar <= 3 + getXRuangan() && barang.getYFurniture() + panjang <= 3 + getYRuangan());
-    //     } else {
-    //         // if (x + barang.getPanjang() > 6 || y + barang.getLebar() > 6) {
-    //         //     return false;
-    //         // } else {
-    //         //     for (int i = x; i < x + barang.getPanjang(); i++) {
-    //         //         for (int j = y; j < y + barang.getLebar(); j++) {
-    //         //             if (!isAvailable[i][j]) {
-    //         //                 return false;
-    //         //             }
-    //         //         }
-    //         //     }
-    //         // }
-    //         return (barang.getXFurniture() >= getXRuangan() - 3 && barang.getYFurniture() >= getYRuangan() - 3 && barang.getXFurniture() + panjang <= 3 + getXRuangan() && barang.getYFurniture() + lebar <= 3 + getYRuangan());
-    //     }
-    //     // return true;
-    // }
-
-    // public void insertObjectRandomly(String namaBarang) throws Exception {
-    //     System.out.println("Nama Barang: " + namaBarang);
-    //     Furniture barang = new Furniture(namaBarang);
-    //     System.out.println("Panjang = " + barang.getPanjang() + ", Lebar = " + barang.getLebar());
-    //     Random rand = new Random();
-    //     int x = rand.nextInt(6) + getXRuangan() - 3;
-    //     int y = rand.nextInt(6) + getYRuangan() - 3;
-    //     barang.setXFurniture(x);
-    //     barang.setYFurniture(y);
-    //     while(!isFurniturePlacable(barang, false)) {
-    //         // barang.rotateFurniture();
-    //         // if (!isFurniturePlacable(barang, true)) {
-    //         //     barang.rotateFurniture();
-    //         //     x++;
-    //         //     if (x > getXRuangan()) {
-    //         //         x = 0;
-    //         //         y++;
-    //         //     }
-    //         //     barang.setXFurniture(x);
-    //         //     barang.setYFurniture(y);
-    //         // }
-    //         System.out.println("x = " + x + " y = " + y);
-    //         barang.rotateFurniture();
-    //         if (!isFurniturePlacable(barang, true)) {
-    //             System.out.println("x = " + x + " y = " + y);
-    //             barang.rotateFurniture();
-    //             x = rand.nextInt(6) + getXRuangan() - 3;
-    //             y = rand.nextInt(6) + getYRuangan() - 3;
-    //             barang.setXFurniture(x);
-    //             barang.setYFurniture(y);
-    //         }
-    //     }
-    //     System.out.println("x = " + x + " y = " + y);
-
-    //     //ini jaga2 kalo dia udah ditaro di semua sudut tapi gabisa
-    //     if (x >= getXRuangan() +  3 && y >= getYRuangan() + 3) {
-    //         System.out.println("Tidak bisa ditaruh di manapun!");
-    //     } else {
-    //         insertObjectToRuangan(namaBarang, new Point(x, y), new AtomicBoolean(false));
-    //     }     
-    // }
 }

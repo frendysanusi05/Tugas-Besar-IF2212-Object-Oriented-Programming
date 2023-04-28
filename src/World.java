@@ -1,5 +1,3 @@
-import java.util.HashMap;
-import java.util.Map;
 import java.util.*;
 
 public class World {
@@ -33,7 +31,7 @@ public class World {
         for (Ruangan ruang : rumah.getDaftarRuangan()) {
             for (int i = ruang.getXRuangan() - 3; i < ruang.getXRuangan() + 3; i++) {
                 for (int j = ruang.getYRuangan() - 3; j < ruang.getYRuangan() + 3; j++) {
-                    cekPosisi[i][j] = true;
+                    cekPosisi[j][i] = true;
                 }
             }
         }
@@ -52,9 +50,9 @@ public class World {
     }
 
     public void printWorld () {
-        for (int j = 0; j < 64; j++) {
+        for (int j = 63; j >= 0; j--) {
             for (int i = 0; i < 64; i++) {
-                if (cekPosisi[i][j]) {
+                if (cekPosisi[j][i]) {
                     System.out.print("o");
                 } else {
                     System.out.print(".");
@@ -62,5 +60,107 @@ public class World {
             }
             System.out.println();
         }
+    }
+
+    public Rumah getRumahSim(Sim sim) {
+        for (Map.Entry<Rumah, Sim> entry : daftarRumah.entrySet()) {
+            if (entry.getValue().getNama().equals(sim.getNama())) {
+                return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public List<Point> checkAvailable(Rumah rumah) {
+        List<Point> available = new ArrayList<Point>();
+        //check the left
+        for (Ruangan ruangan : rumah.getDaftarRuangan()) {
+            int x1 = ruangan.getXRuangan();
+            int x2 = ruangan.getXRuangan() - 6;
+            int x3 = ruangan.getXRuangan() + 6;
+            int y1 = ruangan.getYRuangan();
+            int y2 = ruangan.getYRuangan() - 6;
+            int y3 = ruangan.getYRuangan() + 6;
+
+            // cek kiri ruangan
+            // print nama ruangan
+            System.out.println(ruangan.getNamaRuangan());
+            if (x2 >= 0 && cekPetak(new Point(x2, y1))) {
+                boolean found = false;
+                for (Point point : available) {
+                    if (point.getX() == x2 && point.getY() == y1) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    available.add(new Point(x2, y1));
+                }
+            }
+
+            // cek kanan ruangan
+            if (x3 < 64 && cekPetak(new Point(x3, y1))) {
+                boolean found = false;
+                for (Point point : available) {
+                    if (point.getX() == x3 && point.getY() == y1) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    available.add(new Point(x3, y1));
+                }
+            }
+
+            // cek atas ruangan
+            if (y2 >= 0 && cekPetak(new Point(x1, y2))) {
+                boolean found = false;
+                for (Point point : available) {
+                    if (point.getX() == x1 && point.getY() == y2) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    available.add(new Point(x1, y2));
+                }
+            }
+
+            // cek bawah ruangan
+            if (y3 < 64 && cekPetak(new Point(x1, y3))) {
+                boolean found = false;
+                for (Point point : available) {
+                    if (point.getX() == x1 && point.getY() == y3) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    available.add(new Point(x1, y3));
+                }
+            }
+        }
+        return available;
+    }
+
+    public boolean cekPetak(Point posisi) {
+        boolean isExpandable = true;
+        int x = posisi.getX() - 3;
+        int y = posisi.getY() - 3;
+        while (isExpandable && y < posisi.getY() + 3) {
+            if (cekPosisi[y][x]) {
+                isExpandable = false;
+            } else {
+                x++;
+                if (x == posisi.getX() + 3) {
+                    x = posisi.getX() - 3;
+                    y++;
+                }
+            }
+            if (x >= 64 || y >= 64) {
+                isExpandable = false;
+            }
+        }
+        return isExpandable;
     }
 }

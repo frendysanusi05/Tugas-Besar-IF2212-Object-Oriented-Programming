@@ -1,5 +1,5 @@
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
+
 public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
     public static void main(String[] args) throws Exception {
@@ -141,7 +141,7 @@ public class Main {
                     currentSim.olahraga();
                     break;
                 case "Berkunjung" :
-                
+
                     // currentSim.berkunjung(w);
                     break;
             }
