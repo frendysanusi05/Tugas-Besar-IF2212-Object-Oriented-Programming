@@ -63,7 +63,11 @@ public class Ruangan extends Rumah{
         System.out.println();
         System.out.print("   +---+---+---+---+---+---+\n");
         for (int j = 5; j >= 0; j--) {
-            System.out.print(y + " ");
+            if (y < 10) {
+                System.out.print(y + "  ");
+            } else {
+                System.out.print(y + " ");
+            }
             y--;
             System.out.print("| ");
             for (int i = 0; i < 6; i++)  {
@@ -94,12 +98,11 @@ public class Ruangan extends Rumah{
 
     public boolean isFurnitureInRuangan (String namaFurniture) {
         boolean found = false;
-        int i = 0;
-        while (!found && i < daftarFurniture.size()) {
-            if (daftarFurniture.get(i).getNama().equals(namaFurniture)) {
+        for (Furniture furniture : daftarFurniture) {
+            if (furniture.getNama().equals(namaFurniture)) {
                 found = true;
+                break;
             }
-            i++;
         }
         return found;
     }

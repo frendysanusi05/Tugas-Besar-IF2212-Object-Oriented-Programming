@@ -45,6 +45,8 @@ public class Sim {
         daftarAksi.add("Pindah Ruang");
         daftarAksi.add("Lihat Inventory");
         daftarAksi.add("Pasang Barang");
+        daftarAksi.add("Bergerak ke Objek");
+        daftarAksi.add("Ganti Sim");
     }
 
     public String getNama() {
@@ -145,13 +147,6 @@ public class Sim {
     }
 
     // Methods (Aksi)
-    public void printDaftarAksi() {
-        System.out.println("Daftar Aksi: ");
-        for (int i = 0; i < daftarAksi.size(); i++) {
-            System.out.println(i+1 + ". " + daftarAksi.get(i));
-        }
-    }
-
     public void makan() {
         // Gw coba ganti biar ngikutin speknya yaa - Ariq
         System.out.println("Berikut ini adalah makanan yang ada di inventory: ");
@@ -922,10 +917,11 @@ public class Sim {
     }
 
     public void moveToFurniture(Ruangan ruangan) throws Exception {
+        System.out.println("Berikut ini adalah daftar furniture yang ada di ruangan: ");
+        ruangan.printDaftarFurniture();
         System.out.print("Masukkan nama furniture yang ingin dituju: ");
         Scanner input = new Scanner(System.in);
         String namaFurniture = input.nextLine();
-        input.close();
 
         if (!ruangan.isFurnitureInRuangan(namaFurniture)) {
             System.out.println("Furniture tidak ada di ruangan!");
@@ -938,16 +934,20 @@ public class Sim {
 
     public void checkFurniture(Ruangan ruangan) {
         List<Furniture> daftarFurniture = ruangan.getDaftarFurniture();
-        if (daftarAksi.size() > 8) {
+        if (daftarAksi.size() > 10) {
             int size = daftarAksi.size();
-            for (int i = 8; i < size; i++) {
-                daftarAksi.remove(8);
+            for (int i = 10; i < size; i++) {
+                daftarAksi.remove(10);
             }
         }
 
         for (Furniture furniture : daftarFurniture) {
             if (furniture.isNearSim(posisiSim)) {
-                daftarAksi.add(furniture.getAksi());
+                for (String aksi : furniture.getAksi()) {
+                    if (aksi != null) {
+                        daftarAksi.add(aksi);
+                    }
+                }
             }
         }
     }
@@ -963,6 +963,27 @@ public class Sim {
                 break;
             }
         }
+    }
+
+    public void printSimAttribute() {
+        System.out.println();
+        System.out.println("+------------------+------+------+-----------+-------------+");
+        System.out.println("| Pekerjaan        | Uang | Mood | Kesehatan | Kekenyangan |");
+        System.out.println("+------------------+------+------+-----------+-------------+");
+        System.out.printf("| %-16s | %-4d | %-4d | %-9d | %-11d |\n", pekerjaan, uang, mood, kesehatan, kekenyangan);
+        System.out.println("+------------------+------+------+-----------+-------------+");
+        System.out.println();
+    }
+
+    public void printDaftarAksi() {
+        // print daftar aksi, same like printsimattribute, with the style of table
+        System.out.println();
+        System.out.println("+------------------------+");
+        for (String aksi : daftarAksi) {
+            System.out.printf("| %-22s |\n", aksi);
+            System.out.println("+------------------------+");
+        }
+        System.out.println();
     }
 
     //harus buat 7 aksi lain yang dapat berhubungan dengan objek sesuai dengan kreasi masing-masing.

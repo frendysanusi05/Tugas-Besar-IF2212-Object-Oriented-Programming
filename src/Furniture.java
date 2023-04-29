@@ -3,7 +3,7 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
     private int panjang;
     private int lebar;
     private int harga;
-    private String aksi;
+    private String[] aksi = new String[2];
     private Point posisiFurniture = new Point();
     //atribut nya gw ubah jadi private yakk
     
@@ -12,59 +12,60 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
         switch(nama) {
             case "Kasur Single":
                 this.nama = "Kasur Single";
-                this.panjang = 4;
+                panjang = 4;
                 this.lebar = 1;
                 this.harga = 50;
-                this.aksi = "Tidur";
+                this.aksi[0] = "Tidur";
                 break;
             case "Kasur Queen Size":
                 this.nama = "Kasur Queen Size";
                 this.panjang = 4;
                 this.lebar = 2;
                 this.harga = 100;
-                this.aksi = "Tidur";
+                this.aksi[0] = "Tidur";
                 break;
             case "Kasur King Size":
                 this.nama = "Kasur King Size";
                 this.panjang = 5;
                 this.lebar = 2;
                 this.harga = 150;
-                this.aksi = "Tidur";
+                this.aksi[0] = "Tidur";
                 break;
             case "Toilet":
                 this.nama = "Toilet";
                 this.panjang = 1;
                 this.lebar = 1;
                 this.harga = 50;
-                this.aksi = "Buang air";
+                this.aksi[0] = "Buang air";
                 break;
             case "Kompor Gas":
                 this.nama = "Kompor Gas";
                 this.panjang = 2;
                 this.lebar = 1;
                 this.harga = 100;
-                this.aksi = "Memasak";
+                this.aksi[0] = "Memasak";
                 break;
             case "Kompor Listrik":
                 this.nama = "Kompor Listrik";
                 this.panjang = 1;
                 this.lebar = 1;
                 this.harga = 200;
-                this.aksi = "Memasak";
+                this.aksi[0] = "Memasak";
                 break;
             case "Meja dan Kursi":
                 this.nama = "Meja dan Kursi";
                 this.panjang = 3;
                 this.lebar = 3;
                 this.harga = 50;
-                this.aksi = "Makan";
+                this.aksi[0] = "Makan";
+                this.aksi[1] = "Belajar Coding";
                 break;
             case "Jam":
                 this.nama = "Jam";
-                this.panjang = 1;
-                this.lebar = 1;
-                this.harga = 10;
-                this.aksi = "Melihat Waktu";
+                panjang = 1;
+                lebar = 1;
+                harga = 10;
+                aksi[0] = "Melihat Waktu";
                 break;
             default:
                 throw new Exception("Furniture tidak tersedia!");
@@ -86,7 +87,7 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
         return harga;
     }
     
-    public String getAksi() {
+    public String[] getAksi() {
         return aksi;
     }
 

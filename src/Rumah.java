@@ -34,25 +34,25 @@ public class Rumah {
 
         int xKamar = kamar.getXRuangan();
         int yKamar = kamar.getYRuangan();
-        kamar.insertObjectToRuangan("Kasur Single", new Point (xKamar - 3, yKamar - 3), new AtomicBoolean(false));
+        kamar.insertObjectToRuangan("Kasur Single", new Point (xKamar - 3, yKamar + 1), new AtomicBoolean(false));
         kasurSingle.setXFurniture(xKamar - 3);
-        kasurSingle.setYFurniture(yKamar - 3);
+        kasurSingle.setYFurniture(yKamar + 1);
 
         kamar.insertObjectToRuangan("Toilet", new Point (xKamar + 2, yKamar + 2), new AtomicBoolean(false));
         toilet.setXFurniture(xKamar + 2);
         toilet.setYFurniture(yKamar + 2);
 
-        kamar.insertObjectToRuangan("Kompor Gas", new Point (xKamar - 3, yKamar + 2), new AtomicBoolean(false));
+        kamar.insertObjectToRuangan("Kompor Gas", new Point (xKamar + 1, yKamar - 3), new AtomicBoolean(false));
         komporGas.setXFurniture(xKamar - 3);
         komporGas.setYFurniture(yKamar + 2);
 
-        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (xKamar - 3, yKamar - 2), new AtomicBoolean(false));
+        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (xKamar - 3, yKamar - 3), new AtomicBoolean(false));
         mejaDanKursi.setXFurniture(xKamar - 3);
-        mejaDanKursi.setYFurniture(yKamar - 2);
+        mejaDanKursi.setYFurniture(yKamar - 3);
 
-        kamar.insertObjectToRuangan("Jam", new Point (xKamar + 2, yKamar - 2), new AtomicBoolean(false));
+        kamar.insertObjectToRuangan("Jam", new Point (xKamar + 2, yKamar), new AtomicBoolean(false));
         jam.setXFurniture(xKamar + 2);
-        jam.setYFurniture(yKamar - 2);
+        jam.setYFurniture(yKamar);
     }
 
     public Rumah() {}
@@ -99,8 +99,12 @@ public class Rumah {
 
     public Ruangan getCurrentRuanganSim(Sim sim) {
         for (Ruangan ruangan : daftarRuangan) {
-            if (ruangan.getXRuangan() == sim.getXSim() && ruangan.getYRuangan() == sim.getYSim()) {
-                return ruangan;
+            for (int x = ruangan.getXRuangan() - 3; x < ruangan.getXRuangan() + 3; x++) {
+                for (int y = ruangan.getYRuangan() - 3; y < ruangan.getYRuangan() + 3; y++) {
+                    if (sim.getXSim() == x && sim.getYSim() == y) {
+                        return ruangan;
+                    }
+                }
             }
         }
         return null;

@@ -73,15 +73,15 @@ public class Main {
         world.addCekPosisi(rumah);
 
         System.out.print("Generating Sim");
-        Thread.sleep(1000);
-        System.out.print(".");
-        Thread.sleep(1000);
-        System.out.print(".");
-        Thread.sleep(1000);
-        System.out.println(".");
-        Thread.sleep(1000);
-        System.out.println("Halo, " + namaSim + "!");
-        Thread.sleep(3000);
+        // Thread.sleep(1000);
+        // System.out.print(".");
+        // Thread.sleep(1000);
+        // System.out.print(".");
+        // Thread.sleep(1000);
+        // System.out.println(".");
+        // Thread.sleep(1000);
+        System.out.println("\nWelcome to the game, " + namaSim + "!\n");
+        //Thread.sleep(1000);
         playSim(world);
     }
 
@@ -112,56 +112,89 @@ public class Main {
             sim = world.getDaftarSim().get(pilihan-1);
         }
         boolean exitGame = false;
-        
+
+        // Ini cuma animasi loading
+
+        // System.out.println("Generating World");
+        // Thread.sleep(1000);
+        // System.out.print("[                ]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // System.out.print("[===             ]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // System.out.print("[======          ]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // System.out.print("[==========      ]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // System.out.print("[================]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // System.out.println();
+
+        // End of animasi loading (Gausah dihirauikan)
+
         while (!exitGame) {
             Rumah rumah = world.getRumahSim(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
-            sim.printCurrentSimRoom(world);
-            System.out.println("\nKamu Bermain Sebagai " + sim.getNama());
-            //print daftar aksi
-            for (int i = 0; i < sim.getDaftarAksi().size(); i++) {
-                System.out.println("-> " + sim.getDaftarAksi().get(i));
-            }
-            System.out.print("Apa yang ingin kamu lakukan? ");
             Scanner input = new Scanner(System.in);
-            String aksi = input.nextLine().toLowerCase();
-            //turn the first letter to upper case
-            aksi = aksi.substring(0, 1).toUpperCase() + aksi.substring(1);
-            while (!sim.getDaftarAksi().contains(aksi)) {
-                System.out.println("Aksi tidak tersedia!");
-                System.out.print("Apa yang ingin kamu lakukan? ");
-                aksi = input.nextLine().toLowerCase();
-                aksi = aksi.substring(0, 1).toUpperCase() + aksi.substring(1);
-            }
-            
+            sim.printCurrentSimRoom(world);
+            Thread.sleep(1000);
+            System.out.println("\nBermain Sebagai " + sim.getNama());
+            sim.checkFurniture(ruangan);
+            sim.printSimAttribute();
+            sim.printDaftarAksi();
+            System.out.print("\nApa yang ingin kamu lakukan? ");
+            String aksi = input.nextLine();
+            aksi = aksi.toLowerCase();
+
             switch (aksi) {
-                case "Kerja" :
+                case "kerja" :
                     sim.kerja();
                     break;
-                case "Olahraga" :
+                case "olahraga" :
                     sim.olahraga();
                     break;
-                case "Berkunjung" :
+                case "berkunjung" :
 
                     // currentSim.berkunjung(w);
-                    break;
-                case "Upgrade Rumah":
+                case "upgrade rumah":
                     sim.upgradeRumah(world, rumah);
                     break;
-                case "Beli Barang" :
+                case "beli barang" :
                     sim.beliBarang();
                     break;
-                case "Pindah Ruang" :
+                case "pindah ruang" :
                     sim.pindahRuang();
                     break;
-                case "Lihat Inventory" :
+                case "lihat inventory" :
                     sim.lihatInventory();
                     break;
-                case "Pasang Barang" :
+                case "pasang barang" :
                     sim.pasangBarang(ruangan);
                     break;
+                case "bergerak ke objek" :
+                    sim.moveToFurniture(ruangan);
+                    break;
+                //masih ada beberapa aksi yang belum, nanti ditambahin lagi
             }
-            break;
         }
         
     }
