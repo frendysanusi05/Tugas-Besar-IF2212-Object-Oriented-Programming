@@ -998,6 +998,24 @@ public class Sim {
 
         kesehatan += (lamaMedicalCheckUp / 10) * 3;
         setKesehatan(kesehatan);
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+                isThreadFinished = true;
+            }
+        });
+
+        t1.start();
+
+        try {
+            t1.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        isThreadFinished = false;
     }
 
     public void ibadah(int lamaIbadah) {
@@ -1011,6 +1029,25 @@ public class Sim {
         setMood(mood);
         kekenyangan -= (lamaIbadah / 20) * 3;
         setKekenyangan(kekenyangan);
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+                isThreadFinished = true;
+            }
+        });
+
+        t1.start();
+
+        try {
+            t1.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        isThreadFinished = false;
     }
 
     public void bersihRumah(int lamaBersihRumah) {
@@ -1024,6 +1061,24 @@ public class Sim {
         setKesehatan(kesehatan);
         kekenyangan -= (lamaBersihRumah / 30) * 3;
         setKekenyangan(kekenyangan);    
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+                isThreadFinished = true;
+            }
+        });
+
+        t1.start();
+
+        try {
+            t1.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        isThreadFinished = false;
     }
 
     public void belajarCoding(int lamaBelajarCoding) {
@@ -1039,6 +1094,24 @@ public class Sim {
         setKesehatan(kesehatan);
         mood += (lamaBelajarCoding / 10) * 3;
         setMood(mood);
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+                isThreadFinished = true;
+            }
+        });
+
+        t1.start();
+
+        try {
+            t1.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        isThreadFinished = false;
     } 
 
     public void bukaSosmed(int lamaBukaSosmed) {
@@ -1053,6 +1126,24 @@ public class Sim {
         setKesehatan(kesehatan);
         mood += (lamaBukaSosmed / 20) * 3;
         setMood(mood);    
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+                isThreadFinished = true;
+            }
+        });
+
+        t1.start();
+
+        try {
+            t1.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        isThreadFinished = false;
     }
 
     public void nontonNetflix(int lamaNonton) {
@@ -1086,6 +1177,24 @@ public class Sim {
             System.out.println("Pilihan tidak valid");
             return;
         }
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+                isThreadFinished = true;
+            }
+        });
+
+        t1.start();
+
+        try {
+            t1.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        isThreadFinished = false;
     }
 
     public void ikutUndianBerhadiah() {
@@ -1105,5 +1214,23 @@ public class Sim {
         } else {
             setUang(uang);
         }
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(durasi);
+                isThreadFinished = true;
+            }
+        });
+
+        t1.start();
+
+        try {
+            t1.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        isThreadFinished = false;
     }
 }
