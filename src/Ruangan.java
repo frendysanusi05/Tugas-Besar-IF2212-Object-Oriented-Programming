@@ -111,7 +111,7 @@ public class Ruangan extends Rumah{
         daftarFurniture.add(furniture);
     }
 
-    public void insertObjectToRuangan(String namaBarang, Point koordinat /*koordinat barang yg mau disimpen*/, AtomicBoolean isPlaced) throws Exception{
+    public void insertObjectToRuangan(String namaBarang, Point koordinat /*koordinat barang yg mau disimpen*/) throws Exception{
         Furniture obj = new Furniture(namaBarang);
         int panjang = obj.getPanjang();
         int lebar = obj.getLebar();
@@ -127,7 +127,6 @@ public class Ruangan extends Rumah{
                     isAvailable[i][j] = false;
                 }
             }
-            isPlaced.set(true);
             
         } else if (opsi2){
             int tempX = koordinat.getX() - getXRuangan() + 3;
@@ -137,9 +136,6 @@ public class Ruangan extends Rumah{
                     isAvailable[i][j] = false;
                 }
             }
-            isPlaced.set(true);
-            // System.out.println("Berhasil menaruh barang");
-
 
         } else {
             System.out.println("Maaf, koordinat yang anda masukkan tidak memiliki cukup ruang pada Ruangan " + getNamaRuangan());

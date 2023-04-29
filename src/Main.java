@@ -73,6 +73,8 @@ public class Main {
         world.addCekPosisi(rumah);
 
         System.out.print("Generating Sim");
+
+        // Animasi, hiraukan
         // Thread.sleep(1000);
         // System.out.print(".");
         // Thread.sleep(1000);
@@ -80,6 +82,7 @@ public class Main {
         // Thread.sleep(1000);
         // System.out.println(".");
         // Thread.sleep(1000);
+
         System.out.println("\nWelcome to the game, " + namaSim + "!\n");
         //Thread.sleep(1000);
         playSim(world);
@@ -89,6 +92,15 @@ public class Main {
         World world = new World();
         generateSim(world);
     }
+
+    public static void save() {
+        // proses save
+    }
+    public static void load() {
+        // proses load
+    }
+
+
 
     public static void playSim(World world) throws Exception {
         Sim sim;
@@ -111,6 +123,8 @@ public class Main {
             }
             sim = world.getDaftarSim().get(pilihan-1);
         }
+
+        // Set boolean ke false supaya ga exit dari game
         boolean exitGame = false;
 
         // Ini cuma animasi loading
@@ -151,18 +165,41 @@ public class Main {
 
         // End of animasi loading (Gausah dihirauikan)
 
+        // Keluar dari loop sampe user milih exit
         while (!exitGame) {
+            // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getRumahSim(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
-            Scanner input = new Scanner(System.in);
+
+            // Informasi sim dan lokasinya
             sim.printCurrentSimRoom(world);
             Thread.sleep(1000);
             System.out.println("\nBermain Sebagai " + sim.getNama());
+
+            // Mengecek furniture di sekitarnya yang bisa diinteract
             sim.checkFurniture(ruangan);
+
+            // Tambah opsi save dan exit supaya bisa keluar sama save game
+            sim.addDaftarAksi("Save");
+            sim.addDaftarAksi("Exit");
+
+            // Print current value dari atribut milik sim
             sim.printSimAttribute();
+
+            // Daftar aksi yang bisa dilakukan Sim (termasuk save dan exit)
             sim.printDaftarAksi();
+
+            // Minta masukan user buat aksi yang mau dilakukan
             System.out.print("\nApa yang ingin kamu lakukan? ");
+            Scanner input = new Scanner(System.in);
             String aksi = input.nextLine();
+
+            while (!sim.getDaftarAksi().contains(aksi)) {
+                System.out.println("Aksi tidak tersedia");
+                System.out.print("Apa yang ingin kamu lakukan? ");
+                aksi = input.nextLine();
+            }
+
             aksi = aksi.toLowerCase();
 
             switch (aksi) {
@@ -193,8 +230,89 @@ public class Main {
                 case "bergerak ke objek" :
                     sim.moveToFurniture(ruangan);
                     break;
+                case "ganti sim":
+                    if (world.getDaftarSim().size() == 1) {
+                        System.out.print("Tidak ada sim lain\nApakah kamu ingin membuat Sim baru? (y/n)");
+                        String pilihan = input.nextLine();
+                        while (!pilihan.equals("y") && !pilihan.equals("n")) {
+                            System.out.println("Pilihan tidak tersedia");
+                            System.out.print("Apakah kamu ingin membuat Sim baru? (y/n)");
+                            pilihan = input.nextLine();
+                        }
+                        if (pilihan.equals("y")) {
+                            generateSim(world);;
+                        }
+
+                    } else {
+                        System.out.println("Pilih sim yang ingin dimainkan (masukkan angka)\n(Masukkan angka 0 jika ingin menambahkan Sim)");
+                        for (int i = 0; i < world.getDaftarSim().size(); i++) {
+                            System.out.println((i+1) + ". " + world.getDaftarSim().get(i).getNama());
+                        }
+                        System.out.print("=> ");
+                        int pilihan = input.nextInt();
+                        while (pilihan < 0 || pilihan > world.getDaftarSim().size()) {
+                            System.out.println("Pilihan tidak tersedia");
+                            System.out.print("Pilihan: ");
+                            pilihan = input.nextInt();
+                        }
+                        if (pilihan == 0) {
+                            generateSim(world);
+                        } else {
+                            sim = world.getDaftarSim().get(pilihan-1);
+                        }
+                    }
+                    break;
+                case "makan":
+                    sim.makan();
+                    break;
+                case "tidur":
+                    sim.tidur();
+                    break;
+                case "memasak":
+                    sim.memasak();
+                    break;
+                case "buang air":
+                    sim.buangAir();
+                    break;
+                case "main game":
+                    sim.mainGame();
+                    break;
+                case "mandi":
+                    sim.mandi();
+                    break;
+                case "belajar coding":
+                    sim.belajarCoding();
+                    break;
+                case "buka sosmed":
+                    sim.bukaSosmed();
+                    break;
+                case "nonton netflix":
+                    sim.nontonNetflix();
+                    break;
+                case "ikut undian berhadiah":
+                    sim.ikutUndianBerhadiah();
+                    break;
+                case "save":
+                    //proses save
+                    break;
+                case "exit":
+                    System.out.println("Apakah kamu ingin melakukan save? (y/n)");
+                    String pilihan = input.nextLine();
+                    while (!pilihan.equals("y") && !pilihan.equals("n")) {
+                        System.out.println("Pilihan tidak tersedia");
+                        System.out.print("Apakah kamu ingin menyimpan game? (y/n)");
+                        pilihan = input.nextLine();
+                    }
+                    if (pilihan.equals("y")) {
+                        //proses save
+                    }
+                    exitGame = true;
+                    break;
+                
                 //masih ada beberapa aksi yang belum, nanti ditambahin lagi
             }
+            System.out.println("Tekan enter untuk melanjutkan");
+            input.nextLine();
         }
         
     }
