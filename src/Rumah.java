@@ -103,6 +103,7 @@ public class Rumah {
                 return ruangan;
             }
         }
+        System.out.println("Sim tidak sedang di dalam rumah");
         return null;
     }
 
@@ -112,5 +113,16 @@ public class Rumah {
 
     public int getJumlahRumah(){
         return jumlahRumah;
+    }
+
+    public Boolean isSimInTheRumah(Sim sim){
+        Boolean isIt = false;
+        for (Ruangan ruangan : daftarRuangan){
+            if(ruangan.getTitikRuangan() == sim.getPosisiSim()){
+                System.out.println("Sim sedang di ruangan: " + ruangan);
+                return isIt = true;
+            }
+        }
+        return isIt;
     }
 }

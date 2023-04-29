@@ -80,6 +80,10 @@ public class Sim {
         return status;
     }
 
+    public Point getPosisiSim(){
+        return posisiSim;
+    }
+
     public int getXSim() {
         return posisiSim.getX();
     }
@@ -798,10 +802,54 @@ public class Sim {
         else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
 
         inventory.addItem(item);
+
+        scan.close();
     }
 
-    public void pindahRuang(){
-        
+    public void pindahRuang(World world, Rumah rumah){
+        Scanner scan = new Scanner(System.in);
+        //asumsinya sim udh tau rumahnya yg mana
+
+        //cek posisi sim, apakah dia sedang di dalam suatu rumah atau tidak?
+        //ini gua masi ga tau cara ngeceknya apakah dia di dlm salah satu rumah atau engga
+        int x = getXSim();
+        int y = getYSim();
+        if(world.getCekPosisi(x,y)){
+            System.out.println("Kamu sedang berada di Rumah: "+ rumah.getIDRumah());
+            System.out.println("Opsi yang tersedia untuk kamu berpindah ruangan adalah: ");
+            rumah.printDaftarRuangan();
+            System.out.println("--------------------------------------");
+            System.out.println("Kamu mau berpindah kemana??");
+            String input = scan.nextLine();
+            for (Ruangan ruangan : rumah.getDaftarRuangan()){
+                if (ruangan.getIDRuangan().equals(input)){
+                    this.posisiSim = ruangan.getTitikRuangan();
+                    System.out.println("Sekarang kamu sudah berpindah ruangan");
+                } else {
+                    System.out.println("Maaf, sepertinya kamu salah memasukkan tujuan untuk berpindah");
+                }
+            }  
+        }
+
+
+        // if (inRumah){
+        //     System.out.println("Kamu sedang berada di Rumah: "+ rumah.getIDRumah());
+        //     System.out.println("Opsi yang tersedia untuk kamu berpindah ruangan adalah: ");
+        //     rumah.printDaftarRuangan();
+        //     System.out.println("--------------------------------------");
+        //     System.out.println("Kamu mau berpindah kemana??");
+        //     String input = scan.next();
+        //     for (Ruangan ruangan : rumah.getDaftarRuangan()){
+        //         if (ruangan.getIDRuangan().equals(input)){
+        //             this.posisiSim = ruangan.getTitikRuangan();
+        //             System.out.println("Sekarang kamu sudah berpindah ruangan");
+        //         } else {
+        //             System.out.println("Maaf, sepertinya kamu salah memasukkan tujuan untuk berpindah");
+        //         }
+        //     }
+        // }
+
+        scan.close();
     }
 
     public void lihatInventory(){
@@ -911,6 +959,8 @@ public class Sim {
             System.out.println("Bergerak menuju " + namaFurniture);
             moveTo(new Point(furniture.getXFurniture(), furniture.getYFurniture()));
         }
+
+        input.close();
     }
 
     public void checkFurniture(Ruangan ruangan) {

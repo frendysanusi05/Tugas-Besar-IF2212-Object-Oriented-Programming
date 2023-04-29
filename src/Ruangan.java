@@ -27,6 +27,10 @@ public class Ruangan extends Rumah{
         return this.IDRuangan;
     }
 
+    public Point getTitikRuangan(){
+        return titikRuangan;
+    }
+
     public int getXRuangan(){
         return titikRuangan.getX();
     }
