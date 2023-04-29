@@ -796,8 +796,6 @@ public class Sim {
         //         }
         //     }
         // }
-
-        scan.close();
     }
 
     public void lihatInventory(){
