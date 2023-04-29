@@ -219,7 +219,7 @@ public class Main {
                     sim.beliBarang();
                     break;
                 case "pindah ruang" :
-                    sim.pindahRuang();
+                    sim.pindahRuang(world, rumah);
                     break;
                 case "lihat inventory" :
                     sim.lihatInventory();
