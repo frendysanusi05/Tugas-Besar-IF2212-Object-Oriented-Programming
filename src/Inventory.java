@@ -7,6 +7,10 @@ public class Inventory {
     public Inventory() {
     }
 
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
     public void addItem(String item) {
         if (items.containsKey(item)) {
             items.put(item, items.get(item) + 1);
