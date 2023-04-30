@@ -111,19 +111,18 @@ public class Main {
         // proses load
     }
 
-    public final static void clearConsole() {
-        try {  
-            final String os = System.getProperty("os.name");  
-            if (os.contains("Windows")) {  
-                Runtime.getRuntime().exec("cls");  
+    public static void clearConsole() {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
             }
-        } catch (Exception e) {  
-            e.printStackTrace();  
-        }  
+        } catch (Exception e) {
+            
+        }
     }
-
-
-
 
     public static void playSim(World world) throws Exception {
         Sim sim;
@@ -192,13 +191,13 @@ public class Main {
         boolean isSudahTidur = false;
         while (!exitGame && sim.isAlive()) {
             // int day = Clock.getDay();
-
-            // if (Clock.getDiffTimeInSeconds() == 10*60) {
-            //     if (isSudahTidur) isSudahTidur = false;
-            //     else {
-            //         sim.efekTidakTidur();
-            //     }
-            // }
+            
+            if (Clock.getDiffTimeInSeconds() == 10*60) {
+                if (isSudahTidur) isSudahTidur = false;
+                else {
+                    sim.efekTidakTidur();
+                }
+            }
             // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getRumahSim(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
@@ -326,7 +325,7 @@ public class Main {
                     sim.ikutUndianBerhadiah();
                     break;
                 case "save":
-                    //proses save
+                    Save.save(world);
                     break;
                 case "exit":
                     System.out.println("Apakah kamu ingin melakukan save? (y/n)");
@@ -337,7 +336,7 @@ public class Main {
                         pilihan = input.nextLine();
                     }
                     if (pilihan.equals("y")) {
-                        //proses save
+                        Save.save(world);
                     }
                     exitGame = true;
                     break;
@@ -346,7 +345,7 @@ public class Main {
             }
             System.out.println("\nTekan enter untuk melanjutkan");
             input.nextLine();
-            // clearConsole();
+            clearConsole();
         }
         
     }

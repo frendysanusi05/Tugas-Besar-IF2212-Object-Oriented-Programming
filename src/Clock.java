@@ -6,7 +6,7 @@ public class Clock {
     private static int day = 1;
     private static int skip = 0; /* in seconds */
     private static int stop = 0; /* in seconds */
-    final static LocalTime startTime = LocalTime.now();
+    final static LocalTime startTime = getTime();
 
     /* Menjalankan durasi waktu */
     /* Jika ingin menjalankan 2 menit, maka gunakan Clock.wait(2*60) */

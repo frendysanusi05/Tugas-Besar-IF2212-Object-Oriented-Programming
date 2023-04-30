@@ -357,6 +357,7 @@ public class Sim {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("\nSelesai bekerja");
         isThreadFinished = false;
         setStatus(null);
     }
@@ -421,6 +422,7 @@ public class Sim {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("\nSelesai berolahraga");
         isThreadFinished = false;
         setStatus(null);
     }
@@ -723,41 +725,47 @@ public class Sim {
         }
 
         if (barang instanceof Furniture) {
-            System.out.println("Harga: " + item + " :" + ((Furniture) barang).getHarga());
+            System.out.println("Harga " + item + ": " + ((Furniture) barang).getHarga());
         }
         else if (barang instanceof BahanMakanan) {
-            System.out.println("Harga : " + item + " :" + ((BahanMakanan) barang).getHarga());
+            System.out.println("Harga : " + item + ": " + ((BahanMakanan) barang).getHarga());
         }
 
         System.out.println("Uang Anda saat ini : " + uang);
-
-        if (uang < ((Furniture) barang).getHarga() || uang < ((BahanMakanan) barang).getHarga()) {
-            System.out.println("Uang tidak cukup!");
-            return;
-        } else {
+        if (barang instanceof Furniture) {
+            if (uang < ((Furniture) barang).getHarga()) {
+                System.out.println("Uang tidak cukup!");
+                return;
+            }
+        }
+        if (barang instanceof BahanMakanan) {
+            if (uang < ((BahanMakanan) barang).getHarga()) {
+                System.out.println("Uang tidak cukup!");
+                return;
+            }
+        }
+        System.out.print("\nKonfirmasi Pembelian (y/n): ");
+        String konfirmasi = scan.nextLine();
+        System.out.println();
+        while (!konfirmasi.equals("y") && !konfirmasi.equals("n")) {
+            System.out.println("Masukan invalid!");
             System.out.print("Konfirmasi Pembelian (y/n): ");
-            String konfirmasi = scan.nextLine();
+            konfirmasi = scan.nextLine();
             System.out.println();
-            while (!konfirmasi.equals("y") && !konfirmasi.equals("n")) {
-                System.out.println("Masukan invalid!");
-                System.out.print("Konfirmasi Pembelian (y/n): ");
-                konfirmasi = scan.nextLine();
-                System.out.println();
-            }
-            // scan.close();
-            if (konfirmasi.equals("y")) {
-                int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
-                System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
-                Clock.wait((double)durasi);
-                System.out.printf("%s telah diterima\n", item);
+        }
+        
+        if (konfirmasi.equals("y")) {
+            int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
+            System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
+            Clock.wait((double)durasi);
+            System.out.printf("%s telah diterima\n", item);
 
-                if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
-                else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
+            if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
+            else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
 
-                inventory.addItem(item);
-            } else {
-                System.out.println("Pembelian dibatalkan");
-            }
+            inventory.addItem(item);
+        } else {
+            System.out.println("Pembelian dibatalkan");
         }
     }
 
