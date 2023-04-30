@@ -19,9 +19,9 @@ public class Main {
         System.out.println("    ____\\_\\  \\ \\__\\\\__\\    \\ \\__\\              \\ \\__\\    \\ \\_______\\ \\__\\ \\_______\\ \\__\\   \\ \\__\\__/  / /      \\|__|   ");
         System.out.println("   |\\_________\\|__|\\|__|     \\|__|               \\|__|     \\|_______|\\|__|\\|_______|\\|__|    \\|__|\\___/ /           ___ ");
         System.out.println("   \\|_________|                                                                                  \\|___|/           |\\__\\");
-        System.out.println("                                                                                                                   \\|__|");
-                                                                                                                                       
-        
+        System.out.println("                                                                                                                   \\|__|\n");
+
+        System.out.println("Silahkan pilih menu dibawah ini:");                                                                                                                                        
         System.out.println("1. New Game");
         System.out.println("2. Load Game");
         System.out.println("3. Help");
