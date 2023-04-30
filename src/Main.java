@@ -3,24 +3,7 @@ import java.util.*;
 public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
     public static void main(String[] args) throws Exception {
-
-        // World world = new World();
-        // Save save = new Save();
-
-        // Point titikRumah1 = new Point(3, 3);
-        // Rumah rumah1 = new Rumah(titikRumah1);
-        // Rumah rumah2 = new Rumah(new Point(30, 30));
-        // world.addRumah(rumah1, "Ariq");
-        // world.addRumah(rumah2, "Vina");
-        // rumah1.addRuangan(new Ruangan("Kamar Mandi", rumah1, new Point (9, 3)));
-        // rumah1.addRuangan(new Ruangan("Dapur", rumah1, new Point (15, 3)));
-        // world.addCekPosisi(rumah1);
-        // world.addCekPosisi(rumah2);
-        // world.printWorld();
-        // rumah1.printDaftarRuangan();
-        // world.printDaftarRumah();
-        // save.save(world);
-        World world = new World();
+        clearConsole();
         System.out.println("Welcome to Sim-Plicity!");
         System.out.println("1. New Game");
         System.out.println("2. Load Game");
@@ -50,7 +33,8 @@ public class Main {
                     exitMainMenu = true;
                     break;
                 case 2:
-                    System.out.println("Load Game");
+                    load();
+                    exitMainMenu = true;
                     break;
                 case 3:
                     System.out.println("Help");
@@ -104,11 +88,11 @@ public class Main {
         generateSim(world);
     }
 
-    public static void save() {
-        // proses save
+    public static void save(World world) {
+        Save.save(world);
     }
     public static void load() {
-        // proses load
+        Load.load("data/data.json");
     }
 
     public static void clearConsole() {
@@ -342,18 +326,18 @@ public class Main {
                     sim.ikutUndianBerhadiah();
                     break;
                 case "save":
-                    Save.save(world);
+                    save(world);
                     break;
                 case "exit":
-                    System.out.println("Apakah kamu ingin melakukan save? (y/n)");
+                    System.out.print("Apakah kamu ingin melakukan save? (y/n) => ");
                     String pilihan = input.nextLine();
                     while (!pilihan.equals("y") && !pilihan.equals("n")) {
                         System.out.println("Pilihan tidak tersedia");
-                        System.out.print("Apakah kamu ingin menyimpan game? (y/n)");
+                        System.out.print("Apakah kamu ingin menyimpan game? (y/n) => ");
                         pilihan = input.nextLine();
                     }
                     if (pilihan.equals("y")) {
-                        Save.save(world);
+                        save(world);
                     }
                     exitGame = true;
                     break;

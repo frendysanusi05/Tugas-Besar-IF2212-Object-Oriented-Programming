@@ -24,7 +24,7 @@ public class Sim {
     private static final String[] daftarPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
     
     /* Scanner */
-    Scanner scan = new Scanner(System.in);
+    // Scanner scan = new Scanner(System.in);
 
     public Sim(String nama) {
         this.nama = nama;
@@ -263,6 +263,7 @@ public class Sim {
     }
     
     public void kerja() {
+        Scanner scan = new Scanner(System.in);
         System.out.print("Masukkan durasi kerja: ");
         durasi = scan.nextDouble();
         while (durasi % 120 != 0) {
@@ -369,6 +370,7 @@ public class Sim {
     }
 
     public void olahraga() {
+        Scanner scan = new Scanner(System.in);
         System.out.print("Masukkan durasi olahraga: ");
         durasi = scan.nextDouble();
         while (durasi % 20 != 0) {
@@ -434,6 +436,7 @@ public class Sim {
     }
 
     public void tidur() {
+        Scanner scan = new Scanner(System.in);
         System.out.print("Masukkan durasi tidur (detik): ");
         durasi = scan.nextDouble();
         while (durasi < 180) {
