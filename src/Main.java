@@ -4,7 +4,24 @@ public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
     public static void main(String[] args) throws Exception {
         clearConsole();
-        System.out.println("Welcome to Sim-Plicity!");
+        System.out.println("     :::       ::: :::::::::: :::        ::::::::   ::::::::    :::   :::   ::::::::::      ::::::::::: ::::::::"); 
+        System.out.println("    :+:       :+: :+:        :+:       :+:    :+: :+:    :+:  :+:+: :+:+:  :+:                 :+:    :+:    :+::"); 
+        System.out.println("   +:+       +:+ +:+        +:+       +:+        +:+    +:+ +:+ +:+:+ +:+ +:+                 +:+    +:+    +:+");  
+        System.out.println("  +#+  +:+  +#+ +#++:++#   +#+       +#+        +#+    +:+ +#+  +:+  +#+ +#++:++#            +#+    +#+    +:+");   
+        System.out.println(" +#+ +#+#+ +#+ +#+        +#+       +#+        +#+    +#+ +#+       +#+ +#+                 +#+    +#+    +#+");    
+        System.out.println("#+#+# #+#+#  #+#        #+#       #+#    #+# #+#    #+# #+#       #+# #+#                 #+#    #+#    #+#");     
+        System.out.println("###   ###   ########## ########## ########   ########  ###       ### ##########          ###     ########\n");
+        System.out.println(" ________  ___  _____ ______                  ________  ___       ___  ________  ___  _________    ___    ___ ___       ");
+        System.out.println("|\\   ____\\|\\  \\|\\   _ \\  _   \\               |\\   __  \\|\\  \\     |\\  \\|\\   ____\\|\\  \\|\\___   ___\\ |\\  \\  /  /|\\  \\      ");
+        System.out.println("\\ \\  \\___|\\ \\  \\ \\  \\\\\\__\\ \\  \\  ____________\\ \\  \\|\\  \\ \\  \\    \\ \\  \\ \\  \\___|\\ \\  \\|___ \\  \\_| \\ \\  \\/  / | \\  \\     ");
+        System.out.println(" \\ \\_____  \\ \\  \\ \\  \\\\|__| \\  \\|\\____________\\ \\   ____\\ \\  \\    \\ \\  \\ \\  \\    \\ \\  \\   \\ \\  \\   \\ \\    / / \\ \\  \\    ");
+        System.out.println("  \\|____|\\  \\ \\  \\ \\  \\    \\ \\  \\|____________|\\ \\  \\___|\\ \\  \\____\\ \\  \\ \\  \\____\\ \\  \\   \\ \\  \\   \\/  /  /   \\ \\_\\   ");
+        System.out.println("    ____\\_\\  \\ \\__\\\\__\\    \\ \\__\\              \\ \\__\\    \\ \\_______\\ \\__\\ \\_______\\ \\__\\   \\ \\__\\__/  / /      \\|__|   ");
+        System.out.println("   |\\_________\\|__|\\|__|     \\|__|               \\|__|     \\|_______|\\|__|\\|_______|\\|__|    \\|__|\\___/ /           ___ ");
+        System.out.println("   \\|_________|                                                                                  \\|___|/           |\\__\\");
+        System.out.println("                                                                                                                   \\|__|");
+                                                                                                                                       
+        
         System.out.println("1. New Game");
         System.out.println("2. Load Game");
         System.out.println("3. Help");
@@ -119,7 +136,7 @@ public class Main {
 
     public static void playSim(World world) throws Exception {
         Sim sim;
-        //if there's only 1 sim, then play that sim
+        //if there\s only 1 sim, then play that sim
         if (world.getDaftarSim().size() == 1) {
             sim = world.getDaftarSim().get(0);
         } else {
