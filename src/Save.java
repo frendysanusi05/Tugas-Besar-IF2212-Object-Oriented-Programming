@@ -15,11 +15,8 @@ public class Save {
 
 		try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-			// System.out.println("TES0");
             JsonElement tree = gson.toJsonTree(world);
-			// System.out.println("TES1");
             gson.toJson(tree, writer);
-			// System.out.println("TES2");
 			System.out.println("Berhasil melakukan save.");
         }
 		catch (Exception e) {
