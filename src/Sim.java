@@ -37,6 +37,7 @@ public class Sim {
         this.status = null; 
         daftarAksi.add("Kerja");
         daftarAksi.add("Olahraga");
+        daftarAksi.add("Tidur");
         daftarAksi.add("Berkunjung");
         daftarAksi.add("Upgrade Rumah");
         daftarAksi.add("Beli Barang");
@@ -148,6 +149,10 @@ public class Sim {
         daftarAksi.remove(index);
     }
 
+    public boolean isAlive() {
+        return ((kekenyangan > 0 && kekenyangan <= 100) || (mood > 0 && mood <= 100) || (kesehatan > 0 && kesehatan <= 100));
+    }
+
     // Methods (Aksi)
     public void makan() {
         
@@ -256,11 +261,12 @@ public class Sim {
         durasi = scan.nextDouble();
         while (durasi % 120 != 0) {
             System.out.println("Durasi kerja harus kelipatan 120");
+            System.out.print("Masukkan kembali durasi kerja: ");
             durasi = scan.nextDouble();
         }
         System.out.println();
-
         setStatus("Sedang Bekerja");
+        System.out.println("Sedang bekerja...");
         
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -360,11 +366,12 @@ public class Sim {
         durasi = scan.nextDouble();
         while (durasi % 20 != 0) {
             System.out.println("Durasi olahraga harus merupakan kelipatan 20");
+            System.out.print("Masukkan kembali durasi olahraga: ");
             durasi = scan.nextDouble();
         }
         System.out.println();
-
         setStatus("Sedang Berolahraga");
+        System.out.println("Sedang berolahraga...");
         
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -378,7 +385,7 @@ public class Sim {
             @Override
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
-                int duration = 240;
+                int duration = 20;
                 
                 while (!isThreadFinished) {
                     /*
@@ -427,8 +434,8 @@ public class Sim {
             durasi = scan.nextDouble();
         }
         System.out.println();
-
         setStatus("Sedang Tidur");
+        System.out.println("Sedang tidur...");
         
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -1274,5 +1281,10 @@ public class Sim {
         }
 
         isThreadFinished = false;
+    }
+
+    public void efekTidakTidur() {
+        kesehatan -= 5;
+        mood -= 5;
     }
 }
