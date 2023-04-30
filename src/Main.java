@@ -26,10 +26,21 @@ public class Main {
         System.out.println("2. Load Game");
         System.out.println("3. Help");
         System.out.println("4. Exit");
-        System.out.print("Pilihan: ");
 
         Scanner input = new Scanner(System.in);
-        int pilihan = input.nextInt();
+        int pilihan = 0;
+        boolean isPilihanValid = false;
+        while (!isPilihanValid) {
+            System.out.print("Pilihan: ");
+            try {
+                pilihan = input.nextInt();
+                isPilihanValid = true;
+            }
+            catch (InputMismatchException e) {
+                System.out.println("\nMasukan harus bernilai integer\n");
+                input.nextLine();
+            }
+        }
         boolean exitMainMenu = false;
 
         while (!exitMainMenu) {
@@ -49,7 +60,7 @@ public class Main {
                     exitMainMenu = true;
                     break;
                 default:
-                    System.out.println("Pilihan tidak tersedia");
+                    System.out.println("Pilihan tidak tersedia\n");
                     System.out.print("Pilihan: ");
                     pilihan = input.nextInt();  
             }
@@ -100,7 +111,18 @@ public class Main {
         // proses load
     }
 
-
+    public static void clearConsole() {
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            } else {
+                System.out.print("\033[H\033[2J");
+                System.out.flush();
+            }
+        } catch (Exception e) {
+            
+        }
+    }
 
     public static void playSim(World world) throws Exception {
         Sim sim;
@@ -166,9 +188,16 @@ public class Main {
         // End of animasi loading (Gausah dihirauikan)
 
         // Keluar dari loop sampe user milih exit
-        while (!exitGame) {
-            Sim currentSim = sim;
-
+        boolean isSudahTidur = false;
+        while (!exitGame && sim.isAlive()) {
+            // int day = Clock.getDay();
+            
+            if (Clock.getDiffTimeInSeconds() == 10*60) {
+                if (isSudahTidur) isSudahTidur = false;
+                else {
+                    sim.efekTidakTidur();
+                }
+            }
             // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getRumahSim(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
@@ -215,7 +244,7 @@ public class Main {
             String aksi = input.nextLine();
 
             while (!sim.getDaftarAksi().contains(aksi)) {
-                System.out.println("Aksi tidak tersedia");
+                System.out.println("Aksi tidak tersedia\n");
                 System.out.print("Apa yang ingin kamu lakukan? ");
                 aksi = input.nextLine();
             }
@@ -286,6 +315,7 @@ public class Main {
                     break;
                 case "tidur":
                     sim.tidur();
+                    isSudahTidur = true;
                     break;
                 case "memasak":
                     sim.memasak();
@@ -312,7 +342,7 @@ public class Main {
                     sim.ikutUndianBerhadiah();
                     break;
                 case "save":
-                    //proses save
+                    Save.save(world);
                     break;
                 case "exit":
                     System.out.println("Apakah kamu ingin melakukan save? (y/n)");
@@ -323,20 +353,16 @@ public class Main {
                         pilihan = input.nextLine();
                     }
                     if (pilihan.equals("y")) {
-                        //proses save
+                        Save.save(world);
                     }
                     exitGame = true;
                     break;
                 
                 //masih ada beberapa aksi yang belum, nanti ditambahin lagi
             }
-
-            // try {
-            //     t1.join();
-            //     t2.join();
-            // } catch (Exception e) {
-            //     System.out.println(e.getMessage());
-            // }
+            System.out.println("\nTekan enter untuk melanjutkan");
+            input.nextLine();
+            clearConsole();
         }
         
     }

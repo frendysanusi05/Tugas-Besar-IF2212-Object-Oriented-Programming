@@ -37,6 +37,7 @@ public class Sim {
         this.status = null; 
         daftarAksi.add("Kerja");
         daftarAksi.add("Olahraga");
+        daftarAksi.add("Tidur");
         daftarAksi.add("Berkunjung");
         daftarAksi.add("Upgrade Rumah");
         daftarAksi.add("Beli Barang");
@@ -146,6 +147,10 @@ public class Sim {
 
     public void removeElmtDaftarAksi(int index) {
         daftarAksi.remove(index);
+    }
+
+    public boolean isAlive() {
+        return ((kekenyangan > 0 && kekenyangan <= 100) || (mood > 0 && mood <= 100) || (kesehatan > 0 && kesehatan <= 100));
     }
 
     // Methods (Aksi)
@@ -262,11 +267,12 @@ public class Sim {
         durasi = scan.nextDouble();
         while (durasi % 120 != 0) {
             System.out.println("Durasi kerja harus kelipatan 120");
+            System.out.print("Masukkan kembali durasi kerja: ");
             durasi = scan.nextDouble();
         }
         System.out.println();
-
         setStatus("Sedang Bekerja");
+        System.out.println("Sedang bekerja...");
         
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -357,6 +363,7 @@ public class Sim {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("\nSelesai bekerja");
         isThreadFinished = false;
         setStatus(null);
     }
@@ -366,11 +373,12 @@ public class Sim {
         durasi = scan.nextDouble();
         while (durasi % 20 != 0) {
             System.out.println("Durasi olahraga harus merupakan kelipatan 20");
+            System.out.print("Masukkan kembali durasi olahraga: ");
             durasi = scan.nextDouble();
         }
         System.out.println();
-
         setStatus("Sedang Berolahraga");
+        System.out.println("Sedang berolahraga...");
         
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -384,7 +392,7 @@ public class Sim {
             @Override
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
-                int duration = 240;
+                int duration = 20;
                 
                 while (!isThreadFinished) {
                     /*
@@ -420,6 +428,7 @@ public class Sim {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+        System.out.println("\nSelesai berolahraga");
         isThreadFinished = false;
         setStatus(null);
     }
@@ -433,8 +442,8 @@ public class Sim {
             durasi = scan.nextDouble();
         }
         System.out.println();
-
         setStatus("Sedang Tidur");
+        System.out.println("Sedang tidur...");
         
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -722,44 +731,47 @@ public class Sim {
         }
 
         if (barang instanceof Furniture) {
-            System.out.println("Harga " + item + " :" + ((Furniture) barang).getHarga());
+            System.out.println("Harga " + item + ": " + ((Furniture) barang).getHarga());
         }
         else if (barang instanceof BahanMakanan) {
-            System.out.println("Harga " + item + " :" + ((BahanMakanan) barang).getHarga());
+            System.out.println("Harga : " + item + ": " + ((BahanMakanan) barang).getHarga());
         }
 
         System.out.println("Uang Anda saat ini : " + uang);
-
-        if ((barang instanceof Furniture && uang < ((Furniture) barang).getHarga()) || (barang instanceof BahanMakanan && uang < ((BahanMakanan) barang).getHarga())) {
-            System.out.println("Uang tidak cukup!");
-            return;
-        } else {
+        if (barang instanceof Furniture) {
+            if (uang < ((Furniture) barang).getHarga()) {
+                System.out.println("Uang tidak cukup!");
+                return;
+            }
+        }
+        if (barang instanceof BahanMakanan) {
+            if (uang < ((BahanMakanan) barang).getHarga()) {
+                System.out.println("Uang tidak cukup!");
+                return;
+            }
+        }
+        System.out.print("\nKonfirmasi Pembelian (y/n): ");
+        String konfirmasi = scan.nextLine();
+        System.out.println();
+        while (!konfirmasi.equals("y") && !konfirmasi.equals("n")) {
+            System.out.println("Masukan invalid!");
             System.out.print("Konfirmasi Pembelian (y/n): ");
-            String konfirmasi = scan.nextLine();
+            konfirmasi = scan.nextLine();
             System.out.println();
-            while (!konfirmasi.equals("y") && !konfirmasi.equals("n")) {
-                System.out.println("Masukan invalid!");
-                System.out.print("Konfirmasi Pembelian (y/n): ");
-                konfirmasi = scan.nextLine();
-                System.out.println();
-            }
-            // scan.close();
-            if (konfirmasi.equals("y")) {
-                //int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
-                int durasi = 3;
-                System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
-                setStatus("Membeli barang");
-                Clock.wait((double)durasi);
-                setStatus(null);
-                System.out.printf("%s telah diterima\n", item);
+        }
+        
+        if (konfirmasi.equals("y")) {
+            int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
+            System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
+            Clock.wait((double)durasi);
+            System.out.printf("%s telah diterima\n", item);
 
-                if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
-                else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
+            if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
+            else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
 
-                inventory.addItem(item);
-            } else {
-                System.out.println("Pembelian dibatalkan");
-            }
+            inventory.addItem(item);
+        } else {
+            System.out.println("Pembelian dibatalkan");
         }
     }
 
@@ -1283,5 +1295,10 @@ public class Sim {
         }
 
         isThreadFinished = false;
+    }
+
+    public void efekTidakTidur() {
+        kesehatan -= 5;
+        mood -= 5;
     }
 }

@@ -3,9 +3,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.Duration;
 
 public class Clock {
+    private static int day = 1;
     private static int skip = 0; /* in seconds */
     private static int stop = 0; /* in seconds */
-    final static LocalTime startTime = LocalTime.now();
+    final static LocalTime startTime = getTime();
 
     /* Menjalankan durasi waktu */
     /* Jika ingin menjalankan 2 menit, maka gunakan Clock.wait(2*60) */
@@ -53,6 +54,10 @@ public class Clock {
         return LocalTime.ofSecondOfDay(duration.getSeconds());
     }
 
+    public static int getDiffTimeInSeconds() {
+        return convertToSeconds(diffTime());
+    }
+
     /* dipakai jika ingin melakukan timeskip sebesar seconds detik */
     public static void skipTime(int seconds) {
         skip += seconds;
@@ -62,5 +67,18 @@ public class Clock {
     /* dipakai ketika waktu tidak berjalan (Sim sedang tidak melakukan aksi) */
     public static void stopTime(int seconds) {
         stop -= seconds;
+    }
+
+    public int getDay() {
+        countDay(); /* Meng-update day */
+        return day;
+    }
+
+    public static void countDay() {
+        if (checkChangeDay()) day++;
+    }
+
+    private static boolean checkChangeDay() {
+        return (getDiffTimeInSeconds() == 12*60);
     }
 }
