@@ -33,7 +33,8 @@ public class Main {
                     exitMainMenu = true;
                     break;
                 case 2:
-                    load();
+                    World world = load();
+                    playSim(world);
                     exitMainMenu = true;
                     break;
                 case 3:
@@ -100,8 +101,9 @@ public class Main {
     public static void save(World world) {
         Save.save(world);
     }
-    public static void load() {
-        Load.load("data/data.json");
+    
+    public static World load() {
+        return Load.load("data/data.json");
     }
 
     public static void clearConsole() {
