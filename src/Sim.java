@@ -39,6 +39,7 @@ public class Sim {
         daftarAksi.add("Olahraga");
         daftarAksi.add("Tidur");
         daftarAksi.add("Berkunjung");
+        daftarAksi.add("Buang Air");
         daftarAksi.add("Upgrade Rumah");
         daftarAksi.add("Beli Barang");
         daftarAksi.add("Pindah Ruang");
@@ -99,24 +100,32 @@ public class Sim {
 
     // Setter
     public void addUang(int uangTambahan) {
-        this.uang = uang + uangTambahan;
+        uang += uangTambahan;
+        if (uang > 100) uang = 100;
     }
 
     public void minUang(int uangTambahan) {
-        this.uang = uang - uangTambahan;
+        uang -= uangTambahan;
+        if (uang < 0) uang = 0;
     }
 
     public void addKekenyangan(int kekenyanganTambahan) {
-        this.kekenyangan = kekenyangan + kekenyanganTambahan;
+        kekenyangan += kekenyanganTambahan;
+        if (kekenyangan < 0) kekenyangan = 0;
+        else if (kekenyangan > 100) kekenyangan = 100;
     }
 
     public void addMood(int moodTambahan) {
-        this.mood = mood + moodTambahan;
+        mood += moodTambahan;
+        if (mood < 0) mood = 0;
+        else if (mood > 100) mood = 100;
     }
 
     public void addKesehatan(int kesehatanTambahan) {
-        this.kesehatan = kesehatan + kesehatanTambahan;
-    }
+        kesehatan += kesehatanTambahan;
+        if (kesehatan < 0) kesehatan = 0;
+        else if (kesehatan > 100) kesehatan = 100;
+    } 
 
     public void setStatus(String activity) {
         status = activity;
@@ -150,7 +159,19 @@ public class Sim {
     }
 
     public boolean isAlive() {
-        return ((kekenyangan > 0 && kekenyangan <= 100) || (mood > 0 && mood <= 100) || (kesehatan > 0 && kesehatan <= 100));
+        return matiDepresi() || matiKelaparan() || matiSakit();
+    }
+
+    public boolean matiDepresi() {
+        return mood > 0 && mood <= 100;
+    }
+
+    public boolean matiKelaparan() {
+        return kekenyangan > 0 && kekenyangan <= 100;
+    }
+
+    public boolean matiSakit() {
+        return kesehatan > 0 && kesehatan <= 100;
     }
 
     // Methods (Aksi)
@@ -433,14 +454,13 @@ public class Sim {
         Scanner scan = new Scanner(System.in);
         System.out.print("Masukkan durasi tidur (detik): ");
         durasi = scan.nextDouble();
-        while (durasi < 180) {
+        while (durasi < 3*60) {
             System.out.println("Durasi tidur harus lebih dari sama dengan 3 menit");
             System.out.print("Masukkan durasi tidur: ");
             durasi = scan.nextDouble();
         }
         System.out.println();
-        setStatus("Sedang Tidur");
-        System.out.println("Sedang tidur...");
+        System.out.println("\nSedang tidur...");
         
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -454,7 +474,7 @@ public class Sim {
             @Override
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
-                int duration = 20;
+                int duration = 3*60;
                 
                 while (!isThreadFinished) {
                     /*
@@ -575,6 +595,10 @@ public class Sim {
     }   
 
     public void buangAir(){
+        durasi = (double)10;
+        System.out.println("\nSedang buang air...");
+        Clock.wait(durasi);
+        System.out.println("\nSelesai buang air");
         kekenyangan -= 20;
         addMood(10);
     }
@@ -1295,6 +1319,11 @@ public class Sim {
     }
 
     public void efekTidakTidur() {
+        kesehatan -= 5;
+        mood -= 5;
+    }
+
+    public void efekTidakBuangAir() {
         kesehatan -= 5;
         mood -= 5;
     }
