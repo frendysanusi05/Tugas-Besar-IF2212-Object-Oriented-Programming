@@ -241,10 +241,16 @@ public class Sim {
                 }
             }
         });
-
         t1.start();
         t2.start();
-        
+
+        try {
+            t1.join();
+            t2.join();
+        } catch (InterruptedException e) {
+            System.out.println("Thread interrupted");
+        }
+        Clock.skipTime(30);
     }
     
     public void kerja() {
@@ -712,15 +718,15 @@ public class Sim {
         }
 
         if (barang instanceof Furniture) {
-            System.out.println("Harga: " + item + " :" + ((Furniture) barang).getHarga());
+            System.out.println("Harga " + item + " :" + ((Furniture) barang).getHarga());
         }
         else if (barang instanceof BahanMakanan) {
-            System.out.println("Harga : " + item + " :" + ((BahanMakanan) barang).getHarga());
+            System.out.println("Harga " + item + " :" + ((BahanMakanan) barang).getHarga());
         }
 
         System.out.println("Uang Anda saat ini : " + uang);
 
-        if (uang < ((Furniture) barang).getHarga() || uang < ((BahanMakanan) barang).getHarga()) {
+        if ((barang instanceof Furniture && uang < ((Furniture) barang).getHarga()) || (barang instanceof BahanMakanan && uang < ((BahanMakanan) barang).getHarga())) {
             System.out.println("Uang tidak cukup!");
             return;
         } else {
@@ -735,9 +741,12 @@ public class Sim {
             }
             // scan.close();
             if (konfirmasi.equals("y")) {
-                int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
+                //int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
+                int durasi = 3;
                 System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
+                setStatus("Membeli barang");
                 Clock.wait((double)durasi);
+                setStatus(null);
                 System.out.printf("%s telah diterima\n", item);
 
                 if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();

@@ -167,9 +167,29 @@ public class Main {
 
         // Keluar dari loop sampe user milih exit
         while (!exitGame) {
+            Sim currentSim = sim;
+
             // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getRumahSim(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
+
+            // Thread t1 = new Thread(new Runnable() {
+            //     @Override
+            //     public void run() {
+            //         currentSim.beliBarang();
+            //     }
+            // });
+
+            // Thread t2 = new Thread(new Runnable()  {
+            //     @Override
+            //     public void run() {
+            //         try {
+            //             currentSim.upgradeRumah(world, rumah);
+            //         } catch (Exception e) {
+            //             e.printStackTrace();
+            //         }
+            //     }
+            // });
 
             // Informasi sim dan lokasinya
             sim.printCurrentSimRoom(world);
@@ -201,7 +221,6 @@ public class Main {
             }
 
             aksi = aksi.toLowerCase();
-
             switch (aksi) {
                 case "kerja" :
                     sim.kerja();
@@ -216,7 +235,7 @@ public class Main {
                     sim.upgradeRumah(world, rumah);
                     break;
                 case "beli barang" :
-                    sim.beliBarang();
+                    currentSim.beliBarang();
                     break;
                 case "pindah ruang" :
                     sim.pindahRuang();
@@ -311,8 +330,13 @@ public class Main {
                 
                 //masih ada beberapa aksi yang belum, nanti ditambahin lagi
             }
-            System.out.println("Tekan enter untuk melanjutkan");
-            input.nextLine();
+
+            // try {
+            //     t1.join();
+            //     t2.join();
+            // } catch (Exception e) {
+            //     System.out.println(e.getMessage());
+            // }
         }
         
     }
