@@ -87,7 +87,15 @@ public class Main {
         World world = new World();
         generateSim(world);
     }
-
+    public static void help(){
+        System.out.println("Berikut adalah panduan untuk bermain Sim-Plicity: ");
+        System.out.println("1. Objective Game ini untuk menjaga kesejahteraan SIM agar tidak depresi dan mati.");
+        System.out.println("2. Pemain dapat melanjutkan SIM yang telah dimainkan atau membuat SIM baru.");
+        System.out.println("3. Pastikan untuk save SIM kalian sebelum meninggalkan permainan.");
+        System.out.println("4. Pemain menunggu lama-nya aktivitas sesuai dengan waktu yang telah ditentukan.");
+        System.out.println("5. Pemain dapat memilih untuk memainkan salah satu sim yang sudah ada atau membuat sim baru");
+        System.out.println("SEMOGA MEMBANTU!");
+    }
     public static void save(World world) {
         Save.save(world);
     }
