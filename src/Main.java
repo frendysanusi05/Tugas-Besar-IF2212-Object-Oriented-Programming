@@ -1,4 +1,5 @@
 import java.util.*;
+import java.time.LocalTime;
 
 public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
@@ -25,7 +26,7 @@ public class Main {
         System.out.println("1. New Game");
         System.out.println("2. Load Game");
         System.out.println("3. Help");
-        System.out.println("4. Exit");
+        System.out.println("4. Exit\n");
 
         Scanner input = new Scanner(System.in);
         int pilihan = 0;
@@ -73,7 +74,7 @@ public class Main {
 
     public static void generateSim (World world) throws Exception {
         // World world = new World();
-        System.out.print("Masukkan nama pemain: ");
+        System.out.print("\nMasukkan nama pemain: ");
         Scanner input = new Scanner(System.in);
         String namaSim = input.nextLine();
         Sim sim = new Sim(namaSim);
@@ -86,7 +87,8 @@ public class Main {
         world.addSim(sim);
         world.addCekPosisi(rumah);
 
-        System.out.print("Generating Sim");
+        clearConsole();
+        System.out.print("Generating Sim...\n");
 
         // Animasi, hiraukan
         // Thread.sleep(1000);
@@ -118,7 +120,7 @@ public class Main {
     public static void save(World world) {
         Save.save(world);
     }
-    
+
     public static World load() {
         return Load.load("data/data.json");
     }
@@ -201,15 +203,30 @@ public class Main {
 
         // Keluar dari loop sampe user milih exit
         boolean isSudahTidur = false;
-        while (!exitGame && sim.isAlive()) {
-            // int day = Clock.getDay();
-            
-            if (Clock.getDiffTimeInSeconds() == 10*60) {
-                if (isSudahTidur) isSudahTidur = false;
-                else {
-                    sim.efekTidakTidur();
-                }
+        LocalTime timeTidur = Clock.getTime();
+
+        boolean isSudahBuangAir = false;
+        LocalTime timeBuangAir = Clock.getTime();
+
+        while (!exitGame && sim.isAlive()) {            
+            /* Cek apakah sudah 10 menit tanpa tidur */
+            if (isSudahTidur) {
+                timeTidur = Clock.getTime();
+                isSudahTidur = false;
             }
+            else {
+                if (Clock.getDiffTimeInSeconds(timeTidur) == 10*60) sim.efekTidakTidur();
+            }
+
+            /* Cek apakah sudah 4 menit setelah makan tanpa buang air */
+            if (isSudahBuangAir) {
+                timeTidur = Clock.getTime();
+                isSudahBuangAir = false;
+            }
+            else {
+                if (Clock.getDiffTimeInSeconds(timeBuangAir) == 4*60) sim.efekTidakBuangAir();
+            }
+
             // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getRumahSim(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
@@ -317,6 +334,7 @@ public class Main {
                     break;
                 case "buang air":
                     sim.buangAir();
+                    isSudahBuangAir = true;
                     break;
                 case "main game":
                     sim.mainGame();
@@ -359,6 +377,11 @@ public class Main {
             input.nextLine();
             clearConsole();
         }
+
+        System.out.println("GAME OVER!!!\n");
+        if (sim.matiDepresi()) System.out.printf("%s mati karena depresi.\n", sim.getNama());
+        else if (sim.matiKelaparan()) System.out.printf("%s mati karena kelaparan.\n", sim.getNama());
+        else if (sim.matiSakit()) System.out.printf("%s mati karena sakit.\n", sim.getNama());
         
     }
 }
