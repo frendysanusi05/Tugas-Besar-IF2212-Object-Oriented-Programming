@@ -111,6 +111,18 @@ public class Main {
         // proses load
     }
 
+    public final static void clearConsole() {
+        try {  
+            final String os = System.getProperty("os.name");  
+            if (os.contains("Windows")) {  
+                Runtime.getRuntime().exec("cls");  
+            }
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+    }
+
+
 
 
     public static void playSim(World world) throws Exception {
@@ -179,14 +191,14 @@ public class Main {
         // Keluar dari loop sampe user milih exit
         boolean isSudahTidur = false;
         while (!exitGame && sim.isAlive()) {
-            int day = Clock.getDay();
+            // int day = Clock.getDay();
 
-            if (Clock.getDiffTimeInSeconds() == 10*60) {
-                if (isSudahTidur) isSudahTidur = false;
-                else {
-                    sim.efekTidakTidur();
-                }
-            }
+            // if (Clock.getDiffTimeInSeconds() == 10*60) {
+            //     if (isSudahTidur) isSudahTidur = false;
+            //     else {
+            //         sim.efekTidakTidur();
+            //     }
+            // }
             // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getRumahSim(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
@@ -334,6 +346,7 @@ public class Main {
             }
             System.out.println("\nTekan enter untuk melanjutkan");
             input.nextLine();
+            // clearConsole();
         }
         
     }
