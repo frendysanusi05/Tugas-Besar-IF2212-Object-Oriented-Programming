@@ -264,7 +264,7 @@ public class Main {
                     sim.upgradeRumah(world, rumah);
                     break;
                 case "beli barang" :
-                    currentSim.beliBarang();
+                    sim.beliBarang();
                     break;
                 case "pindah ruang" :
                     sim.pindahRuang(world, rumah);
