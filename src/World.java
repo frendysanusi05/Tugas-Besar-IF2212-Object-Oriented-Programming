@@ -62,6 +62,10 @@ public class World {
         }
     }
 
+    public boolean getCekPosisi(int x, int y){
+        return this.cekPosisi[x][y];
+    }
+
     public Rumah getRumahSim(Sim sim) {
         for (Map.Entry<Rumah, Sim> entry : daftarRumah.entrySet()) {
             if (entry.getValue().getNama().equals(sim.getNama())) {

@@ -107,6 +107,7 @@ public class Rumah {
                 }
             }
         }
+        System.out.println("Sim tidak sedang di dalam rumah");
         return null;
     }
 
