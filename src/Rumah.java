@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Rumah {
     private String IDRumah;
@@ -25,31 +26,31 @@ public class Rumah {
         Furniture mejaDanKursi = new Furniture("Meja dan Kursi");
         Furniture jam = new Furniture("Jam");
 
-        kamar.addDaftarFurniture(kasurSingle);
-        kamar.addDaftarFurniture(toilet);
-        kamar.addDaftarFurniture(komporGas);
-        kamar.addDaftarFurniture(mejaDanKursi);
-        kamar.addDaftarFurniture(jam);
+        // kamar.addDaftarFurniture(kasurSingle);
+        // kamar.addDaftarFurniture(toilet);
+        // kamar.addDaftarFurniture(komporGas);
+        // kamar.addDaftarFurniture(mejaDanKursi);
+        // kamar.addDaftarFurniture(jam);
 
         int xKamar = kamar.getXRuangan();
         int yKamar = kamar.getYRuangan();
-        kamar.insertObjectToRuangan("Kasur Single", new Point (xKamar - 3, yKamar + 1));
+        kamar.insertObjectToRuangan("Kasur Single", new Point (xKamar - 3, yKamar + 1), new AtomicBoolean(false));
         kasurSingle.setXFurniture(xKamar - 3);
         kasurSingle.setYFurniture(yKamar + 1);
 
-        kamar.insertObjectToRuangan("Toilet", new Point (xKamar + 2, yKamar + 2));
+        kamar.insertObjectToRuangan("Toilet", new Point (xKamar + 2, yKamar + 2), new AtomicBoolean(false));
         toilet.setXFurniture(xKamar + 2);
         toilet.setYFurniture(yKamar + 2);
 
-        kamar.insertObjectToRuangan("Kompor Gas", new Point (xKamar + 1, yKamar - 3));
+        kamar.insertObjectToRuangan("Kompor Gas", new Point (xKamar + 1, yKamar - 3), new AtomicBoolean(false));
         komporGas.setXFurniture(xKamar - 3);
         komporGas.setYFurniture(yKamar + 2);
 
-        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (xKamar - 3, yKamar - 3));
+        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (xKamar - 3, yKamar - 3), new AtomicBoolean(false));
         mejaDanKursi.setXFurniture(xKamar - 3);
         mejaDanKursi.setYFurniture(yKamar - 3);
 
-        kamar.insertObjectToRuangan("Jam", new Point (xKamar + 2, yKamar));
+        kamar.insertObjectToRuangan("Jam", new Point (xKamar + 2, yKamar), new AtomicBoolean(false));
         jam.setXFurniture(xKamar + 2);
         jam.setYFurniture(yKamar);
     }
@@ -58,9 +59,11 @@ public class Rumah {
 
     //methods
     public void printDaftarRuangan(){
+        int i = 1;
         for (Ruangan ruangan : daftarRuangan){
             //ini sbenernya gua masi kurang ngerti, konstruktor ruangan mau dibentuk kek gmn wkwk
-            System.out.println("IDRuangan: " + ruangan.getIDRuangan() + ", Nama Ruangan: " + ruangan.getNamaRuangan());
+            System.out.println(i + ") " + ruangan.getNamaRuangan());
+            i++;
         }
     }
 
@@ -98,12 +101,9 @@ public class Rumah {
 
     public Ruangan getCurrentRuanganSim(Sim sim) {
         for (Ruangan ruangan : daftarRuangan) {
-            for (int x = ruangan.getXRuangan() - 3; x < ruangan.getXRuangan() + 3; x++) {
-                for (int y = ruangan.getYRuangan() - 3; y < ruangan.getYRuangan() + 3; y++) {
-                    if (sim.getXSim() == x && sim.getYSim() == y) {
-                        return ruangan;
-                    }
-                }
+            if (sim.getXSim() >= ruangan.getXRuangan() - 3 && sim.getXSim() <= ruangan.getXRuangan() + 2 && sim.getYSim() >= ruangan.getYRuangan() - 3 && sim.getYSim() <= ruangan.getYRuangan() + 2) {
+                // print nama ruangan dan point nya
+                return ruangan;
             }
         }
         System.out.println("Sim tidak sedang di dalam rumah");

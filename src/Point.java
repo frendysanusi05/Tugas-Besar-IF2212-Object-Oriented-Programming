@@ -1,4 +1,4 @@
-public class Point {
+public class Point implements Cloneable {
     private int x;
     private int y;
 
@@ -24,5 +24,14 @@ public class Point {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    @Override
+    public Point clone() {
+        try {
+            return (Point) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError(); // Should never happen
+        }
     }
 }

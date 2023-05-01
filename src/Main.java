@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.time.LocalTime;
 
 public class Main {
@@ -79,10 +80,15 @@ public class Main {
         System.out.print("\nMasukkan nama pemain: ");
         Scanner input = new Scanner(System.in);
         String namaSim = input.nextLine();
+        while (world.isSimInWorld(namaSim)) {
+            System.out.println("Nama sudah digunakan, silahkan masukkan nama lain");
+            System.out.print("Masukkan nama pemain: ");
+            namaSim = input.nextLine();
+        }
         Sim sim = new Sim(namaSim);
         Random rand = new Random();
-        int x = rand.nextInt(3, 60);
-        int y = rand.nextInt(3, 60);
+        int x = rand.nextInt(58) + 3;
+        int y = rand.nextInt(58) + 3;
         Rumah rumah = new Rumah(new Point(x, y));
         sim.setPosisiSim(new Point(x, y));
         world.addRumah(rumah, sim);
@@ -211,6 +217,7 @@ public class Main {
 
         // End of animasi loading (Gausah dihirauikan)
 
+        sim.setUang(10000);
         // Keluar dari loop sampe user milih exit
         while (!exitGame) {
             if (!sim.isAlive()) {
@@ -235,7 +242,7 @@ public class Main {
             sim.checkSudahBuangAir();
 
             // Get current ruangan dan rumah dari sim
-            Rumah rumah = world.getRumahSim(sim);
+            Rumah rumah = world.getCurrentRumah(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
 
             // Thread t1 = new Thread(new Runnable() {
@@ -260,15 +267,18 @@ public class Main {
             sim.printCurrentSimRoom(world);
             Thread.sleep(1000);
             System.out.println("\nBermain Sebagai " + sim.getNama());
+            System.out.println("Posisi: " + sim.getPosisiSim().getX() + ", " + sim.getPosisiSim().getY());
+            // System.out.println("Kamar Mandi: " + kamarMandi.getXRuangan() + ", " + kamarMandi.getYRuangan());
+            //rumah.printDaftarRuangan();
 
             // Mengecek furniture di sekitarnya yang bisa diinteract
             sim.checkFurniture(ruangan);
 
             /********************* testing only *******************/
-            sim.addDaftarAksi("Lihat Inventory");
-            sim.addDaftarAksi("Pasang Barang");
-            sim.addDaftarAksi("Bergerak ke Objek");
-            sim.addDaftarAksi("Ganti Sim");
+            // sim.addDaftarAksi("Lihat Inventory");
+            // sim.addDaftarAksi("Pasang Barang");
+            // sim.addDaftarAksi("Bergerak ke Objek");
+            // sim.addDaftarAksi("Ganti Sim");
             /************************ end testing *******************/
 
             // Tambah opsi save dan exit supaya bisa keluar sama save game
@@ -301,8 +311,8 @@ public class Main {
                     sim.olahraga();
                     break;
                 case "berkunjung" :
-
-                    // currentSim.berkunjung(w);
+                    sim.berkunjung(world);
+                    break;
                 case "upgrade rumah":
                     sim.upgradeRumah(world, rumah);
                     break;
@@ -319,7 +329,7 @@ public class Main {
                     sim.pasangBarang(ruangan);
                     break;
                 case "bergerak ke objek" :
-                    sim.moveToFurniture(ruangan);
+                    sim.moveToFurniture(ruangan, world);
                     break;
                 case "ganti sim":
                     if (world.getDaftarSim().size() == 1) {

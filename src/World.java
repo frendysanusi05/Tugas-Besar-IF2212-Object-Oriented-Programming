@@ -3,7 +3,7 @@ import java.util.*;
 public class World {
     /* Atribut */
     private Map<Rumah, Sim> daftarRumah = new HashMap<Rumah, Sim>();
-    private ArrayList<Sim> daftarSim = new ArrayList<Sim>();
+    private List<Sim> daftarSim = new ArrayList<Sim>();
     private boolean[][] cekPosisi = new boolean[64][64];
 
     /* Konstruktor */
@@ -14,6 +14,15 @@ public class World {
                 cekPosisi[i][j] = false;
             }
         }
+    }
+
+    public Sim getSim(String namaSim) {
+        for (Sim sim : daftarSim) {
+            if (sim.getNama().equals(namaSim)) {
+                return sim;
+            }
+        }
+        return null;
     }
 
     /* Metode */
@@ -45,6 +54,15 @@ public class World {
         daftarSim.remove(sim);
     }
 
+    public boolean isSimInWorld(String namaSim) {
+        for (Sim s : daftarSim) {
+            if (s.getNama().equals(namaSim)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Map<Rumah, Sim> getDaftarRumah() {
         return daftarRumah;
     }
@@ -74,6 +92,27 @@ public class World {
         for (Map.Entry<Rumah, Sim> entry : daftarRumah.entrySet()) {
             if (entry.getValue().getNama().equals(sim.getNama())) {
                 return entry.getKey();
+            }
+        }
+        return null;
+    }
+
+    public Rumah getCurrentRumah(Sim sim) {
+        // Locate the house based on the location of the sim
+        for (Rumah rumah: daftarRumah.keySet()) {
+            for (Ruangan ruangan: rumah.getDaftarRuangan()) {
+                if (ruangan.isSimInRuangan(sim)) {
+                    return rumah;
+                }
+            }
+        }
+        return null;
+    }
+
+    public String getPemilikRumah(Rumah rumah) {
+        for (Map.Entry<Rumah, Sim> entry : daftarRumah.entrySet()) {
+            if (entry.getKey().getIDRumah() == rumah.getIDRumah()) {
+                return entry.getValue().getNama();
             }
         }
         return null;
@@ -155,6 +194,9 @@ public class World {
         boolean isExpandable = true;
         int x = posisi.getX() - 3;
         int y = posisi.getY() - 3;
+        if (x < 0 || y < 0) {
+            return false;
+        }
         while (isExpandable && y < posisi.getY() + 3) {
             if (cekPosisi[y][x]) {
                 isExpandable = false;
