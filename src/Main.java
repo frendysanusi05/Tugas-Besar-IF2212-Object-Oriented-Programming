@@ -131,9 +131,8 @@ public class Main {
     }
     public static void load() {
         Load.load("data/data.json");
-    public static void load() {
-        Load.load("data/data.json");
     }
+
 
     public static void clearConsole() {
         try {
@@ -222,24 +221,17 @@ public class Main {
 
         //sim.setUang(10000);
         // Keluar dari loop sampe user milih exit
+    
         boolean isSudahTidur = false;
         while (!exitGame && sim.isAlive()) {
             // int day = Clock.getDay();
             
-            if (Clock.getDiffTimeInSeconds() == 10*60) {
-                if (isSudahTidur) isSudahTidur = false;
-                else {
-                    sim.efekTidakTidur();
-        boolean isSudahTidur = false;
-        while (!exitGame && sim.isAlive()) {
-            // int day = Clock.getDay();
-            
-            if (Clock.getDiffTimeInSeconds() == 10*60) {
-                if (isSudahTidur) isSudahTidur = false;
-                else {
-                    sim.efekTidakTidur();
-                }
-            }
+            // if (Clock.getDiffTimeInSeconds() == 10*60) {
+            //     if (isSudahTidur) isSudahTidur = false;
+            //     else {
+            //         sim.efekTidakTidur();
+            //     }
+            // }
             // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getCurrentRumah(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
