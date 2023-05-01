@@ -596,9 +596,50 @@ public class Sim {
         // rumusnya sqrt(((x2-x1)^2) + ((y2-y1)^2))
         // x2 dan y2 adalah koordinat rumah yang akan dikunjungi
         // x1 dan y1 adalah koordinat rumah Sim
-        mood += 10;
-        kekenyangan -= 10;
-    }   
+        double x1 = rumahSim.getXRumah();
+        double y1 = rumahSim.getYRumah();
+        double x2 = rumahTemanSim.getXRumah();
+        double y2 = rumahTemanSim.getYRumah();
+        double waktuBerkunjung = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+        System.out.println();
+        setStatus("Berkunjung");
+
+        Thread t1 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Clock.wait(waktuBerkunjung);
+            }
+        });
+
+        Thread t2 = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                int timeInSeconds = LocalTime.now().toSecondOfDay();
+                int duration = 30;
+                
+                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                        addMood(10);
+                        kekenyangan -= 10;
+                        timeInSeconds = LocalTime.now().toSecondOfDay();
+                        try {
+                            Thread.sleep(1000);
+                        }
+                        catch (InterruptedException e) {
+                        }
+                    }
+            }
+        });
+        t1.start();
+        t2.start();
+        try {
+            t1.join();
+            t2.join();
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        setStatus(null);
+    }
 
     public void buangAir(){
         durasi = (double)10;

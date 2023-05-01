@@ -1,5 +1,4 @@
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Ruangan extends Rumah{
     private String IDRuangan;
