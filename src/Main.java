@@ -32,6 +32,7 @@ public class Main {
         int pilihan = 0;
         boolean isPilihanValid = false;
         while (!isPilihanValid) {
+            System.out.print("\u001B[103m");
             System.out.print("Pilihan: ");
             try {
                 pilihan = input.nextInt();
@@ -41,6 +42,7 @@ public class Main {
                 System.out.println("\nMasukan harus bernilai integer\n");
                 input.nextLine();
             }
+            System.out.print("\u001B[0m");
         }
         boolean exitMainMenu = false;
 
@@ -88,7 +90,7 @@ public class Main {
         world.addCekPosisi(rumah);
 
         // Animasi, biarin dulu aja
-        System.out.println(" Generating Sim");
+        System.out.println(" Generating Sim\n");
         // System.out.print("[                ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
@@ -114,7 +116,7 @@ public class Main {
         // Thread.sleep(1000);
         // System.out.println();
 
-        System.out.println("\nWelcome to the game, " + namaSim + "!\n");
+        System.out.println("Welcome to the game, " + namaSim + "!\n");
         //Thread.sleep(1000);
         playSim(world);
     }
@@ -151,6 +153,7 @@ public class Main {
         } catch (Exception e) {
             
         }
+        System.out.println("\u001B[0m");
     }
 
     public static void playSim(World world) throws Exception {
@@ -180,7 +183,7 @@ public class Main {
 
         // Ini cuma animasi loading
 
-        System.out.println(" Generating World");
+        System.out.println(" Generating World\n");
         // System.out.print("[                ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
@@ -209,30 +212,27 @@ public class Main {
         // End of animasi loading (Gausah dihirauikan)
 
         // Keluar dari loop sampe user milih exit
-        boolean isSudahTidur = false;
-        LocalTime timeTidur = Clock.getTime();
-
-        boolean isSudahBuangAir = false;
-        LocalTime timeBuangAir = Clock.getTime();
-
-        while (!exitGame && sim.isAlive()) {            
+        while (!exitGame) {
+            if (!sim.isAlive()) {
+                System.out.print("\u001B[41m");
+                if (sim.matiDepresi()) System.out.printf("%s mati karena depresi.", sim.getNama());
+                else if (sim.matiKelaparan()) System.out.printf("%s mati karena kelaparan.", sim.getNama());
+                else if (sim.matiSakit()) System.out.printf("%s mati karena sakit.", sim.getNama());
+                System.out.print("\u001B[0m\n\n");
+                world.removeSim(sim);
+                
+                System.out.println("Ganti ke sim lain...");
+                if (world.getDaftarSim().size() == 0) {
+                    System.out.println("GAME OVER!!!");
+                    exitGame = true;
+                }
+                else sim = world.getDaftarSim().get(world.getDaftarSim().size()-1);
+            }
             /* Cek apakah sudah 10 menit tanpa tidur */
-            if (isSudahTidur) {
-                timeTidur = Clock.getTime();
-                isSudahTidur = false;
-            }
-            else {
-                if (Clock.getDiffTimeInSeconds(timeTidur) == 10*60) sim.efekTidakTidur();
-            }
+            sim.checkSudahTidur();
 
             /* Cek apakah sudah 4 menit setelah makan tanpa buang air */
-            if (isSudahBuangAir) {
-                timeTidur = Clock.getTime();
-                isSudahBuangAir = false;
-            }
-            else {
-                if (Clock.getDiffTimeInSeconds(timeBuangAir) == 4*60) sim.efekTidakBuangAir();
-            }
+            sim.checkSudahBuangAir();
 
             // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getRumahSim(sim);
@@ -263,6 +263,13 @@ public class Main {
 
             // Mengecek furniture di sekitarnya yang bisa diinteract
             sim.checkFurniture(ruangan);
+
+            /********************* testing only *******************/
+            sim.addDaftarAksi("Lihat Inventory");
+            sim.addDaftarAksi("Pasang Barang");
+            sim.addDaftarAksi("Bergerak ke Objek");
+            sim.addDaftarAksi("Ganti Sim");
+            /************************ end testing *******************/
 
             // Tambah opsi save dan exit supaya bisa keluar sama save game
             sim.addDaftarAksi("Save");
@@ -316,7 +323,7 @@ public class Main {
                     break;
                 case "ganti sim":
                     if (world.getDaftarSim().size() == 1) {
-                        System.out.print("Tidak ada sim lain\nApakah kamu ingin membuat Sim baru? (y/n)");
+                        System.out.print("\nTidak ada sim lain\n\nApakah kamu ingin membuat Sim baru? (y/n) ");
                         String pilihan = input.nextLine();
                         while (!pilihan.equals("y") && !pilihan.equals("n")) {
                             System.out.println("Pilihan tidak tersedia");
@@ -351,14 +358,12 @@ public class Main {
                     break;
                 case "tidur":
                     sim.tidur();
-                    isSudahTidur = true;
                     break;
                 case "memasak":
                     sim.memasak();
                     break;
                 case "buang air":
                     sim.buangAir();
-                    isSudahBuangAir = true;
                     break;
                 case "main game":
                     sim.mainGame();
@@ -400,13 +405,6 @@ public class Main {
             System.out.println("\nTekan enter untuk melanjutkan");
             input.nextLine();
             clearConsole();
-        }
-
-        if (!sim.isAlive()) {
-            System.out.println("GAME OVER!!!\n");
-            if (sim.matiDepresi()) System.out.printf("%s mati karena depresi.\n", sim.getNama());
-            else if (sim.matiKelaparan()) System.out.printf("%s mati karena kelaparan.\n", sim.getNama());
-            else if (sim.matiSakit()) System.out.printf("%s mati karena sakit.\n", sim.getNama());
         }
     }
 }

@@ -36,21 +36,24 @@ public class Inventory {
     }
 
     public void printItem() {
-        if (isItemTypeInInventory("Furniture")) {
-            printSpecificItem("Furniture");
-        } 
+        if (isEmpty()) System.out.println("Inventory kosong.");
+        else {
+            if (isItemTypeInInventory("Furniture")) {
+                printSpecificItem("Furniture");
+            } 
 
-        if (isItemTypeInInventory("Bahan Makanan")) {
-            printSpecificItem("Bahan Makanan");
-        }
+            if (isItemTypeInInventory("Bahan Makanan")) {
+                printSpecificItem("Bahan Makanan");
+            }
 
-        if (isItemTypeInInventory("Masakan")) {
-            printSpecificItem("Masakan");
+            if (isItemTypeInInventory("Masakan")) {
+                printSpecificItem("Masakan");
+            }
         }
     }
 
     public boolean isItemTypeInInventory(String typeName) {
-        String[] daftarFurniture = {"Kasur Single", "Kasur Queen Size", "Kasung King Size", "Toilet", "Kompor Gas", "Kompor Listrik", "Meja dan Kursi", "Jam", "Komputer", "TV", "Shower"};
+        String[] daftarFurniture = {"Kasur Single", "Kasur Queen Size", "Kasur King Size", "Toilet", "Kompor Gas", "Kompor Listrik", "Meja dan Kursi", "Jam", "Komputer", "TV", "Shower"};
         String[] daftarBahanMakanan = {"Nasi", "Kentang", "Ayam", "Sapi", "Wortel", "Bayam", "Kacang", "Susu"};
         String[] daftarMasakan = {"Nasi Ayam", "Nasi Kari", "Susu Kacang", "Tumis Sayur", "Bistik"};
 

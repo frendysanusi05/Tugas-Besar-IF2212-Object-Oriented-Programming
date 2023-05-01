@@ -41,6 +41,10 @@ public class World {
         daftarSim.add(sim);
     }
 
+    public void removeSim(Sim sim) {
+        daftarSim.remove(sim);
+    }
+
     public Map<Rumah, Sim> getDaftarRumah() {
         return daftarRumah;
     }

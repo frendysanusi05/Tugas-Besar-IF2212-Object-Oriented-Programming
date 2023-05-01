@@ -33,7 +33,7 @@ public class Clock {
     }
 
     /* Konversi LocalTime ke seconds*/
-    private static int convertToSeconds(LocalTime time) {
+    public static int convertToSeconds(LocalTime time) {
         return time.toSecondOfDay();
     }
 
@@ -55,8 +55,8 @@ public class Clock {
         return LocalTime.ofSecondOfDay(duration.getSeconds());
     }
 
-    public static int getDiffTimeInSeconds(LocalTime currTime) {
-        return convertToSeconds(diffTime(currTime));
+    public static int getDiffTimeInSeconds(int currTime) {
+        return convertToSeconds(diffTime(LocalTime.ofSecondOfDay(currTime)));
     }
 
     /* dipakai jika ingin melakukan timeskip sebesar seconds detik */
@@ -81,6 +81,6 @@ public class Clock {
 
     private static boolean checkChangeDay() {
         LocalTime currTime = Clock.getTime();
-        return (getDiffTimeInSeconds(currTime) % 12*60 == 0);
+        return (getDiffTimeInSeconds(convertToSeconds(currTime)) % 12*60 == 0);
     }
 }

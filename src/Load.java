@@ -12,6 +12,7 @@ public class Load {
             Reader reader = Files.newBufferedReader(Paths.get(path));
             world = gson.fromJson(reader, World.class);
             System.out.println("Berhasil melakukan load file " + path);
+            System.out.println();
         }
         catch (Exception e) {
             System.out.println("Gagal melakukan load file " + path + ". Pesan error: " + e.getMessage());
