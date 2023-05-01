@@ -10,12 +10,13 @@ import com.google.gson.JsonElement;
 
 public class Save {
    	public static void save(World world) {
-		String fileName = "data/save.json";
+		String fileName = "data/data.json";
 		Path path = Paths.get(fileName);
 
 		try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
+            Gson gson = new GsonBuilder()
+			.enableComplexMapKeySerialization()
+        	.setPrettyPrinting().create();
             JsonElement tree = gson.toJsonTree(world);
             gson.toJson(tree, writer);
 			System.out.println("Berhasil melakukan save.");
