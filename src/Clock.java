@@ -48,14 +48,15 @@ public class Clock {
 
     /* return end - start */
     /* example output: 00:01:18 */
-    public static LocalTime diffTime() {
+    public static LocalTime diffTime(LocalTime currTime) {
+        if (currTime == null) currTime = startTime;
         LocalTime endTime = getTime(); /* current local time */
-        Duration duration = Duration.between(startTime, endTime);
+        Duration duration = Duration.between(currTime, endTime);
         return LocalTime.ofSecondOfDay(duration.getSeconds());
     }
 
-    public static int getDiffTimeInSeconds() {
-        return convertToSeconds(diffTime());
+    public static int getDiffTimeInSeconds(LocalTime currTime) {
+        return convertToSeconds(diffTime(currTime));
     }
 
     /* dipakai jika ingin melakukan timeskip sebesar seconds detik */
@@ -79,6 +80,7 @@ public class Clock {
     }
 
     private static boolean checkChangeDay() {
-        return (getDiffTimeInSeconds() == 12*60);
+        LocalTime currTime = Clock.getTime();
+        return (getDiffTimeInSeconds(currTime) % 12*60 == 0);
     }
 }

@@ -6,6 +6,6 @@ public class ClockDriver {
         System.out.println(Clock.getTime());
         Clock.skipTime(3600);
         System.out.println(Clock.getTime());
-        System.out.printf("Diff: %s\n", Clock.diffTime());
+        System.out.printf("Diff: %s\n", Clock.diffTime(null));
     }
 }
