@@ -36,16 +36,19 @@ public class Inventory {
     }
 
     public void printItem() {
-        if (isItemTypeInInventory("Furniture")) {
-            printSpecificItem("Furniture");
-        } 
+        if (isEmpty()) System.out.println("Inventory kosong.");
+        else {
+            if (isItemTypeInInventory("Furniture")) {
+                printSpecificItem("Furniture");
+            } 
 
-        if (isItemTypeInInventory("Bahan Makanan")) {
-            printSpecificItem("Bahan Makanan");
-        }
+            if (isItemTypeInInventory("Bahan Makanan")) {
+                printSpecificItem("Bahan Makanan");
+            }
 
-        if (isItemTypeInInventory("Masakan")) {
-            printSpecificItem("Masakan");
+            if (isItemTypeInInventory("Masakan")) {
+                printSpecificItem("Masakan");
+            }
         }
     }
 

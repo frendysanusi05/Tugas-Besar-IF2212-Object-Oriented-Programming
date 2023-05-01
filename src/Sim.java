@@ -22,9 +22,14 @@ public class Sim {
     private volatile Double durasi;
 
     private static final String[] daftarPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
-    
-    /* Scanner */
-    // Scanner scan = new Scanner(System.in);
+
+    int timeTidur = Clock.convertToSeconds(Clock.getTime());
+    boolean isSudahTidur = false;
+    int jumlahTidakTidur = 0;
+
+    int timeBuangAir = Clock.convertToSeconds(Clock.getTime());
+    boolean isSudahBuangAir = false;
+    int jumlahTidakBuangAir = 0;
 
     public Sim(String nama) {
         this.nama = nama;
@@ -161,7 +166,7 @@ public class Sim {
     }
 
     public boolean isAlive() {
-        return matiDepresi() || matiKelaparan() || matiSakit();
+        return matiDepresi() && matiKelaparan() && matiSakit();
     }
 
     public boolean matiDepresi() {
@@ -203,86 +208,56 @@ public class Sim {
             namaMakanan = input.nextLine();
         }
 
-        String makanan = namaMakanan;
-
-        inventory.decreaseItem(namaMakanan, 1);
         durasi = (double) 30;
         System.out.println();
         
         setStatus("Sedang Makan");
-        System.out.println("Sedang berolahraga...");
+        System.out.printf("Sedang makan %s...\n", namaMakanan);
 
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Clock.wait(durasi);
-            }
-        });
-
-        Thread t2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                /*
-                +X kekenyangan / 1 siklus makan (30 detik), 
-                X bergantung pada jenis makanan.
-                    */
-
-                int timeInSeconds = LocalTime.now().toSecondOfDay();
-                int duration = 30;
-                if (Clock.isEqualDuration(timeInSeconds, duration)) {
-                    switch(makanan){
-                        case "Nasi" :
-                            addKekenyangan(5);
-                            break;
-                        case "Kentang" :
-                            addKekenyangan(4);
-                            break;
-                        case "Ayam" :
-                            addKekenyangan(8);
-                            break;
-                        case "Sapi" :
-                            addKekenyangan(15);
-                            break;
-                        case "Wortel" :
-                            addKekenyangan(2);
-                            break;
-                        case "Bayam" :
-                            addKekenyangan(2);
-                            break;
-                        case "Kacang" :
-                            addKekenyangan(2);
-                            break;
-                        case "Susu" :
-                            addKekenyangan(1);
-                            break;
-                        case "Nasi Ayam" :
-                            addKekenyangan(16);
-                            break;
-                        case "Nasi Kari" :
-                            addKekenyangan(30);
-                            break;
-                        case "Susu Kacang" :
-                            addKekenyangan(5);
-                            break;
-                        case "Tumis Sayur" :
-                            addKekenyangan(5);
-                            break;
-                        case "Bistik" :
-                            addKekenyangan(22);
-                            break;
-                    }
-                }
-            }
-        });
-        t1.start();
-        t2.start();
-
-        try {
-            t1.join();
-            t2.join();
-        } catch (InterruptedException e) {
-            System.out.println("Thread interrupted");
+        Clock.wait(durasi);
+        inventory.decreaseItem(namaMakanan, 1);
+        switch(namaMakanan){
+            case "Nasi" :
+                addKekenyangan(5);
+                break;
+            case "Kentang" :
+                addKekenyangan(4);
+                break;
+            case "Ayam" :
+                addKekenyangan(8);
+                break;
+            case "Sapi" :
+                addKekenyangan(15);
+                break;
+            case "Wortel" :
+                addKekenyangan(2);
+                break;
+            case "Bayam" :
+                addKekenyangan(2);
+                break;
+            case "Kacang" :
+                addKekenyangan(2);
+                break;
+            case "Susu" :
+                addKekenyangan(1);
+                break;
+            case "Nasi Ayam" :
+                addKekenyangan(16);
+                break;
+            case "Nasi Kari" :
+                addKekenyangan(30);
+                break;
+            case "Susu Kacang" :
+                addKekenyangan(5);
+                break;
+            case "Tumis Sayur" :
+                addKekenyangan(5);
+                break;
+            case "Bistik" :
+                addKekenyangan(22);
+                break;
         }
+        System.out.println();
         System.out.println("Selesai Makan");
     }
     
@@ -320,8 +295,8 @@ public class Sim {
                      */
 
                     if (Clock.isEqualDuration(timeInSeconds, duration)) {
-                        kekenyangan -= 10;
-                        mood -= 10;
+                        addKekenyangan(-10);
+                        addMood(-10);
 
                         timeInSeconds = LocalTime.now().toSecondOfDay();
                         try {
@@ -518,7 +493,7 @@ public class Sim {
             e.printStackTrace();
         }
         isThreadFinished = false;
-        setStatus(null);
+        isSudahTidur = true;
     }
 
     public void memasak() throws Exception {
@@ -621,7 +596,7 @@ public class Sim {
                 
                     if (Clock.isEqualDuration(timeInSeconds, duration)) {
                         addMood(10);
-                        kekenyangan -= 10;
+                        addKekenyangan(-10);
                         timeInSeconds = LocalTime.now().toSecondOfDay();
                         try {
                             Thread.sleep(1000);
@@ -648,8 +623,9 @@ public class Sim {
         System.out.println("\nSedang buang air...");
         Clock.wait(durasi);
         System.out.println("\nSelesai buang air");
-        kekenyangan -= 20;
+        addKekenyangan(-20);
         addMood(10);
+        isSudahBuangAir = true;
     }
 
     public void upgradeRumah(World world, Rumah rumah) throws Exception{
@@ -1084,20 +1060,14 @@ public class Sim {
         }
 
         if (pilihan == 1) {
-            mood += 15;
-            setMood(mood);
-            kesehatan -= 5;
-            setKesehatan(kesehatan);
+            addMood(15);
+            addKesehatan(-5);
         } else if (pilihan == 2) {
-            mood += 30;
-            setMood(mood);
-            kesehatan -= 10;
-            setKesehatan(kesehatan);
+            addMood(30);
+            addKekenyangan(-10);
         } else if (pilihan == 3) {
-            mood += 45;
-            setMood(mood);
-            kesehatan -= 15;
-            setKesehatan(kesehatan);
+            addMood(45);
+            addKesehatan(-15);
         }
 
         isThreadFinished = false;
@@ -1124,10 +1094,8 @@ public class Sim {
             e.printStackTrace();
         }
 
-        kesehatan += 10;
-        setKesehatan(kesehatan);
-        mood += 10;
-        setMood(mood);
+        addKesehatan(10);
+        addMood(10);
 
         isThreadFinished = false;
     }
@@ -1163,10 +1131,8 @@ public class Sim {
             e.printStackTrace();
         }
 
-        mood += (lamaRebahan / 10) * 5;
-        setMood(mood);
-        kesehatan += (lamaRebahan / 10) * 5;
-        setKesehatan(kesehatan);
+        addMood((lamaRebahan / 10) * 5);
+        addKesehatan((lamaRebahan / 10) * 5);
 
         isThreadFinished = false;
     }
@@ -1205,10 +1171,8 @@ public class Sim {
             e.printStackTrace();
         }
 
-        kesehatan -= (lamaBelajarCoding / 30) * 10;
-        setKesehatan(kesehatan);
-        mood += (lamaBelajarCoding / 30) * 10;
-        setMood(mood);
+        addKesehatan((lamaBelajarCoding / 30) * 10);
+        addMood((lamaBelajarCoding / 30) * 10);
 
         isThreadFinished = false;
     } 
@@ -1247,10 +1211,8 @@ public class Sim {
             e.printStackTrace();
         }
 
-        kesehatan -= (lamaBukaSosmed / 30) * 5;
-        setKesehatan(kesehatan);
-        mood += (lamaBukaSosmed / 30) * 20;
-        setMood(mood); 
+        addKesehatan((lamaBukaSosmed / 30) * 5);
+        addMood((lamaBukaSosmed / 30) * 20);
 
         isThreadFinished = false;
     }
@@ -1309,14 +1271,11 @@ public class Sim {
         }
 
         if (pilihan == 1) {
-            mood += 15;
-            setMood(mood);
+            addMood(15);
         } else if (pilihan == 2) {
-            mood += 30;
-            setMood(mood);
+            addMood(30);
         } else if (pilihan == 3) {
-            mood += 45;
-            setMood(mood);
+            addMood(45);
         }
 
         isThreadFinished = false;
@@ -1371,12 +1330,37 @@ public class Sim {
     }
 
     public void efekTidakTidur() {
-        kesehatan -= 5;
-        mood -= 5;
+        addKesehatan(-5);
+        addMood(-5);
     }
 
     public void efekTidakBuangAir() {
-        kesehatan -= 5;
-        mood -= 5;
+        addKesehatan(-5);
+        addMood(-5);
+    }
+
+    public void checkSudahTidur() {
+        if (isSudahTidur) {
+            timeTidur = Clock.convertToSeconds(Clock.getTime());
+            isSudahTidur = false;
+            jumlahTidakTidur = 0;
+        }
+        else {
+            if (Clock.getDiffTimeInSeconds(timeTidur) >= (jumlahTidakTidur+1)*10*60) {
+                efekTidakTidur();
+                jumlahTidakTidur++;
+            }
+        }
+    }
+
+    public void checkSudahBuangAir() {
+        if (isSudahBuangAir) {
+            timeTidur = Clock.convertToSeconds(Clock.getTime());
+            isSudahBuangAir = false;
+            jumlahTidakBuangAir = 0;
+        }
+        else {
+            if (Clock.getDiffTimeInSeconds(timeBuangAir) >= (jumlahTidakBuangAir+1)*4*60) efekTidakBuangAir();
+        }
     }
 }

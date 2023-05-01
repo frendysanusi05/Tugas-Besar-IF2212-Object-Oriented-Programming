@@ -14,8 +14,9 @@ public class Save {
 		Path path = Paths.get(fileName);
 
 		try (Writer writer = Files.newBufferedWriter(path, StandardCharsets.UTF_8)) {
-            Gson gson = new GsonBuilder().enableComplexMapKeySerialization()
-        .setPrettyPrinting().create();
+            Gson gson = new GsonBuilder()
+			.enableComplexMapKeySerialization()
+        	.setPrettyPrinting().create();
             JsonElement tree = gson.toJsonTree(world);
             gson.toJson(tree, writer);
 			System.out.println("Berhasil melakukan save.");

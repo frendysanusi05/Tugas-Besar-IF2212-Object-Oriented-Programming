@@ -75,7 +75,7 @@ public class Ruangan extends Rumah{
             System.out.print("| ");
             for (int i = 0; i < 6; i++)  {
                 if (i == sim.getXSim() - titikRuangan.getX() + 3 && j == sim.getYSim() - titikRuangan.getY() + 3) {
-                    System.out.print("𖨆 | ");
+                    System.out.print("웃| ");
                 } else if (isAvailable[i][j]) {
                     System.out.print("  | ");
                 } else {
