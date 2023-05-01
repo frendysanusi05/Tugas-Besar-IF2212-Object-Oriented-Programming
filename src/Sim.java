@@ -688,7 +688,7 @@ public class Sim {
         Selamat Datang di Indimaret Online!\nBerikut ini adalah barang yang bisa dibeli:\n
             +-----+-------------------------------------------------------+
             |     |                        Kategori                       |
-            | No. |----------------------------+--------------------------+
+            | No. +----------------------------+--------------------------+
             |     |      Furniture   (Harga)   |   Bahan Makanan (Harga)  |
             +-----+----------------------------+--------------------------+
             |  1. | Kasur Single     ( 50  )   | Nasi    ( 5  )           |
@@ -699,6 +699,9 @@ public class Sim {
             |  6. | Kompor Listrik   ( 200 )   | Bayam   ( 3  )           |
             |  7. | Meja dan Kursi   ( 50  )   | Kacang  ( 2  )           |
             |  8. | Jam              ( 10  )   | Susu    ( 2  )           |
+            |  9. | Komputer         ( 250 )   |                          |
+            | 10. | TV               ( 100 )   |                          |
+            | 11. | Shower           ( 150 )   |                          |   
             +-----+----------------------------+--------------------------+
         """);
 

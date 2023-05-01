@@ -85,16 +85,32 @@ public class Main {
         world.addSim(sim);
         world.addCekPosisi(rumah);
 
-        System.out.print("Generating Sim");
-
-        // Animasi, hiraukan
+        // Animasi, biarin dulu aja
+        System.out.println(" Generating Sim");
+        // System.out.print("[                ]");
         // Thread.sleep(1000);
-        // System.out.print(".");
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // System.out.print("[===             ]");
         // Thread.sleep(1000);
-        // System.out.print(".");
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // System.out.print("[======          ]");
         // Thread.sleep(1000);
-        // System.out.println(".");
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // System.out.print("[==========      ]");
         // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // System.out.print("[================]");
+        // Thread.sleep(1000);
+        // Thread.sleep(1000);
+        // System.out.println();
 
         System.out.println("\nWelcome to the game, " + namaSim + "!\n");
         //Thread.sleep(1000);
@@ -161,37 +177,29 @@ public class Main {
 
         // Ini cuma animasi loading
 
-        // System.out.println("Generating World");
-        // Thread.sleep(1000);
+        System.out.println(" Generating World");
         // System.out.print("[                ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
-        // Thread.sleep(1000);
         // System.out.print("[===             ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
-        // Thread.sleep(1000);
         // System.out.print("[======          ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
-        // Thread.sleep(1000);
         // System.out.print("[==========      ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
-        // Thread.sleep(1000);
         // System.out.print("[================]");
         // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
         // Thread.sleep(1000);
         // System.out.println();
 

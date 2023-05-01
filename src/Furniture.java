@@ -80,9 +80,9 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
                 this.aksi[3] = "Ikut Undian Berhadiah";
                 break;
             case "TV":
-                this.nama = "Komputer";
+                this.nama = "TV";
                 this.panjang = 3;
-                this.lebar = 3;
+                this.lebar = 2;
                 this.harga = 100;
                 this.aksi[0] = "Nonton Netflix";
                 break;
