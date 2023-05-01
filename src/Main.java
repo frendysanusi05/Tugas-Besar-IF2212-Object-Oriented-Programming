@@ -94,15 +94,21 @@ public class Main {
         System.out.print("Generating Sim");
 
         // Animasi, hiraukan
+        System.out.print("Generating Sim");
+
+        // Animasi, hiraukan
         // Thread.sleep(1000);
         // System.out.print(".");
+        // System.out.print(".");
         // Thread.sleep(1000);
+        // System.out.print(".");
         // System.out.print(".");
         // Thread.sleep(1000);
         // System.out.println(".");
+        // System.out.println(".");
         // Thread.sleep(1000);
 
-        System.out.println("\nWelcome to the game, " + namaSim + "!\n");
+        System.out.println("\n\nWelcome to the game, " + namaSim + "!\n");
         //Thread.sleep(1000);
         playSim(world);
     }
@@ -123,6 +129,8 @@ public class Main {
     public static void save(World world) {
         Save.save(world);
     }
+    public static void load() {
+        Load.load("data/data.json");
     public static void load() {
         Load.load("data/data.json");
     }
@@ -169,11 +177,14 @@ public class Main {
 
         // System.out.println("Generating World");
         // Thread.sleep(1000);
+        // System.out.println("Generating World");
+        // Thread.sleep(1000);
         // System.out.print("[                ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
+        // Thread.sleep(1000);
         // Thread.sleep(1000);
         // System.out.print("[===             ]");
         // Thread.sleep(1000);
@@ -181,11 +192,13 @@ public class Main {
         //     System.out.print("\b");
         // }
         // Thread.sleep(1000);
+        // Thread.sleep(1000);
         // System.out.print("[======          ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
+        // Thread.sleep(1000);
         // Thread.sleep(1000);
         // System.out.print("[==========      ]");
         // Thread.sleep(1000);
@@ -193,8 +206,12 @@ public class Main {
         //     System.out.print("\b");
         // }
         // Thread.sleep(1000);
+        // Thread.sleep(1000);
         // System.out.print("[================]");
         // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
@@ -205,6 +222,14 @@ public class Main {
 
         //sim.setUang(10000);
         // Keluar dari loop sampe user milih exit
+        boolean isSudahTidur = false;
+        while (!exitGame && sim.isAlive()) {
+            // int day = Clock.getDay();
+            
+            if (Clock.getDiffTimeInSeconds() == 10*60) {
+                if (isSudahTidur) isSudahTidur = false;
+                else {
+                    sim.efekTidakTidur();
         boolean isSudahTidur = false;
         while (!exitGame && sim.isAlive()) {
             // int day = Clock.getDay();
@@ -260,6 +285,7 @@ public class Main {
 
             aksi = aksi.toLowerCase();
 
+
             switch (aksi) {
                 case "kerja" :
                     sim.kerja();
@@ -290,6 +316,7 @@ public class Main {
                     break;
                 case "ganti sim":
                     if (world.getDaftarSim().size() == 1) {
+                        System.out.print("Tidak ada sim lain\nApakah kamu ingin membuat Sim baru? (y/n)");
                         System.out.print("Tidak ada sim lain\nApakah kamu ingin membuat Sim baru? (y/n)");
                         String pilihan = input.nextLine();
                         while (!pilihan.equals("y") && !pilihan.equals("n")) {
@@ -325,6 +352,7 @@ public class Main {
                     break;
                 case "tidur":
                     sim.tidur();
+                    isSudahTidur = true;
                     isSudahTidur = true;
                     break;
                 case "memasak":
@@ -374,6 +402,7 @@ public class Main {
             input.nextLine();
             clearConsole();
         }
+        
         
     }
 }
