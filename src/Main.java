@@ -402,10 +402,11 @@ public class Main {
             clearConsole();
         }
 
-        System.out.println("GAME OVER!!!\n");
-        if (sim.matiDepresi()) System.out.printf("%s mati karena depresi.\n", sim.getNama());
-        else if (sim.matiKelaparan()) System.out.printf("%s mati karena kelaparan.\n", sim.getNama());
-        else if (sim.matiSakit()) System.out.printf("%s mati karena sakit.\n", sim.getNama());
-        
+        if (!sim.isAlive()) {
+            System.out.println("GAME OVER!!!\n");
+            if (sim.matiDepresi()) System.out.printf("%s mati karena depresi.\n", sim.getNama());
+            else if (sim.matiKelaparan()) System.out.printf("%s mati karena kelaparan.\n", sim.getNama());
+            else if (sim.matiSakit()) System.out.printf("%s mati karena sakit.\n", sim.getNama());
+        }
     }
 }

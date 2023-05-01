@@ -38,6 +38,8 @@ public class Sim {
         daftarAksi.add("Kerja");
         daftarAksi.add("Olahraga");
         daftarAksi.add("Tidur");
+        daftarAksi.add("Makan");
+        daftarAksi.add("Memasak");
         daftarAksi.add("Berkunjung");
         daftarAksi.add("Buang Air");
         daftarAksi.add("Upgrade Rumah");
@@ -196,7 +198,7 @@ public class Sim {
         String namaMakanan = input.nextLine();
 
         while (!inventory.containsItem(namaMakanan)) {
-            System.out.println("Makanan tidak ada di inventory");
+            System.out.println("\nMakanan tidak ada di inventory\n");
             System.out.print("Masukkan makanan yang ingin dimakan: ");
             namaMakanan = input.nextLine();
         }
@@ -208,6 +210,7 @@ public class Sim {
         System.out.println();
         
         setStatus("Sedang Makan");
+        System.out.println("Sedang berolahraga...");
 
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -280,7 +283,7 @@ public class Sim {
         } catch (InterruptedException e) {
             System.out.println("Thread interrupted");
         }
-        Clock.skipTime(30);
+        System.out.println("Selesai Makan");
     }
     
     public void kerja() {
@@ -560,8 +563,7 @@ public class Sim {
 
                 durasi = 1.5 * masakanBaru.getKekenyangan();
                 System.out.println();
-
-                setStatus("Sedang Memasak");
+                System.out.println("Sedang memasak...");
                 
                 Thread t1 = new Thread(new Runnable() {
                     @Override
@@ -581,7 +583,7 @@ public class Sim {
                 }
 
                 isThreadFinished = false;
-                setStatus(null);
+                System.out.println("\nSelesai memasak");
                 addMood(10);
 
                 inventory.addItem(masakanBaru.getName());
