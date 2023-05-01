@@ -217,7 +217,7 @@ public class Main {
 
         // End of animasi loading (Gausah dihirauikan)
 
-        sim.setUang(10000);
+        //sim.setUang(10000);
         // Keluar dari loop sampe user milih exit
         while (!exitGame) {
             if (!sim.isAlive()) {
