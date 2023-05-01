@@ -32,6 +32,7 @@ public class Main {
         int pilihan = 0;
         boolean isPilihanValid = false;
         while (!isPilihanValid) {
+            System.out.print("\u001B[103m");
             System.out.print("Pilihan: ");
             try {
                 pilihan = input.nextInt();
@@ -41,6 +42,7 @@ public class Main {
                 System.out.println("\nMasukan harus bernilai integer\n");
                 input.nextLine();
             }
+            System.out.print("\u001B[0m");
         }
         boolean exitMainMenu = false;
 
@@ -151,6 +153,7 @@ public class Main {
         } catch (Exception e) {
             
         }
+        System.out.println("\u001B[0m");
     }
 
     public static void playSim(World world) throws Exception {

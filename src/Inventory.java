@@ -53,7 +53,7 @@ public class Inventory {
     }
 
     public boolean isItemTypeInInventory(String typeName) {
-        String[] daftarFurniture = {"Kasur Single", "Kasur Queen Size", "Kasung King Size", "Toilet", "Kompor Gas", "Kompor Listrik", "Meja dan Kursi", "Jam", "Komputer", "TV", "Shower"};
+        String[] daftarFurniture = {"Kasur Single", "Kasur Queen Size", "Kasur King Size", "Toilet", "Kompor Gas", "Kompor Listrik", "Meja dan Kursi", "Jam", "Komputer", "TV", "Shower"};
         String[] daftarBahanMakanan = {"Nasi", "Kentang", "Ayam", "Sapi", "Wortel", "Bayam", "Kacang", "Susu"};
         String[] daftarMasakan = {"Nasi Ayam", "Nasi Kari", "Susu Kacang", "Tumis Sayur", "Bistik"};
 
