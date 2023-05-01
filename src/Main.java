@@ -1,6 +1,5 @@
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.time.LocalTime;
 
 public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
@@ -33,7 +32,6 @@ public class Main {
         int pilihan = 0;
         boolean isPilihanValid = false;
         while (!isPilihanValid) {
-            System.out.print("\u001B[103m");
             System.out.print("Pilihan: ");
             try {
                 pilihan = input.nextInt();
@@ -43,7 +41,6 @@ public class Main {
                 System.out.println("\nMasukan harus bernilai integer\n");
                 input.nextLine();
             }
-            System.out.print("\u001B[0m");
         }
         boolean exitMainMenu = false;
 
@@ -54,8 +51,7 @@ public class Main {
                     exitMainMenu = true;
                     break;
                 case 2:
-                    World world = load();
-                    playSim(world);
+                    load();
                     exitMainMenu = true;
                     break;
                 case 3:
@@ -77,7 +73,7 @@ public class Main {
 
     public static void generateSim (World world) throws Exception {
         // World world = new World();
-        System.out.print("\nMasukkan nama pemain: ");
+        System.out.print("Masukkan nama pemain: ");
         Scanner input = new Scanner(System.in);
         String namaSim = input.nextLine();
         while (world.isSimInWorld(namaSim)) {
@@ -95,34 +91,18 @@ public class Main {
         world.addSim(sim);
         world.addCekPosisi(rumah);
 
-        // Animasi, biarin dulu aja
-        System.out.println(" Generating Sim\n");
-        // System.out.print("[                ]");
-        // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // System.out.print("[===             ]");
-        // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // System.out.print("[======          ]");
-        // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // System.out.print("[==========      ]");
-        // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // System.out.print("[================]");
-        // Thread.sleep(1000);
-        // Thread.sleep(1000);
-        // System.out.println();
+        System.out.print("Generating Sim");
 
-        System.out.println("Welcome to the game, " + namaSim + "!\n");
+        // Animasi, hiraukan
+        // Thread.sleep(1000);
+        // System.out.print(".");
+        // Thread.sleep(1000);
+        // System.out.print(".");
+        // Thread.sleep(1000);
+        // System.out.println(".");
+        // Thread.sleep(1000);
+
+        System.out.println("\nWelcome to the game, " + namaSim + "!\n");
         //Thread.sleep(1000);
         playSim(world);
     }
@@ -143,9 +123,8 @@ public class Main {
     public static void save(World world) {
         Save.save(world);
     }
-
-    public static World load() {
-        return Load.load("data/data.json");
+    public static void load() {
+        Load.load("data/data.json");
     }
 
     public static void clearConsole() {
@@ -159,7 +138,6 @@ public class Main {
         } catch (Exception e) {
             
         }
-        System.out.println("\u001B[0m");
     }
 
     public static void playSim(World world) throws Exception {
@@ -189,29 +167,37 @@ public class Main {
 
         // Ini cuma animasi loading
 
-        System.out.println(" Generating World\n");
+        // System.out.println("Generating World");
+        // Thread.sleep(1000);
         // System.out.print("[                ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
+        // Thread.sleep(1000);
         // System.out.print("[===             ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
+        // Thread.sleep(1000);
         // System.out.print("[======          ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
+        // Thread.sleep(1000);
         // System.out.print("[==========      ]");
         // Thread.sleep(1000);
         // for (int i = 0; i < 18; i++) {
         //     System.out.print("\b");
         // }
+        // Thread.sleep(1000);
         // System.out.print("[================]");
         // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
         // Thread.sleep(1000);
         // System.out.println();
 
@@ -219,49 +205,19 @@ public class Main {
 
         //sim.setUang(10000);
         // Keluar dari loop sampe user milih exit
-        while (!exitGame) {
-            if (!sim.isAlive()) {
-                System.out.print("\u001B[41m");
-                if (sim.matiDepresi()) System.out.printf("%s mati karena depresi.", sim.getNama());
-                else if (sim.matiKelaparan()) System.out.printf("%s mati karena kelaparan.", sim.getNama());
-                else if (sim.matiSakit()) System.out.printf("%s mati karena sakit.", sim.getNama());
-                System.out.print("\u001B[0m\n\n");
-                world.removeSim(sim);
-                
-                System.out.println("Ganti ke sim lain...");
-                if (world.getDaftarSim().size() == 0) {
-                    System.out.println("GAME OVER!!!");
-                    exitGame = true;
+        boolean isSudahTidur = false;
+        while (!exitGame && sim.isAlive()) {
+            // int day = Clock.getDay();
+            
+            if (Clock.getDiffTimeInSeconds() == 10*60) {
+                if (isSudahTidur) isSudahTidur = false;
+                else {
+                    sim.efekTidakTidur();
                 }
-                else sim = world.getDaftarSim().get(world.getDaftarSim().size()-1);
             }
-            /* Cek apakah sudah 10 menit tanpa tidur */
-            sim.checkSudahTidur();
-
-            /* Cek apakah sudah 4 menit setelah makan tanpa buang air */
-            sim.checkSudahBuangAir();
-
             // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getCurrentRumah(sim);
             Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
-
-            // Thread t1 = new Thread(new Runnable() {
-            //     @Override
-            //     public void run() {
-            //         currentSim.beliBarang();
-            //     }
-            // });
-
-            // Thread t2 = new Thread(new Runnable()  {
-            //     @Override
-            //     public void run() {
-            //         try {
-            //             currentSim.upgradeRumah(world, rumah);
-            //         } catch (Exception e) {
-            //             e.printStackTrace();
-            //         }
-            //     }
-            // });
 
             // Informasi sim dan lokasinya
             sim.printCurrentSimRoom(world);
@@ -303,6 +259,7 @@ public class Main {
             }
 
             aksi = aksi.toLowerCase();
+
             switch (aksi) {
                 case "kerja" :
                     sim.kerja();
@@ -333,7 +290,7 @@ public class Main {
                     break;
                 case "ganti sim":
                     if (world.getDaftarSim().size() == 1) {
-                        System.out.print("\nTidak ada sim lain\n\nApakah kamu ingin membuat Sim baru? (y/n) ");
+                        System.out.print("Tidak ada sim lain\nApakah kamu ingin membuat Sim baru? (y/n)");
                         String pilihan = input.nextLine();
                         while (!pilihan.equals("y") && !pilihan.equals("n")) {
                             System.out.println("Pilihan tidak tersedia");
@@ -368,6 +325,7 @@ public class Main {
                     break;
                 case "tidur":
                     sim.tidur();
+                    isSudahTidur = true;
                     break;
                 case "memasak":
                     sim.memasak();
@@ -416,5 +374,6 @@ public class Main {
             input.nextLine();
             clearConsole();
         }
+        
     }
 }
