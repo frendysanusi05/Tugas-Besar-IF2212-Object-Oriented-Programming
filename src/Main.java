@@ -168,7 +168,54 @@ public class Main {
         boolean exitGame = false;
 
         // Ini cuma animasi loading
+        
         System.out.println(" Generating World...\n");
+        // Ini cuma animasi loading
+
+        // System.out.println("Generating World");
+        // Thread.sleep(1000);
+        // System.out.println("Generating World");
+        // Thread.sleep(1000);
+        // System.out.print("[                ]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // Thread.sleep(1000);
+        // System.out.print("[===             ]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // Thread.sleep(1000);
+        // System.out.print("[======          ]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // Thread.sleep(1000);
+        // System.out.print("[==========      ]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // Thread.sleep(1000);
+        // System.out.print("[================]");
+        // Thread.sleep(1000);
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // for (int i = 0; i < 18; i++) {
+        //     System.out.print("\b");
+        // }
+        // Thread.sleep(1000);
+        // System.out.println();
+
+        // End of animasi loading (Gausah dihirauikan)
 
         while (!exitGame) {
             if (!sim.isAlive()) {
