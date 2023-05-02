@@ -33,9 +33,23 @@ public class Sim {
     boolean isSudahBuangAir = false;
     int jumlahTidakBuangAir = 0;
 
+    volatile boolean isBeliBarang = false;
+    String statusBeliBarang;
+    int timeBeliBarang = 0;
+    int lamaBeliBarang = 0;
+
+    volatile boolean isUpgradeRumah = false;
+    String statusUpgradeRumah;
+    int timeUpgradeRumah = 0;
+    int lamaUpgradeRumah = 0;
+
+    private volatile boolean isAksiAktif = false;
+    volatile boolean stopTimeUpgradeRumah = false;
+    volatile boolean stopTimeBeliBarang = false;
+
     public Sim(String nama) {
         this.nama = nama;
-        this.uang = 1500;
+        this.uang = 80;
         this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
@@ -53,6 +67,7 @@ public class Sim {
         daftarAksi.add("Beli Barang");
         daftarAksi.add("Pindah Ruang");
         daftarAksi.add("Lihat Inventory");
+        daftarAksi.add("Lihat Waktu");
         daftarAksi.add("Pasang Barang");
         daftarAksi.add("Bergerak ke Objek");
         daftarAksi.add("Ganti Sim");
@@ -104,6 +119,10 @@ public class Sim {
 
     public List<String> getDaftarAksi() {
         return daftarAksi;
+    }
+
+    public boolean getIsAksiAktif() {
+        return isAksiAktif;
     }
 
 
@@ -215,7 +234,9 @@ public class Sim {
         setStatus("Sedang Makan");
         System.out.printf("Sedang makan %s...\n", namaMakanan);
 
+        isAksiAktif = true;
         Clock.wait(durasi);
+        isAksiAktif = false;
         inventory.decreaseItem(namaMakanan, 1);
         switch(namaMakanan){
             case "Nasi" :
@@ -300,7 +321,7 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 30;
-                
+                isAksiAktif = true;
                 while (!isThreadFinished) {
                     /*
                     -10 kekenyangan / 30 detik
@@ -320,6 +341,7 @@ public class Sim {
                         }
                     }
                 }
+                isAksiAktif = false;
             }
         });
 
@@ -420,6 +442,7 @@ public class Sim {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 20;
                 
+                isAksiAktif = true;
                 while (!isThreadFinished) {
                     /*
                     +5 kesehatan/20 detik
@@ -440,6 +463,7 @@ public class Sim {
                         }
                     }
                 }
+                isAksiAktif = false;
             }
         });
 
@@ -494,7 +518,7 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 3*60;
-                
+                isAksiAktif = true;
                 while (!isThreadFinished) {
                     /*
                     +30 mood / 4 menit
@@ -513,6 +537,7 @@ public class Sim {
                         }
                     }
                 }
+                isAksiAktif = false;
             }
         });
 
@@ -612,7 +637,9 @@ public class Sim {
             Thread t1 = new Thread(new Runnable() {
                 @Override
                 public void run() {
+                    isAksiAktif = true;
                     Clock.wait(durasi);
+                    isAksiAktif = false;
                     isThreadFinished = true;
                 }
             });
@@ -691,7 +718,9 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
+                isAksiAktif = true;
                 Clock.wait(waktuBerkunjung);
+                isAksiAktif = false;
             }
         });
 
@@ -748,14 +777,18 @@ public class Sim {
             return;
         }
         System.out.println("Pulang ke rumah...");
+        isAksiAktif = true;
         Clock.wait(durasi);
+        isAksiAktif = false;
         isOutside = false;
     }
 
     public void buangAir(){
         durasi = (double)10;
         System.out.println("\nSedang buang air...");
+        isAksiAktif = true;
         Clock.wait(durasi);
+        isAksiAktif = false;
         System.out.println("\nSelesai buang air");
         addKekenyangan(-20);
         addMood(10);
@@ -765,72 +798,98 @@ public class Sim {
     public void upgradeRumah(World world, Rumah rumah) throws Exception{
         //menambah ruangan
         //membutuhkan waktu sejumlah 18 menit
-        
-        int waktuUpgradeRumah = 18;
-        int hargaUpgradeRumah = 1500;
-        List<Point> available = world.checkAvailable(rumah);
+        if (statusUpgradeRumah == "Sedang Upgrade Rumah") {
+            System.out.println("Rumah sedang di-upgrade, belum bisa menggunakan aksi ini.");
+        }
+        else {
+            lamaUpgradeRumah = 18*60;
+            int hargaUpgradeRumah = 1500;
+            List<Point> available = world.checkAvailable(rumah);
 
-        //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
-        
-        if (available.size() > 0 && getUang() >= hargaUpgradeRumah) {
-            world.printWorld();
-            System.out.println("Berikut ini adalah titik yang kamu bisa pilih untuk memperluas rumah kamu");
-            int i = 1;
-            for (Point point : available) {
-                System.out.println(i + ". (" + point.getX() + ", " + point.getY() + ")");
-                i++;
-            }
-            Scanner input = new Scanner(System.in);
-            int pilihan = -1;
-            boolean isInputInt = false;
-            while (!isInputInt) {
-                try {
-                    System.out.print("Pilih salah satu titik di atas (masukkan angka 1 sampai " + available.size() + " saja): ");
-                    pilihan = input.nextInt();
-                    while (pilihan < 1 || pilihan > available.size()) {
-                        System.out.println("Pilihan tidak valid");
+            //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
+            
+            if (available.size() > 0 && getUang() >= hargaUpgradeRumah) {
+                world.printWorld();
+                System.out.println("Berikut ini adalah titik yang kamu bisa pilih untuk memperluas rumah kamu");
+                int i = 1;
+                for (Point point : available) {
+                    System.out.println(i + ". (" + point.getX() + ", " + point.getY() + ")");
+                    i++;
+                }
+                Scanner input = new Scanner(System.in);
+                int pilihan = -1;
+                boolean isInputInt = false;
+                while (!isInputInt) {
+                    try {
                         System.out.print("Pilih salah satu titik di atas (masukkan angka 1 sampai " + available.size() + " saja): ");
-                        input = new Scanner(System.in);
                         pilihan = input.nextInt();
+                        while (pilihan < 1 || pilihan > available.size()) {
+                            System.out.println("Pilihan tidak valid");
+                            System.out.print("Pilih salah satu titik di atas (masukkan angka 1 sampai " + available.size() + " saja): ");
+                            input = new Scanner(System.in);
+                            pilihan = input.nextInt();
+                        }
+                        isInputInt = true;
                     }
-                    isInputInt = true;
+                    catch (Exception e) {
+                        System.out.println("Masukan harus integer");
+                        input.next();
+                    }
                 }
-                catch (Exception e) {
-                    System.out.println("Masukan harus integer");
-                    input.next();
-                }
-            }
 
-            System.out.print("Apa nama ruangan baru itu? ");
-            input = new Scanner(System.in);
-            String namaRuangan = input.nextLine();
+                System.out.print("Apa nama ruangan baru itu? ");
+                input = new Scanner(System.in);
+                String namaRuangan = input.nextLine();
 
-            Point point = available.get(pilihan - 1);
+                Point point = available.get(pilihan - 1);
 
 
-            Ruangan newRoom = new Ruangan(namaRuangan, rumah, point);
+                Ruangan newRoom = new Ruangan(namaRuangan, rumah, point);
 
-            System.out.println("Mengupgrade rumah...");
-            //ubah status
-            setStatus("Sedang Upgrade Rumah");
-            Thread t1 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    durasi = (double)waktuUpgradeRumah * 60;
-                    Clock.wait(durasi);
-                }
-            });
+                System.out.println("Mengupgrade rumah...");
+                //ubah status
+                timeUpgradeRumah = Clock.convertToSeconds(Clock.getTime());
+                statusUpgradeRumah = "Sedang Upgrade Rumah";
+                Thread t1 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        isUpgradeRumah = true;
+                        if (!stopTimeBeliBarang) stopTimeUpgradeRumah = true;
+                        durasi = (double) lamaUpgradeRumah;
+                        Clock.wait(durasi);
+                        isUpgradeRumah = false;
+                        stopTimeUpgradeRumah = false;
+                    }
+                });
 
-            t1.start();
-            //kurangin uangnya
-            minUang(hargaUpgradeRumah);
-            world.addCekPosisi(rumah);
-            world.printWorld();
-        } else {
-            if (available.size() == 0) {
-                System.out.println("Space di world tidak cukup");
+                Thread t2 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true) {
+                            if (!isAksiAktif && !stopTimeBeliBarang) {
+                                Clock.stopTime(1);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                });
+
+                t2.start();
+                t1.start();
+                //kurangin uangnya
+                minUang(hargaUpgradeRumah);
+                world.addCekPosisi(rumah);
+                world.printWorld();
             } else {
-                System.out.println("Saldo tidak cukup");
+                if (available.size() == 0) {
+                    System.out.println("Space di world tidak cukup");
+                } else {
+                    System.out.println("Saldo tidak cukup");
+                }
             }
         }
     }
@@ -839,134 +898,160 @@ public class Sim {
         //mengisi rumahnya dengan barang-barang.
         //waktu kedatangan barang tidak dapat dipastikan.
         //durasi pengiriman barang akan selalu acak tetapi tetap dalam range waktu X menit.
+        if (statusBeliBarang == "Sedang Beli Barang") {
+            System.out.println("Barang lain masih dalam proses pengantaran, belum bisa menggunakan aksi ini.");
+        }
+        else {
+            ArrayList<String> furniture = new ArrayList<String>() {{
+                add("Kasur Single");
+                add("Kasur Queen Size");
+                add("Kasur King Size");
+                add("Toilet");
+                add("Kompor Gas");
+                add("Kompor Listrik");
+                add("Meja dan Kursi");
+                add("Jam");
+                add("Komputer");
+                add("TV");
+                add("Shower");
+            }};
 
-        ArrayList<String> furniture = new ArrayList<String>() {{
-            add("Kasur Single");
-            add("Kasur Queen Size");
-            add("Kasur King Size");
-            add("Toilet");
-            add("Kompor Gas");
-            add("Kompor Listrik");
-            add("Meja dan Kursi");
-            add("Jam");
-            add("Komputer");
-            add("TV");
-            add("Shower");
-        }};
+            ArrayList<String> bahanMakanan = new ArrayList<String>() {{
+                add("Nasi");
+                add("Kentang");
+                add("Ayam");
+                add("Sapi");
+                add("Wortel");
+                add("Bayam");
+                add("Kacang");
+                add("Susu");
+            }};
 
-        ArrayList<String> bahanMakanan = new ArrayList<String>() {{
-            add("Nasi");
-            add("Kentang");
-            add("Ayam");
-            add("Sapi");
-            add("Wortel");
-            add("Bayam");
-            add("Kacang");
-            add("Susu");
-        }};
+            System.out.println("""
+            Selamat Datang di Indimaret Online!\nBerikut ini adalah barang yang bisa dibeli:\n
+                +-----+-------------------------------------------------------+
+                |     |                        Kategori                       |
+                | No. +----------------------------+--------------------------+
+                |     |      Furniture   (Harga)   |   Bahan Makanan (Harga)  |
+                +-----+----------------------------+--------------------------+
+                |  1. | Kasur Single     ( 50  )   | Nasi    ( 5  )           |
+                |  2. | Kasur Queen Size ( 100 )   | Kentang ( 3  )           |
+                |  3. | Kasur King Size  ( 150 )   | Ayam    ( 10 )           |
+                |  4. | Toilet           ( 50  )   | Sapi    ( 12 )           |
+                |  5. | Kompor Gas       ( 100 )   | Wortel  ( 3  )           |
+                |  6. | Kompor Listrik   ( 200 )   | Bayam   ( 3  )           |
+                |  7. | Meja dan Kursi   ( 50  )   | Kacang  ( 2  )           |
+                |  8. | Jam              ( 10  )   | Susu    ( 2  )           |
+                |  9. | Komputer         ( 250 )   |                          |
+                | 10. | TV               ( 100 )   |                          |
+                | 11. | Shower           ( 150 )   |                          |   
+                +-----+----------------------------+--------------------------+
+            """);
 
-        System.out.println("""
-        Selamat Datang di Indimaret Online!\nBerikut ini adalah barang yang bisa dibeli:\n
-            +-----+-------------------------------------------------------+
-            |     |                        Kategori                       |
-            | No. +----------------------------+--------------------------+
-            |     |      Furniture   (Harga)   |   Bahan Makanan (Harga)  |
-            +-----+----------------------------+--------------------------+
-            |  1. | Kasur Single     ( 50  )   | Nasi    ( 5  )           |
-            |  2. | Kasur Queen Size ( 100 )   | Kentang ( 3  )           |
-            |  3. | Kasur King Size  ( 150 )   | Ayam    ( 10 )           |
-            |  4. | Toilet           ( 50  )   | Sapi    ( 12 )           |
-            |  5. | Kompor Gas       ( 100 )   | Wortel  ( 3  )           |
-            |  6. | Kompor Listrik   ( 200 )   | Bayam   ( 3  )           |
-            |  7. | Meja dan Kursi   ( 50  )   | Kacang  ( 2  )           |
-            |  8. | Jam              ( 10  )   | Susu    ( 2  )           |
-            |  9. | Komputer         ( 250 )   |                          |
-            | 10. | TV               ( 100 )   |                          |
-            | 11. | Shower           ( 150 )   |                          |   
-            +-----+----------------------------+--------------------------+
-        """);
-
-        Scanner scan = new Scanner(System.in);
-        System.out.print("Masukkan nama barang yang ingin dibeli: ");
-        String item = scan.nextLine();
-        System.out.println();
-        
-        while (!furniture.contains(item) && !bahanMakanan.contains(item)) {
-            System.out.println("Masukan invalid! Masukan harus ada di tabel.");
+            Scanner scan = new Scanner(System.in);
             System.out.print("Masukkan nama barang yang ingin dibeli: ");
-            item = scan.nextLine();
+            String item = scan.nextLine();
             System.out.println();
-        }
-
-        Object barang = new Object();
-
-        if (furniture.contains(item)) {
-            try {
-                barang = new Furniture(item);
-            }
-            catch (Exception e) {
-
-            }
-        }
-        else if (bahanMakanan.contains(item)) {
-            try {
-                barang = new BahanMakanan(item);
-            }
-            catch (Exception e) {
-                
-            }
-        }
-
-        if (barang instanceof Furniture) {
-            System.out.println("Harga " + item + ": " + ((Furniture) barang).getHarga());
-        }
-        else if (barang instanceof BahanMakanan) {
-            System.out.println("Harga : " + item + ": " + ((BahanMakanan) barang).getHarga());
-        }
-
-        System.out.println("Uang Anda saat ini : " + uang);
-        if (barang instanceof Furniture) {
-            if (uang < ((Furniture) barang).getHarga()) {
-                System.out.println("Uang tidak cukup!");
-                return;
-            }
-        }
-        if (barang instanceof BahanMakanan) {
-            if (uang < ((BahanMakanan) barang).getHarga()) {
-                System.out.println("Uang tidak cukup!");
-                return;
-            }
-        }
-        System.out.print("\nKonfirmasi Pembelian (y/n): ");
-        String konfirmasi = scan.nextLine();
-        System.out.println();
-        while (!konfirmasi.equals("y") && !konfirmasi.equals("n")) {
-            System.out.println("Masukan invalid!");
-            System.out.print("Konfirmasi Pembelian (y/n): ");
-            konfirmasi = scan.nextLine();
-            System.out.println();
-        }
-        
-        if (konfirmasi.equals("y")) {
-            int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
-            System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
             
-            Thread t1 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    Clock.wait((double)durasi);
+            while (!furniture.contains(item) && !bahanMakanan.contains(item)) {
+                System.out.println("Masukan invalid! Masukan harus ada di tabel.");
+                System.out.print("Masukkan nama barang yang ingin dibeli: ");
+                item = scan.nextLine();
+                System.out.println();
+            }
+
+            Object barang = new Object();
+
+            if (furniture.contains(item)) {
+                try {
+                    barang = new Furniture(item);
                 }
-            });
+                catch (Exception e) {
 
-            t1.start();
-            // System.out.printf("%s telah diterima\n", item);
+                }
+            }
+            else if (bahanMakanan.contains(item)) {
+                try {
+                    barang = new BahanMakanan(item);
+                }
+                catch (Exception e) {
+                    
+                }
+            }
 
-            if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
-            else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
+            if (barang instanceof Furniture) {
+                System.out.println("Harga " + item + ": " + ((Furniture) barang).getHarga());
+            }
+            else if (barang instanceof BahanMakanan) {
+                System.out.println("Harga : " + item + ": " + ((BahanMakanan) barang).getHarga());
+            }
 
-            inventory.addItem(item);
-        } else {
-            System.out.println("Pembelian dibatalkan");
+            System.out.println("Uang Anda saat ini : " + uang);
+            if (barang instanceof Furniture) {
+                if (uang < ((Furniture) barang).getHarga()) {
+                    System.out.println("Uang tidak cukup!");
+                    return;
+                }
+            }
+            if (barang instanceof BahanMakanan) {
+                if (uang < ((BahanMakanan) barang).getHarga()) {
+                    System.out.println("Uang tidak cukup!");
+                    return;
+                }
+            }
+            System.out.print("\nKonfirmasi Pembelian (y/n): ");
+            String konfirmasi = scan.nextLine();
+            System.out.println();
+            while (!konfirmasi.equals("y") && !konfirmasi.equals("n")) {
+                System.out.println("Masukan invalid!");
+                System.out.print("Konfirmasi Pembelian (y/n): ");
+                konfirmasi = scan.nextLine();
+                System.out.println();
+            }
+            
+            if (konfirmasi.equals("y")) {
+                lamaBeliBarang = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
+                System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, lamaBeliBarang);
+                timeBeliBarang = Clock.convertToSeconds(Clock.getTime());
+                statusBeliBarang = "Sedang Beli Barang";
+                Thread t1 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        isBeliBarang = true;
+                        if (!stopTimeUpgradeRumah) stopTimeBeliBarang = true;
+                        Clock.wait((double)lamaBeliBarang);
+                        isBeliBarang = false;
+                        stopTimeBeliBarang = false;
+                    }
+                });
+
+                Thread t2 = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        while (true) {
+                            if (!isAksiAktif && !stopTimeUpgradeRumah) {
+                                Clock.stopTime(1);
+                                try {
+                                    Thread.sleep(1000);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                    }
+                });
+
+                t2.start();
+                t1.start();
+                // System.out.printf("%s telah diterima\n", item);
+
+                if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
+                else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
+
+                inventory.addItem(item);
+            } else {
+                System.out.println("Pembelian dibatalkan");
+            }
         }
     }
 
@@ -1116,7 +1201,26 @@ public class Sim {
     }
 
     public void lihatWaktu() {
-        Clock.getTime();
+        System.out.println();
+        System.out.println(" WAKTU SIMPLICITY");
+        System.out.println("------------------");
+        System.out.println("Hari ke-" + Clock.getDay() + "\n");
+        System.out.print("Sisa waktu hari ini: ");
+        Clock.printTime(Clock.dayRemaining());
+        System.out.println("\n");
+        if (isBeliBarang) {
+            System.out.print("Sisa waktu beli barang: ");
+            System.out.println();
+            Clock.printTime(Clock.minusTime(Clock.diffTime(Clock.convertToLocalTime(timeBeliBarang)), Clock.convertToLocalTime(lamaBeliBarang)));
+            System.out.println("\n");
+        }
+        if (isUpgradeRumah) {
+            System.out.print("Sisa waktu upgrade rumah: ");
+            System.out.println();
+            Clock.printTime(Clock.minusTime(Clock.diffTime(Clock.convertToLocalTime(timeUpgradeRumah)), Clock.convertToLocalTime(lamaUpgradeRumah)));
+            System.out.println("\n");
+        }
+        if (!isBeliBarang && !isUpgradeRumah) System.out.println("Tidak sedang melakukan upgrade rumah maupun beli barang\n");
     }
 
     public void moveTo(Point point) {
