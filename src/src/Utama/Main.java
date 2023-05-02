@@ -1,14 +1,8 @@
+package src.Utama;
 
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import src.Utama.Load;
-import src.Utama.Point;
-import src.Utama.Ruangan;
-import src.Utama.Rumah;
-import src.Utama.Save;
-import src.Utama.World;
 
 public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
