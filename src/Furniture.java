@@ -1,4 +1,3 @@
-
 public class Furniture extends ObjectType<Furniture> implements Purchasable{
     private String nama;
     private int panjang;
@@ -142,5 +141,9 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
 
     public boolean isNearSim(Point posisiSim) {
         return (Math.abs(posisiSim.getX() - posisiFurniture.getX()) <= 1 && Math.abs(posisiSim.getY() - posisiFurniture.getY()) <= 1);
+    }
+
+    public void getPosisi(){
+        System.out.println("Posisi Furniture: (" + posisiFurniture.getX() + "," + posisiFurniture.getY() + ")");
     }
 }

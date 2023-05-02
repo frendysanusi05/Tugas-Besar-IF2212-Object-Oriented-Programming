@@ -1,4 +1,3 @@
-
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -190,5 +189,9 @@ public class Ruangan extends Rumah{
             }
         }
 
+    }
+
+    public Furniture getFurniture(int i) {
+        return null;
     }
 }
