@@ -86,10 +86,11 @@ public class Main {
         int x = rand.nextInt(58) + 3;
         int y = rand.nextInt(58) + 3;
         Rumah rumah = new Rumah(new Point(x, y));
-        sim.setPosisiSim(new Point(x, y));
+        sim.setPosisiSim(new Point(3, 3));
+        sim.setCurrentRuangan(rumah.getRuangan("Kamar"));
         world.addRumah(rumah, sim);
         world.addSim(sim);
-        world.addCekPosisi(rumah);
+        world.placeRumah(rumah);
 
         System.out.print("Generating Sim");
 
@@ -219,7 +220,9 @@ public class Main {
 
         // End of animasi loading (Gausah dihirauikan)
 
-        //sim.setUang(10000);
+        /*** Buat Testing ****/
+        // sim.setUang(10000);
+        
         // Keluar dari loop sampe user milih exit
     
         boolean isSudahTidur = false;
@@ -234,13 +237,24 @@ public class Main {
             // }
             // Get current ruangan dan rumah dari sim
             Rumah rumah = world.getCurrentRumah(sim);
-            Ruangan ruangan = rumah.getCurrentRuanganSim(sim);
+            Ruangan ruangan = sim.getCurrentRuangan();
 
             // Informasi sim dan lokasinya
             sim.printCurrentSimRoom(world);
             Thread.sleep(1000);
+            if (world.getDaftarSim().size() > 1) {
+                for (Sim s : world.getDaftarSim()) {
+                    if (s.getCurrentRuangan().equals(ruangan) && !s.equals(sim)) {
+                        System.out.println("웃 : Anda");
+                        System.out.println("유 : Teman Anda");
+                        break;
+                    }
+                }
+            } 
+
             System.out.println("\nBermain Sebagai " + sim.getNama());
-            System.out.println("Posisi: " + sim.getPosisiSim().getX() + ", " + sim.getPosisiSim().getY());
+
+            //System.out.println("Posisi: " + sim.getXSim() + ", " + sim.getYSim());
             // System.out.println("Kamar Mandi: " + kamarMandi.getXRuangan() + ", " + kamarMandi.getYRuangan());
             //rumah.printDaftarRuangan();
 
@@ -289,13 +303,13 @@ public class Main {
                     sim.berkunjung(world);
                     break;
                 case "upgrade rumah":
-                    sim.upgradeRumah(world, rumah);
+                    sim.upgradeRumah(rumah, ruangan);
                     break;
                 case "beli barang" :
                     sim.beliBarang();
                     break;
                 case "pindah ruang" :
-                    sim.pindahRuang(world, rumah);
+                    sim.pindahRuang(rumah);
                     break;
                 case "lihat inventory" :
                     sim.lihatInventory();
@@ -308,8 +322,7 @@ public class Main {
                     break;
                 case "ganti sim":
                     if (world.getDaftarSim().size() == 1) {
-                        System.out.print("Tidak ada sim lain\nApakah kamu ingin membuat Sim baru? (y/n)");
-                        System.out.print("Tidak ada sim lain\nApakah kamu ingin membuat Sim baru? (y/n)");
+                        System.out.print("Tidak ada sim lain\nApakah kamu ingin membuat Sim baru? (y/n) ");
                         String pilihan = input.nextLine();
                         while (!pilihan.equals("y") && !pilihan.equals("n")) {
                             System.out.println("Pilihan tidak tersedia");
