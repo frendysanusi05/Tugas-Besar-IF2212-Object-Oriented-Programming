@@ -28,47 +28,49 @@ public class Main {
         System.out.println("4. Exit\n");
 
         Scanner input = new Scanner(System.in);
-        int pilihan = 0;
-        boolean isPilihanValid = false;
-        while (!isPilihanValid) {
-            System.out.print("\u001B[103m");
-            System.out.print("Pilihan: ");
-            try {
-                pilihan = input.nextInt();
-                isPilihanValid = true;
-            }
-            catch (InputMismatchException e) {
-                System.out.println("\nMasukan harus bernilai integer\n");
-                input.nextLine();
-            }
-            System.out.print("\u001B[0m");
-        }
         boolean exitMainMenu = false;
 
         while (!exitMainMenu) {
-            switch (pilihan) {
-                case 1:
-                    newGameSim();
-                    exitMainMenu = true;
-                    break;
-                case 2:
-                    World world = load();
-                    playSim(world);
-                    load();
-                    exitMainMenu = true;
-                    break;
-                case 3:
-                    System.out.println("Help");
-                    help();
-                    break;
-                case 4:
-                    System.out.println("Exit");
-                    exitMainMenu = true;
-                    break;
-                default:
-                    System.out.println("Pilihan tidak tersedia\n");
-                    System.out.print("Pilihan: ");
-                    pilihan = input.nextInt();  
+            int pilihan = 0;
+            boolean isPilihanValid = false;
+
+            while (!isPilihanValid) {
+                System.out.print("\u001B[103m");
+                System.out.print("Pilihan: ");
+                try {
+                    pilihan = input.nextInt();
+                    System.out.print("\u001B[0m");
+                    if (pilihan < 0 || pilihan > 4) {
+                        System.out.println("Pilihan tidak tersedia\n");
+                    }
+                    else isPilihanValid = true;
+
+                    switch (pilihan) {
+                        case 1:
+                            newGameSim();
+                            exitMainMenu = true;
+                            break;
+                        case 2:
+                            World world = load();
+                            playSim(world);
+                            load();
+                            exitMainMenu = true;
+                            break;
+                        case 3:
+                            System.out.println("Help");
+                            help();
+                            break;
+                        case 4:
+                            System.out.println("Exit");
+                            exitMainMenu = true;
+                            break;
+                    }
+                }
+                catch (InputMismatchException e) {
+                    System.out.print("\u001B[0m");
+                    System.out.println("\nMasukan harus bernilai integer\n");
+                    input.nextLine();
+                }
             }
         }
         System.out.println("Terima kasih telah bermain!");
@@ -107,13 +109,13 @@ public class Main {
         generateSim(world);
     }
     public static void help(){
-        System.out.println("Berikut adalah panduan untuk bermain Sim-Plicity: ");
+        System.out.println("Berikut adalah panduan untuk bermain Sim-Plicity:\n");
         System.out.println("1. Objective Game ini untuk menjaga kesejahteraan SIM agar tidak depresi dan mati.");
         System.out.println("2. Pemain dapat melanjutkan SIM yang telah dimainkan atau membuat SIM baru.");
         System.out.println("3. Pastikan untuk save SIM kalian sebelum meninggalkan permainan.");
         System.out.println("4. Pemain menunggu lama-nya aktivitas sesuai dengan waktu yang telah ditentukan.");
         System.out.println("5. Pemain dapat berimajinasi sesuai dengan keinginannya di Game ini.");
-        System.out.println("SEMOGA MEMBANTU!");
+        System.out.println("\nSEMOGA MEMBANTU!\n");
     }
     public static void save(World world) {
         Save.save(world);
@@ -163,7 +165,7 @@ public class Main {
         boolean exitGame = false;
 
         // Ini cuma animasi loading
-        System.out.println(" Generating World\n");
+        System.out.println(" Generating World...\n");
     
         while (!exitGame) {
             if (!sim.isAlive()) {
