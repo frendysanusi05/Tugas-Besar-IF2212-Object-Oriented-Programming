@@ -1,3 +1,4 @@
+
 public class Furniture extends ObjectType<Furniture> implements Purchasable{
     private String nama;
     private int panjang;
