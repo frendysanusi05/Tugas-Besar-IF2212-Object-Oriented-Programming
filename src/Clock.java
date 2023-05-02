@@ -16,7 +16,7 @@ public class Clock {
         
         while (convertToSeconds(getTime()) - seconds < duration) {
             /*** for debugging ***/
-            // System.out.println(getTime().toSecondOfDay() - seconds);
+            // System.out.println("TES");
             // try {
             //     Thread.sleep(1000);
             // } catch (InterruptedException e) {

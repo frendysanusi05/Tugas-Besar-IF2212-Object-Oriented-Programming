@@ -203,10 +203,10 @@ public class Main {
             sim.checkFurniture(ruangan);
 
             /********************* testing only *******************/
-            // sim.addDaftarAksi("Lihat Inventory");
-            // sim.addDaftarAksi("Pasang Barang");
-            // sim.addDaftarAksi("Bergerak ke Objek");
-            // sim.addDaftarAksi("Ganti Sim");
+            sim.addDaftarAksi("Lihat Inventory");
+            sim.addDaftarAksi("Pasang Barang");
+            sim.addDaftarAksi("Bergerak ke Objek");
+            sim.addDaftarAksi("Ganti Sim");
             /************************ end testing *******************/
 
             // Tambah opsi save dan exit supaya bisa keluar sama save game

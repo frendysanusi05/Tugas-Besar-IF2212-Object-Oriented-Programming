@@ -35,7 +35,7 @@ public class Sim {
 
     public Sim(String nama) {
         this.nama = nama;
-        this.uang = 100;
+        this.uang = 1500;
         this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
@@ -818,23 +818,10 @@ public class Sim {
                 public void run() {
                     durasi = (double)waktuUpgradeRumah * 60;
                     Clock.wait(durasi);
-                    isThreadFinished = true;
                 }
             });
 
             t1.start();
-
-            try {
-                t1.join();
-            }
-            catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            isThreadFinished = false;
-            setStatus(null);
-            
-
             //kurangin uangnya
             minUang(hargaUpgradeRumah);
             world.addCekPosisi(rumah);
@@ -963,8 +950,16 @@ public class Sim {
         if (konfirmasi.equals("y")) {
             int durasi = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
             System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, durasi);
-            Clock.wait((double)durasi);
-            System.out.printf("%s telah diterima\n", item);
+            
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    Clock.wait((double)durasi);
+                }
+            });
+
+            t1.start();
+            // System.out.printf("%s telah diterima\n", item);
 
             if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
             else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
