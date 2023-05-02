@@ -27,7 +27,8 @@ import javax.swing.SwingUtilities;
 
 import java.util.stream.Collectors;
 
-//import package
+import src.Utama.*;
+import src.Utama.Ruangan;
 
 public class GUI {
     //background
@@ -65,7 +66,7 @@ public class GUI {
         window.setResizable(false);
     }
 
-    public void createMainBackground(){
+    public void createMainBackground(int bgNum, String bgPath){
         bgPanel[0] = new JPanel();
         bgPanel[0].setBounds(0, 0, 1000, 800);
         bgPanel[0].setBackground(Color.black);
@@ -75,14 +76,14 @@ public class GUI {
         bgLabel[0] = new JLabel();
         bgLabel[0].setBounds(0, 0, 1000, 800);
 
-        ImageIcon bgIcon = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("src\\img\\background\\main.png")).getImage()
+        ImageIcon bgIcon = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("/Resource/background.png")).getImage()
                 .getScaledInstance(1000, 800, Image.SCALE_SMOOTH));
         bgLabel[0].setIcon(bgIcon);
         bgPanel[0].add(bgLabel[0]);
         bgPanel[0].setVisible(false);
     }
 
-    public void createBackground(int bgNum, MouseListener mouse) {
+    public void createBackground(int bgNum, String bgPath ,MouseListener mouse) {
         bgPanel[0] = new JPanel();
         bgPanel[0].setBounds(0, 0, 700, 700);
         bgPanel[0].setBackground(null);
@@ -91,7 +92,7 @@ public class GUI {
 
         bgLabel[0] = new JLabel();
         bgLabel[0].setBounds(0, 0, 700, 700);
-        ImageIcon bgIcon = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("src\\resource\\background.png")).getImage()
+        ImageIcon bgIcon = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("/Resource/background.png")).getImage()
                 .getScaledInstance(700, 700, Image.SCALE_SMOOTH));
         bgLabel[0].setIcon(bgIcon);
         bgLabel[0].addMouseListener(mouse);
@@ -123,8 +124,8 @@ public class GUI {
         window.add(attributePanel);
 
         // add jam
-        attributeItem(50, 30, "src\\resource\\jam.png");
-        //jamText = new JLabel(mg.world.getTime());
+        attributeItem(50, 30, "/Resource/jam.png");
+        //jamText = new JLabel(mg.lock.getTime());
         jamText.setBounds(50 + 70, 15, 200, 50);
         jamText.setBackground(null);
         jamText.setForeground(Color.white);
@@ -146,8 +147,8 @@ public class GUI {
         attributePanel.add(nameText);
 
         // add pekerjaan
-        attributeItem(50, 160, "src\\resource\\upgrade.png");
-        createObjek(attributePanel, 50, 160, 50, 50, "src\\resource\\upgrade.png", new String[] { "Bekerja", "Ganti Pekerjaan" }, -1);
+        attributeItem(50, 160, "upgrade.png");
+        createObjek(attributePanel, 50, 160, 50, 50, "upgrade.png", new String[] { "Bekerja", "Ganti Pekerjaan" }, -1);
         pekerjaanText = new JLabel();
         pekerjaanText.setBounds(50 + 70, 160, 200, 50);
         pekerjaanText.setBackground(null);
@@ -156,7 +157,7 @@ public class GUI {
         attributePanel.add(pekerjaanText);
 
         // add uang
-        attributeItem(50, 220, "src\\resource\\cash.png");
+        attributeItem(50, 220, "/Resource/cash.png");
         uangText = new JLabel("80");
         uangText.setBounds(50 + 70, 220, 200, 50);
         uangText.setBackground(null);
@@ -165,7 +166,7 @@ public class GUI {
         attributePanel.add(uangText);
 
         // add mood
-        attributeItem(50, 280, "src\\resource\\mood.png");
+        attributeItem(50, 280, "/Resource/mood.png");
         moodText = new JLabel("80");
         moodText.setBounds(50 + 70, 280, 200, 50);
         moodText.setBackground(null);
@@ -174,7 +175,7 @@ public class GUI {
         attributePanel.add(moodText);
 
         // add kesehatan
-        attributeItem(50, 340, "src\\resource\\life.png");
+        attributeItem(50, 340, "/Resource/life.png");
         kesehatanText = new JLabel("80");
         kesehatanText.setBounds(50 + 70, 340, 200, 50);
         kesehatanText.setBackground(null);
@@ -183,7 +184,7 @@ public class GUI {
         attributePanel.add(kesehatanText);
 
         // add kekenyangan
-        attributeItem(50, 400, "src\\resource\\kekenyangan.png");
+        attributeItem(50, 400, "/Resource/kekenyangan.png");
         kekenyanganText = new JLabel("80");
         kekenyanganText.setBounds(50 + 70, 400, 200, 50);
         kekenyanganText.setBackground(null);
@@ -192,10 +193,10 @@ public class GUI {
         attributePanel.add(kekenyanganText);
 
         // add inventory
-        createObjek(attributePanel, 85, 475, 50, 50, "src\\resource\\inventory.png", new String[] { "View Inventory" }, -1);
+        createObjek(attributePanel, 85, 475, 50, 50, "/Resource/inventory.png", new String[] { "View Inventory" }, -1);
 
         // add shop
-        createObjek(attributePanel, 160, 475, 50, 50, "src\\resource\\shop.png", new String[] { "Go to Store" }, -1);
+        createObjek(attributePanel, 160, 475, 50, 50, "/Resource/shop.png", new String[] { "Go to Store" }, -1);
 
         // Save
         customButton(attributePanel, 50, 560, 200, 40, "Save", 24, "save");
@@ -206,7 +207,7 @@ public class GUI {
     }
 
     public void attributeItem(int x, int y, String path) {
-        ImageIcon image = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("src\\resource\\background.png")).getImage()
+        ImageIcon image = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("/Resource/background.png")).getImage()
                 .getScaledInstance(50, 50, Image.SCALE_SMOOTH));
         JLabel icon = new JLabel();
         icon.setBounds(x, y, 50, 50);
@@ -248,39 +249,6 @@ public class GUI {
         return new ImageIcon(rotatedImage);
     }
 
-    //public void createObjek(int bgNum, int x, int y, int width, int height, String objPath, String[] actions,
-      //      String posisi) {
-        // POP MENU
-        //JPopupMenu popMenu = new JPopupMenu();
-        //JMenuItem menuItem[] = new JMenuItem[actions.length];
-        //for (int i = 0; i < menuItem.length; i++) {
-        //    menuItem[i] = new JMenuItem(actions[i]);
-        //    menuItem[i].addActionListener(mg.actionHandler);
-        //    menuItem[i].setActionCommand(actions[i]);
-        //    popMenu.add(menuItem[i]);
-        //}
-
-        //JLabel obj = new JLabel();
-        //obj.setBounds(x, y, width, height);
-
-        //ImageIcon objImage = new ImageIcon(getClass().getClassLoader().getResource(objPath));
-        //if (posisi.equals("h")) {
-        //    objImage = rotate(objImage, 90);
-        //}
-        //obj.setIcon(objImage);
-
-        //obj.addMouseListener(new java.awt.event.MouseAdapter() {
-        //    @Override
-        //    public void mousePressed(java.awt.event.MouseEvent e) {
-        //        if (SwingUtilities.isLeftMouseButton(e)) {
-        //            popMenu.show(obj, e.getX(), e.getY());
-         //       }
-         //   }
-        //});
-
-        //bgPanel[bgNum].add(obj);
-    //}
-
     public void createObjek(JPanel panel, int x, int y, int width, int height, String objPath, String[] actions,
             int index) {
         // POP MENU
@@ -302,7 +270,7 @@ public class GUI {
 
         JLabel obj = new JLabel();
         obj.setBounds(x, y, width, height);
-        ImageIcon objImage = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("src\\resource\\inventory.png")).getImage()
+        ImageIcon objImage = new ImageIcon(new ImageIcon(getClass().getClassLoader().getResource("/Resource/inventory.png")).getImage()
                 .getScaledInstance(width, height, Image.SCALE_SMOOTH));
         obj.setIcon(objImage);
         obj.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -395,7 +363,6 @@ public class GUI {
         });
         bgPanel[bgNum].add(obj, 0);
     }
-
     public static void main(String[] args) {
         MasterGame mg = new MasterGame();
         new GUI(mg);

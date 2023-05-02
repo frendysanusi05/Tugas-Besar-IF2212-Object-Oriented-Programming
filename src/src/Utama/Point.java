@@ -1,3 +1,4 @@
+package src.Utama;
 
 public class Point implements Cloneable {
     private int x;
