@@ -168,7 +168,7 @@ public class Main {
 
         // Ini cuma animasi loading
         System.out.println(" Generating World...\n");
-    
+
         while (!exitGame) {
             if (!sim.isAlive()) {
                 System.out.print("\u001B[41m");
@@ -185,6 +185,7 @@ public class Main {
                 }
                 else sim = world.getDaftarSim().get(world.getDaftarSim().size()-1);
             }
+
             /* Cek apakah sudah 10 menit tanpa tidur */
             sim.checkSudahTidur();
 
@@ -208,6 +209,7 @@ public class Main {
 
             /********************* testing only *******************/
             sim.addDaftarAksi("Lihat Inventory");
+            sim.addDaftarAksi("Lihat Waktu");
             sim.addDaftarAksi("Pasang Barang");
             sim.addDaftarAksi("Bergerak ke Objek");
             sim.addDaftarAksi("Ganti Sim");
@@ -236,7 +238,6 @@ public class Main {
 
             aksi = aksi.toLowerCase();
 
-
             switch (aksi) {
                 case "kerja" :
                     sim.kerja();
@@ -258,6 +259,9 @@ public class Main {
                     break;
                 case "lihat inventory" :
                     sim.lihatInventory();
+                    break;
+                case "lihat waktu":
+                    sim.lihatWaktu();
                     break;
                 case "pasang barang" :
                     sim.pasangBarang(ruangan);
@@ -346,6 +350,7 @@ public class Main {
                 
                 //masih ada beberapa aksi yang belum, nanti ditambahin lagi
             }
+
             System.out.println("\nTekan enter untuk melanjutkan");
             input.nextLine();
             clearConsole();
