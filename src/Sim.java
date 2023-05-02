@@ -44,7 +44,11 @@ public class Sim {
         this.status = null; 
         daftarAksi.add("Kerja");
         daftarAksi.add("Olahraga");
+        daftarAksi.add("Tidur");
+        daftarAksi.add("Makan");
+        daftarAksi.add("Memasak");
         daftarAksi.add("Berkunjung");
+        daftarAksi.add("Buang Air");
         daftarAksi.add("Upgrade Rumah");
         daftarAksi.add("Beli Barang");
         daftarAksi.add("Pindah Ruang");
