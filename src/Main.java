@@ -4,6 +4,7 @@ public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
     public static void main(String[] args) throws Exception {
         clearConsole();
+        System.out.println("\033[1;32m");
         System.out.println("     :::       ::: :::::::::: :::        ::::::::   ::::::::    :::   :::   ::::::::::      ::::::::::: ::::::::"); 
         System.out.println("    :+:       :+: :+:        :+:       :+:    :+: :+:    :+:  :+:+: :+:+:  :+:                 :+:    :+:    :+::"); 
         System.out.println("   +:+       +:+ +:+        +:+       +:+        +:+    +:+ +:+ +:+:+ +:+ +:+                 +:+    +:+    +:+");  
@@ -11,6 +12,7 @@ public class Main {
         System.out.println(" +#+ +#+#+ +#+ +#+        +#+       +#+        +#+    +#+ +#+       +#+ +#+                 +#+    +#+    +#+");    
         System.out.println("#+#+# #+#+#  #+#        #+#       #+#    #+# #+#    #+# #+#       #+# #+#                 #+#    #+#    #+#");     
         System.out.println("###   ###   ########## ########## ########   ########  ###       ### ##########          ###     ########\n");
+        System.out.println("\033[1;36m");
         System.out.println(" ________  ___  _____ ______                  ________  ___       ___  ________  ___  _________    ___    ___ ___       ");
         System.out.println("|\\   ____\\|\\  \\|\\   _ \\  _   \\               |\\   __  \\|\\  \\     |\\  \\|\\   ____\\|\\  \\|\\___   ___\\ |\\  \\  /  /|\\  \\      ");
         System.out.println("\\ \\  \\___|\\ \\  \\ \\  \\\\\\__\\ \\  \\  ____________\\ \\  \\|\\  \\ \\  \\    \\ \\  \\ \\  \\___|\\ \\  \\|___ \\  \\_| \\ \\  \\/  / | \\  \\     ");
@@ -20,7 +22,7 @@ public class Main {
         System.out.println("   |\\_________\\|__|\\|__|     \\|__|               \\|__|     \\|_______|\\|__|\\|_______|\\|__|    \\|__|\\___/ /           ___ ");
         System.out.println("   \\|_________|                                                                                  \\|___|/           |\\__\\");
         System.out.println("                                                                                                                   \\|__|\n");
-
+        System.out.println("\033[0m");
         System.out.println("Silahkan pilih menu dibawah ini:");                                                                                                                                        
         System.out.println("1. New Game");
         System.out.println("2. Load Game");
