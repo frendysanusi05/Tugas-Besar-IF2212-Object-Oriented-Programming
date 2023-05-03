@@ -1370,7 +1370,7 @@ public class Sim {
     }
 
     public void printDaftarAksi() {
-        // print daftar aksi, same like printsimattribute, with the style of table
+
         System.out.println();
         System.out.println("+------------------------+");
         for (String aksi : daftarAksi) {
