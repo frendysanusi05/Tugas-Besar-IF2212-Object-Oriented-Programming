@@ -56,7 +56,7 @@ public class Sim {
 
     public Sim(String nama) {
         this.nama = nama;
-        this.uang = 80;
+        this.uang = 100;
         this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
@@ -829,7 +829,7 @@ public class Sim {
             System.out.println("Kamu tidak bisa upgrade rumah di rumah orang lain");
             return;
         }
-        
+
         if (statusUpgradeRumah == "Sedang Upgrade Rumah") {
             System.out.println("Rumah sedang di-upgrade, belum bisa menggunakan aksi ini.");
         } else {
@@ -1361,11 +1361,11 @@ public class Sim {
 
     public void printSimAttribute() {
         System.out.println();
-        System.out.println("+------------------+-------+------+-----------+-------------+");
-        System.out.println("| Pekerjaan        | Uang  | Mood | Kesehatan | Kekenyangan |");
-        System.out.println("+------------------+-------+------+-----------+-------------+");
-        System.out.printf("| %-16s | %-4d | %-5d  | %-8d | %-10d |\n", pekerjaan, uang, mood, kesehatan, kekenyangan);
-        System.out.println("+------------------+-------+------+-----------+-------------+");
+        System.out.println("+------------------+----------+----------+----------------+----------------+");
+        System.out.println("| Pekerjaan        | Uang     | Mood     | Kesehatan      | Kekenyangan    |");
+        System.out.println("+------------------+----------+----------+----------------+----------------+");
+        System.out.printf("| %-16s | %-8d | %-8d | %-14d | %-14d |\n", pekerjaan, uang, mood, kesehatan, kekenyangan);
+        System.out.println("+------------------+----------+----------+----------------+----------------+");
         System.out.println();
     }
 
