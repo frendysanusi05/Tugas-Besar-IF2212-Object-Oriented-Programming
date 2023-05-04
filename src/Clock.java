@@ -23,9 +23,7 @@ public class Clock {
         // Changed "... + 1 < duration" to "... <= duration"
         while ((convertToSeconds(getRealTime()) - stop) - seconds <= duration) {
             /*** for debugging ***/
-            // System.out.println("Current Time: " + convertToSeconds(getRealTime()));
-            // //System.out.println("Stop: " + stop);
-            // System.out.println("Seconds: " + seconds + "\n");
+            // System.out.println((convertToSeconds(getRealTime()) - stop) - seconds + 1);
             // try {
             //     Thread.sleep(1000);
             // } catch (InterruptedException e) {
