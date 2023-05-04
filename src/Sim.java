@@ -32,6 +32,8 @@ public class Sim {
 
     private static final String[] daftarPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
 
+    private boolean isSudahMakan = false;
+
     int timeTidur = Clock.convertToSeconds(Clock.getTime());
     boolean isSudahTidur = false;
     int jumlahTidakTidur = 0;
@@ -56,7 +58,7 @@ public class Sim {
 
     public Sim(String nama) {
         this.nama = nama;
-        this.uang = 100;
+        this.uang = 10000;
         this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
@@ -137,8 +139,16 @@ public class Sim {
         return currentRuangan;
     }
 
+    public boolean getIsSudahMakan() {
+        return isSudahMakan;
+    }
+
 
     // Setter
+    public void setIsSudahMakan(boolean isSudahMakan) {
+        this.isSudahMakan = isSudahMakan;
+    }
+
     public void addUang(int uangTambahan) {
         uang += uangTambahan;
         if (uang > 100) uang = 100;
@@ -304,6 +314,7 @@ public class Sim {
         }
         System.out.println();
         System.out.println("Selesai Makan");
+        isSudahMakan = true;
     }
     
     public void kerja() {
@@ -433,8 +444,8 @@ public class Sim {
             try {
                 System.out.print("Masukkan durasi olahraga: ");
                 durasi = scan.nextDouble();
-
-                while (durasi % 20 != 0) {
+                while (durasi % 2 != 0) {
+                // while (durasi % 20 != 0) {
                     System.out.println("Durasi olahraga harus merupakan kelipatan 20");
                     System.out.print("Masukkan kembali durasi olahraga: ");
                     durasi = scan.nextDouble();
@@ -923,6 +934,7 @@ public class Sim {
                                     e.printStackTrace();
                                 }
                             }
+                            else Clock.setStopTime(0);
                         }
                     }
                 });
@@ -1104,6 +1116,7 @@ public class Sim {
                                     e.printStackTrace();
                                 }
                             }
+                            else Clock.setStopTime(0);
                         }
                     }
                 });
@@ -1252,6 +1265,26 @@ public class Sim {
 
     public void lihatWaktu() {
         Clock.getTime();
+        System.out.println();
+        System.out.println(" WAKTU SIMPLICITY");
+        System.out.println("------------------");
+        System.out.println("Hari ke-" + Clock.getDay() + "\n");
+        System.out.print("Sisa waktu hari ini: ");
+        Clock.printTime(Clock.dayRemaining());
+        System.out.println("\n");
+        if (isBeliBarang) {
+            System.out.print("Sisa waktu beli barang: ");
+            System.out.println();
+            Clock.printTime(Clock.minusTime(Clock.diffTime(Clock.convertToLocalTime(timeBeliBarang)), Clock.convertToLocalTime(lamaBeliBarang)));
+            System.out.println("\n");
+        }
+        if (isUpgradeRumah) {
+            System.out.print("Sisa waktu upgrade rumah: ");
+            System.out.println();
+            Clock.printTime(Clock.minusTime(Clock.diffTime(Clock.convertToLocalTime(timeUpgradeRumah)), Clock.convertToLocalTime(lamaUpgradeRumah)));
+            System.out.println("\n");
+        }
+        if (!isBeliBarang && !isUpgradeRumah) System.out.println("Tidak sedang melakukan upgrade rumah maupun beli barang\n");
     }
 
     public void moveTo(Point point) {
@@ -1739,7 +1772,9 @@ public class Sim {
             jumlahTidakBuangAir = 0;
         }
         else {
-            if (Clock.getDiffTimeInSeconds(timeBuangAir) >= (jumlahTidakBuangAir+1)*4*60) efekTidakBuangAir();
+            if (!isSudahMakan) {
+                if (Clock.getDiffTimeInSeconds(timeBuangAir) >= (jumlahTidakBuangAir+1)*4*60) efekTidakBuangAir();
+            }
         }
     }
 }

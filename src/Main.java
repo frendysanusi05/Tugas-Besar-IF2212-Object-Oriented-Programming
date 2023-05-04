@@ -234,6 +234,8 @@ public class Main {
                 else sim = world.getDaftarSim().get(world.getDaftarSim().size()-1);
             }
 
+            /* Cek apakah dalam sehari sim sudah makan */
+            if (Clock.checkChangeDay()) sim.setIsSudahMakan(false);
             /* Cek apakah sudah 10 menit tanpa tidur */
             sim.checkSudahTidur();
 

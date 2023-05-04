@@ -4,31 +4,32 @@ import java.time.Duration;
 
 public class Clock {
     private static int day = 0;
-    private static int skip = 0; /* in seconds */
     private static int stop = 0; /* in seconds */
-    final static LocalTime firstTime = LocalTime.now();
-    static LocalTime startTime = firstTime;
+    // final static LocalTime firstTime = LocalTime.now();
+    static LocalTime startTime = convertToLocalTime(0);
+    private static LocalTime currTime = startTime;
+    static boolean firstTimeClock = true;
 
     /* Menjalankan durasi waktu */
     /* Jika ingin menjalankan 2 menit, maka gunakan Clock.wait(2*60) */
     public static void wait(Double duration) {
-        LocalTime localTime = getTime();
+        LocalTime localTime = getRealTime();
         int seconds = localTime.toSecondOfDay();
-        
-        while (convertToSeconds(getTime()) - seconds < duration) {
+        if (firstTimeClock) {
+            startTime = Clock.getTime();
+            currTime = startTime;
+            firstTimeClock = false;
+        }
+        while ((convertToSeconds(getRealTime()) - stop) - seconds + 1 < duration) {
             /*** for debugging ***/
-            // System.out.println(getTime());
             // try {
             //     Thread.sleep(1000);
             // } catch (InterruptedException e) {
             //     e.printStackTrace();
             // }
         }
-        // System.out.println();
-        // System.out.println("Finished");
-        LocalTime localTimeDuration = convertToLocalTime(duration.intValue());
-        if (startTime == firstTime) startTime = localTimeDuration;
-        else startTime = convertToLocalTime(convertToSeconds(startTime) + convertToSeconds(localTimeDuration));
+        Duration durationInDuration = Duration.ofSeconds(duration.intValue());
+        currTime = currTime.plus(durationInDuration);
     }
 
     /* Mengecek durasi waktu == duration */
@@ -43,11 +44,15 @@ public class Clock {
 
     /* Mengambil waktu sekarang di dunia Sim */
     public static LocalTime getTime() {
+        return currTime;
+    }
+
+    /* Get current Local Time */
+    public static LocalTime getRealTime() {
         LocalTime time = LocalTime.now();
-        Duration addSkipAndStop = Duration.ofSeconds(skip-stop);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
         time = LocalTime.parse(time.format(formatter));
-        return time.plus(addSkipAndStop);
+        return time;
     }
 
     public static void printTime(LocalTime time) {
@@ -60,13 +65,15 @@ public class Clock {
     /* example output: 00:01:18 */
     public static LocalTime diffTime(LocalTime currTime) {
         if (currTime == null) {
-            if (startTime == firstTime) {
+            if (firstTimeClock) {
                 return LocalTime.ofSecondOfDay(0);
             }
-            else currTime = startTime;
+            else {
+                currTime = startTime;
+            }
         }
-        LocalTime endTime = getTime(); /* current local time */
-        Duration duration = Duration.between(currTime, endTime); /* bugs */
+        LocalTime endTime = getTime();
+        Duration duration = Duration.between(currTime, endTime);
         return LocalTime.ofSecondOfDay(duration.getSeconds());
     }
 
@@ -79,19 +86,18 @@ public class Clock {
     }
 
     public static LocalTime minusTime(LocalTime currTime, LocalTime endTime) {
-        Duration duration = Duration.between(currTime, endTime); /* bugs */
+        Duration duration = Duration.between(currTime, endTime);
         return LocalTime.ofSecondOfDay(duration.getSeconds());
-    }
-
-    /* dipakai jika ingin melakukan timeskip sebesar seconds detik */
-    public static void skipTime(int seconds) {
-        skip += seconds;
     }
 
     /* Menghitung lama waktu idle */
     /* dipakai ketika waktu tidak berjalan (Sim sedang tidak melakukan aksi) */
     public static void stopTime(int seconds) {
         stop += seconds;
+    }
+
+    public static void setStopTime(int seconds) {
+        stop = seconds;
     }
 
     public static int getDay() {
@@ -103,13 +109,12 @@ public class Clock {
         if (checkChangeDay()) day++;
     }
 
-    private static boolean checkChangeDay() {
+    public static boolean checkChangeDay() {
         LocalTime currTime = Clock.getTime();
-        return (getDiffTimeInSeconds(convertToSeconds(currTime)) % 12*60 == 0);
+        return (getDiffTimeInSeconds(convertToSeconds(currTime)) - day*12*60 == 0);
     }
 
     public static LocalTime dayRemaining() {
-        // LocalTime currTime = Clock.getTime();
         return (minusTime(diffTime(null), convertToLocalTime(12*60)));
     }
 }
