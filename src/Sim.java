@@ -1305,13 +1305,6 @@ public class Sim {
         if (!isBeliBarang && !isUpgradeRumah) System.out.println("Tidak sedang melakukan upgrade rumah maupun beli barang\n");
     }
 
-    public void moveTo(Point point) {
-        Point copiedPoint = posisiSim.clone();
-        copiedPoint.setX(point.getX());
-        copiedPoint.setY(point.getY());
-        posisiSim = copiedPoint;  
-    }
-
     public void moveToFurniture(Ruangan ruangan, World world) throws Exception {
         ruangan.printRuangan(this, world);
         System.out.println("Berikut ini adalah daftar furniture yang ada di ruangan: ");
