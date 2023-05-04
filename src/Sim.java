@@ -30,7 +30,7 @@ public class Sim {
     private volatile boolean isThreadFinished = false;
     private volatile Double durasi;
 
-    private static final String[] daftarPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter"};
+    private static final String[] daftarPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter", "Dosen", "Penyanyi", "Streamer"};
 
     private boolean isSudahMakan = false;
 
@@ -407,6 +407,17 @@ public class Sim {
                         else if(pekerjaan.equals("Dokter"))
                         {
                             addUang(50);
+                        } 
+                        else if(pekerjaan.equals("Dosen")) 
+                        {
+                            addUang(40);
+                        }
+                        else if(pekerjaan.equals("Penyanyi")) 
+                        {
+                            addUang(60);
+                        }
+                        else if(pekerjaan.equals("Streamer")) {
+                            addUang(55);
                         }
 
                         timeInSeconds = LocalTime.now().toSecondOfDay();
