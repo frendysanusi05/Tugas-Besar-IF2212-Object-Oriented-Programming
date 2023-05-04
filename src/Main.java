@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.List;
 
 public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
@@ -75,6 +76,7 @@ public class Main {
                 }
             }
         }
+
         System.out.println("Terima kasih telah bermain!");
         System.exit(0);
     }
@@ -108,9 +110,14 @@ public class Main {
         playSim(world);
     }
 
-    public static void newGameSim() throws Exception {
+    public static void newGameSim() {
         World world = new World();
-        generateSim(world);
+        try {
+            generateSim(world);
+        }
+        catch (Exception e) {
+            
+        }
     }
     public static void help(){
         System.out.println("Berikut adalah panduan untuk bermain Sim-Plicity:\n");

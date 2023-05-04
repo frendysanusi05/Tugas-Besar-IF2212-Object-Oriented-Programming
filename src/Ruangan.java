@@ -1,4 +1,5 @@
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Ruangan extends Rumah{
