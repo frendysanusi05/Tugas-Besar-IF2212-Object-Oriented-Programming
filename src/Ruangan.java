@@ -13,10 +13,10 @@ public class Ruangan extends Rumah{
     ****/
     
     /**** Atribut Tambahan ****/
-    Ruangan ruanganAtas;
-    Ruangan ruanganBawah;
-    Ruangan ruanganKiri;
-    Ruangan ruanganKanan;
+    String IDRuanganAtas;
+    String IDRuanganBawah;
+    String IDRuanganKiri;
+    String IDRuanganKanan;
 
     /**** 
      * Atribut ini dipake pas method pindahRuang
@@ -39,10 +39,10 @@ public class Ruangan extends Rumah{
             }
         }
         /**** Ketika pertama kali di-construct, dibikin null dulu ****/
-        ruanganAtas = null;
-        ruanganBawah = null;
-        ruanganKiri = null;
-        ruanganKanan = null;
+        IDRuanganAtas = null;
+        IDRuanganBawah = null;
+        IDRuanganKiri = null;
+        IDRuanganKanan = null;
         /**** 
          * ruanganAtas/ruanganBawah/ruanganKiri/ruanganKanan punya nilai rumah ketika upgradeRumah 
          * (Prinsipnya bakal sama kaya linked list)
@@ -88,37 +88,37 @@ public class Ruangan extends Rumah{
         return null;
     }
 
-    public Ruangan getRuanganAtas(){
-        return ruanganAtas;
+    public String getIDRuanganAtas() {
+        return IDRuanganAtas;
     }
 
-    public Ruangan getRuanganBawah(){
-        return ruanganBawah;
+    public String getIDRuanganBawah() {
+        return IDRuanganBawah;
     }
 
-    public Ruangan getRuanganKiri(){
-        return ruanganKiri;
+    public String getIDRuanganKiri() {
+        return IDRuanganKiri;
     }
 
-    public Ruangan getRuanganKanan(){
-        return ruanganKanan;
+    public String getIDRuanganKanan() {
+        return IDRuanganKanan;
     }
 
     // Setter
-    public void setRuanganAtas(Ruangan ruanganAtas) {
-        this.ruanganAtas = ruanganAtas;
+    public void setIDRuanganAtas(String IDRuanganAtas) {
+        this.IDRuanganAtas = IDRuanganAtas;
     }
 
-    public void setRuanganBawah(Ruangan ruanganBawah) {
-        this.ruanganBawah = ruanganBawah;
+    public void setIDRuanganBawah(String IDRuanganBawah) {
+        this.IDRuanganBawah = IDRuanganBawah;
     }
 
-    public void setRuanganKiri(Ruangan ruanganKiri) {
-        this.ruanganKiri = ruanganKiri;
+    public void setIDRuanganKiri(String IDRuanganKiri) {
+        this.IDRuanganKiri = IDRuanganKiri;
     }
 
-    public void setRuanganKanan(Ruangan ruanganKanan) {
-        this.ruanganKanan = ruanganKanan;
+    public void setIDRuanganKanan(String IDRuanganKanan) {
+        this.IDRuanganKanan = IDRuanganKanan;
     }
 
     public void setPosisiRuangan(Point newPos) {
@@ -200,20 +200,20 @@ public class Ruangan extends Rumah{
 
     public void printRuanganNextTo() {
         int i = 1;
-        if (ruanganAtas != null) {
-            System.out.println(i + ". " + ruanganAtas.getNamaRuangan());
+        if (IDRuanganAtas != null) {
+            System.out.println(i + ". " + getRuanganBasedOnID(IDRuanganAtas).getNamaRuangan());
             i++;
         } 
-        if (ruanganBawah != null) {
-            System.out.println(i + ". " + ruanganBawah.getNamaRuangan());
+        if (IDRuanganBawah != null) {
+            System.out.println(i + ". " + getRuanganBasedOnID(IDRuanganBawah).getNamaRuangan());
             i++;
-        } 
-        if (ruanganKiri != null) {
-            System.out.println(i + ". " + ruanganKiri.getNamaRuangan());
+        }
+        if (IDRuanganKiri != null) {
+            System.out.println(i + ". " + getRuanganBasedOnID(IDRuanganKiri).getNamaRuangan());
             i++;
-        } 
-        if (ruanganKanan != null) {
-            System.out.println(i + ". " + ruanganKanan.getNamaRuangan());
+        }
+        if (IDRuanganKanan != null) {
+            System.out.println(i + ". " + getRuanganBasedOnID(IDRuanganKanan).getNamaRuangan());
             i++;
         }
     }
@@ -357,25 +357,25 @@ public class Ruangan extends Rumah{
 
     public void checkSurrounding(Rumah rumah) {
         for (Ruangan ruangan : rumah.getDaftarRuangan()) {
-            if (ruangan.getXRuangan() == getXRuangan() && ruangan.getYRuangan() == titikRuangan.getY() + 6 && getRuanganAtas() == null) {
+            if (ruangan.getXRuangan() == getXRuangan() && ruangan.getYRuangan() == titikRuangan.getY() + 6 && getIDRuanganAtas() == null) {
                 System.out.println("Ruang " + ruangan.getNamaRuangan() + " berada di atas " + getNamaRuangan());
-                setRuanganAtas(ruangan);
-                ruangan.setRuanganBawah(this);
+                setIDRuanganAtas(ruangan.getIDRuangan());
+                ruangan.setIDRuanganBawah(IDRuangan);
             } 
-            if (ruangan.getXRuangan() == getXRuangan() && ruangan.getYRuangan() == titikRuangan.getY() - 6 && getRuanganBawah() == null) {
+            if (ruangan.getXRuangan() == getXRuangan() && ruangan.getYRuangan() == titikRuangan.getY() - 6 && getIDRuanganBawah() == null) {
                 System.out.println("Ruang " + ruangan.getNamaRuangan() + " berada di bawah " + getNamaRuangan());
-                setRuanganBawah(ruangan);
-                ruangan.setRuanganAtas(this);
+                setIDRuanganBawah(ruangan.getIDRuangan());
+                ruangan.setIDRuanganAtas(IDRuangan);
             } 
-            if (ruangan.getYRuangan() == getYRuangan() && ruangan.getXRuangan() == titikRuangan.getX() + 6 && getRuanganKanan() == null) {
+            if (ruangan.getYRuangan() == getYRuangan() && ruangan.getXRuangan() == titikRuangan.getX() + 6 && getIDRuanganKanan() == null) {
                 System.out.println("Ruang " + ruangan.getNamaRuangan() + " berada di kanan " + getNamaRuangan());
-                setRuanganKanan(ruangan);
-                ruangan.setRuanganKiri(this);
+                setIDRuanganKanan(ruangan.getIDRuangan());
+                ruangan.setIDRuanganKiri(IDRuangan);
             } 
-            if (ruangan.getYRuangan() == getYRuangan() && ruangan.getXRuangan() == titikRuangan.getX() - 6 && getRuanganKiri() == null) {
+            if (ruangan.getYRuangan() == getYRuangan() && ruangan.getXRuangan() == titikRuangan.getX() - 6 && getIDRuanganKiri() == null) {
                 System.out.println("Ruang " + ruangan.getNamaRuangan() + " berada di kiri " + getNamaRuangan());
-                setRuanganKiri(ruangan);
-                ruangan.setRuanganKanan(this);
+                setIDRuanganKiri(ruangan.getIDRuangan());
+                ruangan.setIDRuanganKanan(IDRuangan);
             }
         }
     }

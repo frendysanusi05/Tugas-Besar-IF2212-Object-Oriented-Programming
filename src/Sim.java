@@ -345,6 +345,7 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
+                isThreadFinished = false;
                 Clock.wait(durasi);
                 isThreadFinished = true;
             }
@@ -769,7 +770,9 @@ public class Sim {
             @Override
             public void run() {
                 isAksiAktif = true;
+                //isThreadFinished = false;
                 Clock.wait(waktuBerkunjung);
+                isThreadFinished = true;
                 isAksiAktif = false;
             }
         });
@@ -779,15 +782,22 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 30;
-                if (Clock.isEqualDuration(timeInSeconds, duration)) {
-                    addMood(10);
-                    addKekenyangan(-10);
-                    timeInSeconds = LocalTime.now().toSecondOfDay();
-                    // try {
-                    //     Thread.sleep(1000);
-                    // }
-                    // catch (InterruptedException e) {
-                    // }
+                isAksiAktif = true;
+                while (!isThreadFinished) {
+                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                        addMood(10);
+                        addKekenyangan(-10);
+                        timeInSeconds = LocalTime.now().toSecondOfDay();
+                        try {
+                            Thread.sleep(1000);
+                        }
+                        catch (InterruptedException e) {
+                        }
+                    }
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                    }
                 }
             }
         });
@@ -862,16 +872,16 @@ public class Sim {
 
             //cek space di worldnya masih cukup apa ngga sama ngecek saldo cukup apa ngga
             ArrayList<String> expandable = new ArrayList<String>();
-            if (ruangan.getRuanganAtas() == null) {
+            if (ruangan.getIDRuanganAtas() == null) {
                 expandable.add("Atas");
             } 
-            if (ruangan.getRuanganBawah() == null) {
+            if (ruangan.getIDRuanganBawah() == null) {
                 expandable.add("Bawah");
             } 
-            if (ruangan.getRuanganKiri() == null) {
+            if (ruangan.getIDRuanganKiri() == null) {
                 expandable.add("Kiri");
             } 
-            if (ruangan.getRuanganKanan() == null) {
+            if (ruangan.getIDRuanganKanan() == null) {
                 expandable.add("Kanan");
             }
 
@@ -915,7 +925,9 @@ public class Sim {
                     public void run() {
                         isUpgradeRumah = true;
                         if (!stopTimeBeliBarang) stopTimeUpgradeRumah = true;
-                        durasi = (double) lamaUpgradeRumah;
+                        // durasi = (double) lamaUpgradeRumah;
+                        /**** For Testing ****/
+                        durasi = (double) 0;
                         Clock.wait(durasi);
                         isUpgradeRumah = false;
                         stopTimeUpgradeRumah = false;
@@ -945,20 +957,20 @@ public class Sim {
                 minUang(hargaUpgradeRumah);
                 Ruangan newRoom = new Ruangan(namaRuangan, rumah);
                 if (pilihan.equals("Atas")) {
-                    ruangan.setRuanganAtas(newRoom);
-                    newRoom.setRuanganBawah(ruangan);
+                    ruangan.setIDRuanganAtas(newRoom.getIDRuangan());
+                    newRoom.setIDRuanganBawah(ruangan.getIDRuangan());
                     newRoom.setPosisiRuangan(new Point(ruangan.getXRuangan(), ruangan.getYRuangan() + 6));
                 } else if (pilihan.equals("Bawah")) {
-                    ruangan.setRuanganBawah(newRoom);
-                    newRoom.setRuanganAtas(ruangan);
+                    ruangan.setIDRuanganBawah(newRoom.getIDRuangan());
+                    newRoom.setIDRuanganAtas(ruangan.getIDRuangan());
                     newRoom.setPosisiRuangan(new Point(ruangan.getXRuangan(), ruangan.getYRuangan() - 6));
                 } else if (pilihan.equals("Kiri")) {
-                    ruangan.setRuanganKiri(newRoom);
-                    newRoom.setRuanganKanan(ruangan);
+                    ruangan.setIDRuanganKiri(newRoom.getIDRuangan());
+                    newRoom.setIDRuanganKanan(ruangan.getIDRuangan());
                     newRoom.setPosisiRuangan(new Point(ruangan.getXRuangan() - 6, ruangan.getYRuangan()));
                 } else if (pilihan.equals("Kanan")) {
-                    ruangan.setRuanganKanan(newRoom);
-                    newRoom.setRuanganKiri(ruangan);
+                    ruangan.setIDRuanganKanan(newRoom.getIDRuangan());
+                    newRoom.setIDRuanganKiri(ruangan.getIDRuangan());
                     newRoom.setPosisiRuangan(new Point(ruangan.getXRuangan() + 6, ruangan.getYRuangan()));
                 }
 
@@ -1140,17 +1152,17 @@ public class Sim {
         Ruangan ruangan = currentRuangan;
         ruangan.printRuanganNextTo();
         ArrayList<String> nextTo = new ArrayList<String>();
-        if (ruangan.getRuanganAtas() != null) {
-            nextTo.add(ruangan.getRuanganAtas().getNamaRuangan());
+        if (ruangan.getIDRuanganAtas() != null) {
+            nextTo.add(rumah.getRuanganBasedOnID(ruangan.getIDRuanganAtas()).getNamaRuangan());
         } 
-        if (ruangan.getRuanganBawah() != null) {
-            nextTo.add(ruangan.getRuanganBawah().getNamaRuangan());
+        if (ruangan.getIDRuanganBawah() != null) {
+            nextTo.add(rumah.getRuanganBasedOnID(ruangan.getIDRuanganBawah()).getNamaRuangan());
         } 
-        if (ruangan.getRuanganKiri() != null) {
-            nextTo.add(ruangan.getRuanganKiri().getNamaRuangan());
+        if (ruangan.getIDRuanganKiri() != null) {
+            nextTo.add(rumah.getRuanganBasedOnID(ruangan.getIDRuanganKiri()).getNamaRuangan());
         } 
-        if (ruangan.getRuanganKanan() != null) {
-            nextTo.add(ruangan.getRuanganKanan().getNamaRuangan());
+        if (ruangan.getIDRuanganKanan() != null) {
+            nextTo.add(rumah.getRuanganBasedOnID(ruangan.getIDRuanganKanan()).getNamaRuangan());
         }
 
         if (nextTo.size() == 0) {

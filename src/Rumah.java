@@ -81,6 +81,15 @@ public class Rumah {
         return null;
     }
 
+    public Ruangan getRuanganBasedOnID (String IDRuangan) {
+        for (Ruangan ruangan : daftarRuangan) {
+            if (ruangan.getIDRuangan().equals(IDRuangan)) {
+                return ruangan;
+            }
+        }
+        return null;
+    }
+
     // public Ruangan getCurrentRuanganSim(Sim sim) {
     //     for (Ruangan ruangan : daftarRuangan) {
     //         if (sim.getCurrentRuangan().equals(ruangan)) {
