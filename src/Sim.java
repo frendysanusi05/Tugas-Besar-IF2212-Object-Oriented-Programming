@@ -67,11 +67,7 @@ public class Sim {
         this.status = null; 
         daftarAksi.add("Kerja");
         daftarAksi.add("Olahraga");
-        daftarAksi.add("Tidur");
-        daftarAksi.add("Makan");
-        daftarAksi.add("Memasak");
         daftarAksi.add("Berkunjung");
-        daftarAksi.add("Buang Air");
         daftarAksi.add("Upgrade Rumah");
         daftarAksi.add("Beli Barang");
         daftarAksi.add("Pindah Ruang");
@@ -984,6 +980,7 @@ public class Sim {
                 }
 
                 newRoom.checkSurrounding(rumah);
+                statusUpgradeRumah = "Selesai Upgrade Rumah";
             } else {
                 if (expandable.size() == 0) {
                     System.out.println("Space di world tidak cukup");
@@ -1148,7 +1145,7 @@ public class Sim {
 
                 if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
                 else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
-
+                statusBeliBarang = "Barang telah diterima";
                 inventory.addItem(item);
             } else {
                 System.out.println("Pembelian dibatalkan");
@@ -1386,10 +1383,10 @@ public class Sim {
 
     public void checkFurniture(Ruangan ruangan) {
         List<Furniture> daftarFurniture = ruangan.getDaftarFurniture();
-        if (daftarAksi.size() > 10) {
+        if (daftarAksi.size() > 11) {
             int size = daftarAksi.size();
-            for (int i = 10; i < size; i++) {
-                daftarAksi.remove(10);
+            for (int i = 11; i < size; i++) {
+                daftarAksi.remove(11);
             }
         }
 

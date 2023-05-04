@@ -164,6 +164,8 @@ public class Main {
             }
             sim = world.getDaftarSim().get(pilihan-1);
         }
+        /*** For Testing ***/
+        //sim.setUang(10000);
 
         // Set boolean ke false supaya ga exit dari game
         boolean exitGame = false;
@@ -270,11 +272,11 @@ public class Main {
             sim.checkFurniture(ruangan);
 
             /********************* testing only *******************/
-            sim.addDaftarAksi("Lihat Inventory");
-            sim.addDaftarAksi("Lihat Waktu");
-            sim.addDaftarAksi("Pasang Barang");
-            sim.addDaftarAksi("Bergerak ke Objek");
-            sim.addDaftarAksi("Ganti Sim");
+            // sim.addDaftarAksi("Lihat Inventory");
+            // sim.addDaftarAksi("Lihat Waktu");
+            // sim.addDaftarAksi("Pasang Barang");
+            // sim.addDaftarAksi("Bergerak ke Objek");
+            // sim.addDaftarAksi("Ganti Sim");
             /************************ end testing *******************/
 
             // Tambah opsi save dan exit supaya bisa keluar sama save game
@@ -380,6 +382,9 @@ public class Main {
                     break;
                 case "mandi":
                     sim.mandi();
+                    break;
+                case "rebahan":
+                    sim.rebahan();
                     break;
                 case "belajar coding":
                     sim.belajarCoding();
