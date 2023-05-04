@@ -696,14 +696,27 @@ public class Sim {
             System.out.println("Tidak ada teman yang bisa dikunjungi");
             return;
         }
-        System.out.println("Berikut ini adalah daftar teman yang bisa kamu kunjungi:");
-        int i = 1;
+
+        Rumah currentRumah = world.getCurrentRumah(this);
+        ArrayList<String> visitable = new ArrayList<String>();
         for (Sim sim : world.getDaftarSim()) {
-            if (!sim.getNama().equals(this.getNama())) {
-                System.out.println(i + ". " + sim.getNama());
-                i++;
+            if(!sim.getNama().equals(getNama()) && !world.getRumahSim(sim).equals(currentRumah)){
+                visitable.add(sim.getNama());
             }
         }
+        if (visitable.size() == 0) {
+            System.out.println("Tidak ada lagi teman yang bisa dikunjungi");
+            System.out.println("Kamu sedang berada di rumah " + world.getPemilikRumah(currentRumah));
+            return;
+        }
+
+        System.out.println("Berikut ini adalah daftar teman yang bisa kamu kunjungi:");
+        int i = 1;
+        for (String nama : visitable) {
+            System.out.println(i + ". " + nama);
+            i++;
+        }
+
         System.out.print("Masukkan nama teman yang ingin dikunjungi: ");
         Scanner input = new Scanner(System.in);
         String namaTeman = input.nextLine();
@@ -717,7 +730,7 @@ public class Sim {
         }
         Sim temanSim = world.getSim(namaTeman);
         Rumah rumahTemanSim = world.getRumahSim(temanSim);
-        Rumah rumahSim = world.getRumahSim(this);
+        Rumah rumahSim = world.getCurrentRumah(this);
 
         double x1 = rumahSim.getXRumah();
         double y1 = rumahSim.getYRumah();
@@ -755,17 +768,16 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 30;
-                
-                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
-                        addMood(10);
-                        addKekenyangan(-10);
-                        timeInSeconds = LocalTime.now().toSecondOfDay();
-                        try {
-                            Thread.sleep(1000);
-                        }
-                        catch (InterruptedException e) {
-                        }
-                    }
+                if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                    addMood(10);
+                    addKekenyangan(-10);
+                    timeInSeconds = LocalTime.now().toSecondOfDay();
+                    // try {
+                    //     Thread.sleep(1000);
+                    // }
+                    // catch (InterruptedException e) {
+                    // }
+                }
             }
         });
         t1.start();
