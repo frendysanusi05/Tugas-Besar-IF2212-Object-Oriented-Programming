@@ -58,7 +58,7 @@ public class Sim {
 
     public Sim(String nama) {
         this.nama = nama;
-        this.uang = 10000;
+        this.uang = 100;
         this.kekenyangan = 80;
         this.mood = 80;
         this.kesehatan = 80;
@@ -936,9 +936,7 @@ public class Sim {
                     public void run() {
                         isUpgradeRumah = true;
                         if (!stopTimeBeliBarang) stopTimeUpgradeRumah = true;
-                        // durasi = (double) lamaUpgradeRumah;
-                        /**** For Testing ****/
-                        durasi = (double) 0;
+                        durasi = (double) lamaUpgradeRumah;
                         Clock.wait(durasi);
                         isUpgradeRumah = false;
                         stopTimeUpgradeRumah = false;

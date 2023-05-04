@@ -76,6 +76,7 @@ public class Main {
             }
         }
         System.out.println("Terima kasih telah bermain!");
+        System.exit(0);
     }
 
     public static void generateSim (World world) throws Exception {
