@@ -20,8 +20,12 @@ public class Clock {
             currTime = startTime;
             firstTimeClock = false;
         }
-        while ((convertToSeconds(getRealTime()) - stop) - seconds + 1 < duration) {
+        // Changed "... + 1 < duration" to "... <= duration"
+        while ((convertToSeconds(getRealTime()) - stop) - seconds <= duration) {
             /*** for debugging ***/
+            // System.out.println("Current Time: " + convertToSeconds(getRealTime()));
+            // //System.out.println("Stop: " + stop);
+            // System.out.println("Seconds: " + seconds + "\n");
             // try {
             //     Thread.sleep(1000);
             // } catch (InterruptedException e) {
@@ -33,8 +37,9 @@ public class Clock {
     }
 
     /* Mengecek durasi waktu == duration */
+    // Changed getTime() to getRealTime()
     public static boolean isEqualDuration(int timeInSeconds, int duration) {
-        return getTime().toSecondOfDay() - timeInSeconds == duration;
+        return getRealTime().toSecondOfDay() - timeInSeconds == duration;
     }
 
     /* Konversi LocalTime ke seconds*/

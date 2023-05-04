@@ -26,7 +26,8 @@ public class SimDriver {
         // sim.kerja();
         // //sim.kerja();
         // sim.printSimAttribute();
-        sim.upgradeRumah(rumah, ruangan);
+        //sim.upgradeRumah(rumah, ruangan);
+        sim.beliBarang();
         Save.save(world);
         // Ruangan kamarMandi = new Ruangan("Kamar Mandi", rumah);
         // kamarMandi.setPosisiRuangan(new Point(6, 0));
