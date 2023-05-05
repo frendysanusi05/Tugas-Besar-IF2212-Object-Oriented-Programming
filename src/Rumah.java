@@ -4,7 +4,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Rumah {
     private String IDRumah;
     private Point posisi;
-    private ArrayList<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
+    private List<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
     //private Ruangan R1;
     private int jumlahRuangan;
     private static int jumlahRumah = 0;
@@ -22,19 +22,19 @@ public class Rumah {
         kamar.setPosisiRuangan(new Point(0, 0));
 
         // Diset (0,4)
-        kamar.insertObjectToRuangan("Kasur Single", new Point (0,4), new AtomicBoolean(false));
+        kamar.insertObjectToRuangan("Kasur Single", new Point (0,4), new Inventory());
 
         // Diset (5,5)
-        kamar.insertObjectToRuangan("Toilet", new Point (5, 5), new AtomicBoolean(false));
+        kamar.insertObjectToRuangan("Toilet", new Point (5, 5), new Inventory());
 
         // Diset (4,0)
-        kamar.insertObjectToRuangan("Kompor Gas", new Point (4, 0), new AtomicBoolean(false));
+        kamar.insertObjectToRuangan("Kompor Gas", new Point (4, 0), new Inventory());
 
         // Diset (0,0)
-        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (0, 0), new AtomicBoolean(false));
+        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (0, 0), new Inventory());
 
         // Diset (5,3)
-        kamar.insertObjectToRuangan("Jam", new Point (5, 3), new AtomicBoolean(false));
+        kamar.insertObjectToRuangan("Jam", new Point (5, 3), new Inventory());
     }
 
     public Rumah() {}
@@ -68,7 +68,7 @@ public class Rumah {
         return posisi.getY();
     }
 
-    public ArrayList<Ruangan> getDaftarRuangan(){
+    public List<Ruangan> getDaftarRuangan(){
         return daftarRuangan;
     }
 
@@ -89,18 +89,6 @@ public class Rumah {
         }
         return null;
     }
-
-    // public Ruangan getCurrentRuanganSim(Sim sim) {
-    //     for (Ruangan ruangan : daftarRuangan) {
-    //         if (sim.getCurrentRuangan().equals(ruangan)) {
-    //             // print nama ruangan dan point nya
-    //             return ruangan;
-    //         }
-    //     }
-    //     System.out.println("Sim tidak sedang di dalam rumah");
-    //     return null;
-    // }
-
     public int getJumlahRuangan(){
         return jumlahRuangan;
     }

@@ -1,7 +1,7 @@
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Ruangan extends Rumah{
+
+public class Ruangan extends Rumah {
     private String IDRuangan;
     private String namaRuangan;
 
@@ -53,10 +53,6 @@ public class Ruangan extends Rumah{
     //getter
     public String getIDRuangan(){
         return this.IDRuangan;
-    }
-
-    public Point getTitikRuangan(){
-        return titikRuangan;
     }
 
     public int getXRuangan(){
@@ -167,7 +163,7 @@ public class Ruangan extends Rumah{
         System.out.println();
     }
 
-    public void printRuanganWithCoordinate(Sim sim) {
+    public void printRuanganWithCoordinate() {
         int x = 0;
         int y = 5;
         System.out.println();
@@ -177,9 +173,7 @@ public class Ruangan extends Rumah{
             y--;
             System.out.print("| ");
             for (int i = 0; i < 6; i++)  {
-                if (i == sim.getXSim() - titikRuangan.getX() + 3 && j == sim.getYSim() - titikRuangan.getY() + 3) {
-                    System.out.print("웃| ");
-                } else if (isAvailable[j][i]) {
+                if (isAvailable[j][i]) {
                     System.out.print("  | ");
                 } else {
                     System.out.print("X | ");
@@ -237,39 +231,7 @@ public class Ruangan extends Rumah{
         daftarFurniture.add(furniture);
     }
 
-    public void insertObjectToRuangan(String namaBarang, Point koordinat, AtomicBoolean isPlaced) throws Exception{
-        // Furniture obj = new Furniture(namaBarang);
-        
-        // boolean opsi1 = (koordinat.getX() >= getXRuangan() - 3 && koordinat.getY() >= getYRuangan() - 3 && koordinat.getX() + panjang <= 3 + getXRuangan() && koordinat.getY() + lebar <= 3 + getYRuangan());
-        // boolean opsi2 = (koordinat.getX() >= getXRuangan() - 3 && koordinat.getY() >= getYRuangan() - 3 && koordinat.getX() + lebar <= 3 + getXRuangan() && koordinat.getY() + panjang <= 3 + getYRuangan());
-        
-        // if(opsi1){
-        //     int tempX = koordinat.getX() - getXRuangan() + 3;
-        //     int tempY = koordinat.getY() - getYRuangan() + 3;
-
-        //     for (int i = tempX; i < tempX + obj.getPanjang(); i++) {
-        //         for (int j = tempY; j < tempY + obj.getLebar(); j++) {
-        //             isAvailable[i][j] = false;
-        //         }
-        //     }
-        //     obj.setXFurniture(koordinat.getX());
-        //     obj.setYFurniture(koordinat.getY());
-        //     daftarFurniture.add(obj);
-        //     isPlaced.set(true);
-        // } else if (opsi2){
-        //     int tempX = koordinat.getX() - getXRuangan() + 3;
-        //     int tempY = koordinat.getY() - getYRuangan() + 3;
-        //     for (int i = tempX; i < tempX + obj.getLebar(); i++) {
-        //         for (int j = tempY; j < tempY + obj.getPanjang(); j++) {
-        //             isAvailable[i][j] = false;
-        //         }
-        //     }
-        //     obj.setXFurniture(koordinat.getX());
-        //     obj.setYFurniture(koordinat.getY());
-        //     daftarFurniture.add(obj);
-        //     isPlaced.set(true);
-        // } else {
-
+    public void insertObjectToRuangan(String namaBarang, Point koordinat, Inventory inventory) throws Exception{
         if (isFurniturePlacable(namaBarang, koordinat)) {
             Furniture obj = new Furniture(namaBarang);
             int tempX = koordinat.getX();
@@ -282,9 +244,12 @@ public class Ruangan extends Rumah{
             obj.setXFurniture(koordinat.getX());
             obj.setYFurniture(koordinat.getY());
             daftarFurniture.add(obj);
-            isPlaced.set(true);
+            if (inventory.containsItem(namaBarang)) {
+                System.out.println("Furniture berhasil dipasang");
+                inventory.decreaseItem(namaBarang, 1);
+            }
         } else {
-            System.out.println("Furniture: " + namaBarang + " tidak dapat ditempatkan pada koordinat " + koordinat.getX() + ", " + koordinat.getY() + " pada Ruangan " + getNamaRuangan() + "!");
+            System.out.println("Furniture " + namaBarang + " tidak dapat ditempatkan pada koordinat " + koordinat.getX() + ", " + koordinat.getY() + " pada Ruangan " + getNamaRuangan() + "!");
             System.out.println("Maaf, koordinat yang anda masukkan tidak memiliki cukup ruang pada Ruangan " + getNamaRuangan());
         }
         
@@ -308,14 +273,6 @@ public class Ruangan extends Rumah{
             }
         }
         boolean case2 = false;
-        // for (int j = 0; j < 6; j++) {
-        //     for (int i = 0; i < 6; i++) {
-        //         if (!isAvailable[j][i]) {
-        //             bool = true;
-        //             break;
-        //         }
-        //     }
-        // }
         if (isAvailable[koordinat.getY()][koordinat.getX()]) {
             case2 = true;
         }
@@ -327,9 +284,6 @@ public class Ruangan extends Rumah{
     }
 
     public void printDaftarFurniture() {
-        // System.out.println("Daftar Furniture yang ada di Ruangan " + getNamaRuangan() + " :");
-
-        // if there is two or more furniture with the same name, then only print one of them
         int i = 0;
         String[] daftarNamaFurniture = new String[daftarFurniture.size()];
         for (Furniture furniture : daftarFurniture) {

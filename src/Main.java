@@ -109,7 +109,7 @@ public class Main {
     }
 
     public static void newGameSim() throws Exception {
-        World world = new World();
+        World world = World.getInstance();
         generateSim(world);
     }
     public static void help(){
@@ -264,20 +264,8 @@ public class Main {
 
             System.out.println("\nBermain Sebagai " + sim.getNama());
 
-            //System.out.println("Posisi: " + sim.getXSim() + ", " + sim.getYSim());
-            // System.out.println("Kamar Mandi: " + kamarMandi.getXRuangan() + ", " + kamarMandi.getYRuangan());
-            //rumah.printDaftarRuangan();
-
             // Mengecek furniture di sekitarnya yang bisa diinteract
             sim.checkFurniture(ruangan);
-
-            /********************* testing only *******************/
-            // sim.addDaftarAksi("Lihat Inventory");
-            // sim.addDaftarAksi("Lihat Waktu");
-            // sim.addDaftarAksi("Pasang Barang");
-            // sim.addDaftarAksi("Bergerak ke Objek");
-            // sim.addDaftarAksi("Ganti Sim");
-            /************************ end testing *******************/
 
             // Tambah opsi save dan exit supaya bisa keluar sama save game
             sim.addDaftarAksi("Save");

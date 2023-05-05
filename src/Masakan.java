@@ -52,8 +52,4 @@ public class Masakan extends ObjectType<Masakan> implements Edible {
             System.out.print(bahanMakanan);
         }
     }
-
-    public void addKekenyangan(int kekenyangan) {
-        this.kekenyangan += kekenyangan;
-    }
 }

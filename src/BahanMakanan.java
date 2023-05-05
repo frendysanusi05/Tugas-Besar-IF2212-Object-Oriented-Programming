@@ -51,19 +51,17 @@ public class BahanMakanan extends ObjectType<BahanMakanan> implements Edible, Pu
         }
     }
 
+    @Override
     public int getKekenyangan() {
         return kekenyangan;
     }
 
+    @Override
     public String getName() {
         return nama;
     }
 
     public int getHarga() {
         return harga;
-    }
-
-    public void addKekenyangan(int kekenyangan) {
-        this.kekenyangan += kekenyangan;
     }
 }

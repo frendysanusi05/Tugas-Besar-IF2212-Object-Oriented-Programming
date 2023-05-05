@@ -1,38 +1,35 @@
-// import java.util.Random;
-// import java.util.Map;
-// import java.util.HashMap;
-// import java.util.ArrayList;
-// import java.util.Scanner;
+/**
+ * Sim.java
+ * Kelas yang memodelkan Sim dalam game Sim-Plicity
+ * 
+ */
+
+import java.util.Random;
+import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.time.LocalTime;
-import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Sim {
+    /*** Atribut ***/
     private String nama;
     private String pekerjaan;
     private int uang;
-    private Inventory inventory;
     private int kekenyangan;
     private int mood;
     private int kesehatan;
-    private String status;
+    private Inventory inventory;
     private Point posisiSim;
     private boolean isOutside;
-
-    /*** Atribut Baru****/
     private Ruangan currentRuangan;
-    /**** 
-     * Setiap kali pindahRuang, currentRuangan-nya diupdate
-    ****/
+    private boolean isSudahMakan = false;
 
+    /*** Atribut Tambahan yang Tidak Berkaitan Langsung Dengan Sim ***/
     private List<String> daftarAksi = new ArrayList<String>();
-
     private volatile boolean isThreadFinished = false;
     private volatile Double durasi;
-
     private static final String[] daftarPekerjaan = {"Badut Sulap", "Koki", "Polisi", "Programmer", "Dokter", "Dosen", "Penyanyi", "Streamer"};
-
-    private boolean isSudahMakan = false;
 
     int timeTidur = Clock.convertToSeconds(Clock.getTime());
     boolean isSudahTidur = false;
@@ -56,6 +53,7 @@ public class Sim {
     volatile boolean stopTimeUpgradeRumah = false;
     volatile boolean stopTimeBeliBarang = false;
 
+    /*** Constructor ***/
     public Sim(String nama) {
         this.nama = nama;
         this.uang = 100;
@@ -64,7 +62,6 @@ public class Sim {
         this.kesehatan = 80;
         this.inventory = new Inventory();
         this.pekerjaan = daftarPekerjaan[new Random().nextInt(daftarPekerjaan.length)];
-        this.status = null; 
         daftarAksi.add("Kerja");
         daftarAksi.add("Olahraga");
         daftarAksi.add("Berkunjung");
@@ -78,7 +75,7 @@ public class Sim {
         daftarAksi.add("Ganti Sim");
     }
 
-    // Getter
+    /*** Getter ***/
     public String getNama() {
         return nama;
     }
@@ -89,10 +86,6 @@ public class Sim {
 
     public int getUang() {
         return uang;
-    }
-
-    public Inventory getInventory() {
-        return inventory;
     }
 
     public int getKekenyangan() {
@@ -107,8 +100,8 @@ public class Sim {
         return kesehatan;
     }
 
-    public String getStatus() {
-        return status;
+    public Inventory getInventory() {
+        return inventory;
     }
 
     public int getXSim() {
@@ -139,20 +132,28 @@ public class Sim {
         return isSudahMakan;
     }
 
-
-    // Setter
-    public void setIsSudahMakan(boolean isSudahMakan) {
-        this.isSudahMakan = isSudahMakan;
+    /*** Functions ***/
+    public boolean isAlive() {
+        return matiDepresi() && matiKelaparan() && matiSakit();
     }
 
+    public boolean matiDepresi() {
+        return mood > 0 && mood <= 100;
+    }
+
+    public boolean matiKelaparan() {
+        return kekenyangan > 0 && kekenyangan <= 100;
+    }
+
+    public boolean matiSakit() {
+        return kesehatan > 0 && kesehatan <= 100;
+    }
+
+    /*** Setter ***/
     public void addUang(int uangTambahan) {
         uang += uangTambahan;
         if (uang > 100) uang = 100;
-    }
-
-    public void minUang(int uangTambahan) {
-        uang -= uangTambahan;
-        if (uang < 0) uang = 0;
+        else if (uang < 0) uang = 0;
     }
 
     public void addKekenyangan(int kekenyanganTambahan) {
@@ -173,24 +174,8 @@ public class Sim {
         else if (kesehatan > 100) kesehatan = 100;
     } 
 
-    public void setStatus(String activity) {
-        status = activity;
-    }
-
-    public void setKekenyangan(int kekenyangan) {
-        this.kekenyangan = kekenyangan;
-    }
-    
-    public void setMood(int mood) {
-        this.mood = mood;
-    }
-
-    public void setKesehatan(int kesehatan) {
-        this.kesehatan = kesehatan;
-    }
-
-    public void setUang(int uang) {
-        this.uang = uang;
+    public void setIsSudahMakan(boolean isSudahMakan) {
+        this.isSudahMakan = isSudahMakan;
     }
     
     public void setPosisiSim(Point newPos) {
@@ -211,27 +196,7 @@ public class Sim {
         daftarAksi.add(aksi);
     }
 
-    public void removeElmtDaftarAksi(int index) {
-        daftarAksi.remove(index);
-    }
-
-    public boolean isAlive() {
-        return matiDepresi() && matiKelaparan() && matiSakit();
-    }
-
-    public boolean matiDepresi() {
-        return mood > 0 && mood <= 100;
-    }
-
-    public boolean matiKelaparan() {
-        return kekenyangan > 0 && kekenyangan <= 100;
-    }
-
-    public boolean matiSakit() {
-        return kesehatan > 0 && kesehatan <= 100;
-    }
-
-    // Methods (Aksi)
+    /*** Aksi ***/
     public void makan() {
         if (inventory.isItemTypeInInventory("Bahan Makanan") || inventory.isItemTypeInInventory("Masakan")) {
             System.out.println("Berikut ini adalah makanan yang ada di inventory: ");
@@ -260,7 +225,6 @@ public class Sim {
         durasi = (double) 30;
         System.out.println();
         
-        setStatus("Sedang Makan");
         System.out.printf("Sedang makan %s...\n", namaMakanan);
 
         isAksiAktif = true;
@@ -335,7 +299,6 @@ public class Sim {
         }
 
         System.out.println();
-        setStatus("Sedang Bekerja");
         System.out.println("Sedang bekerja...");
         
         Thread t1 = new Thread(new Runnable() {
@@ -442,7 +405,6 @@ public class Sim {
         }
         System.out.println("\nSelesai bekerja");
         isThreadFinished = false;
-        setStatus(null);
     }
 
     public void olahraga() {
@@ -467,7 +429,6 @@ public class Sim {
         }
 
         System.out.println();
-        setStatus("Sedang Berolahraga");
         System.out.println("Sedang berolahraga...");
         
         Thread t1 = new Thread(new Runnable() {
@@ -522,7 +483,6 @@ public class Sim {
         }
         System.out.println("\nSelesai berolahraga");
         isThreadFinished = false;
-        setStatus(null);
     }
 
     public void tidur() {
@@ -771,7 +731,6 @@ public class Sim {
         // double waktuBerkunjung = 0;
 
         System.out.println("Mengunjungi rumah " + temanSim.getNama() + "...");
-        setStatus("Berkunjung");
 
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -820,7 +779,6 @@ public class Sim {
         isOutside = true;
         currentRuangan = rumahTemanSim.getRuangan("Kamar");
         setPosisiSim(new Point(3,3));
-        setStatus(null);
     }
 
     public void pulang(World world) {
@@ -892,7 +850,7 @@ public class Sim {
                 expandable.add("Kanan");
             }
 
-            if (getUang() >= hargaUpgradeRumah && expandable.size() > 0) {
+            if (uang >= hargaUpgradeRumah && expandable.size() > 0) {
                 for (int i = 0; i < expandable.size(); i++) {
                     System.out.println((i + 1) + ". " + expandable.get(i));
                 }
@@ -959,7 +917,8 @@ public class Sim {
                 t2.start();
                 t1.start();
                 //kurangin uangnya
-                minUang(hargaUpgradeRumah);
+                hargaUpgradeRumah = hargaUpgradeRumah * (-1);
+                addUang(hargaUpgradeRumah);
                 Ruangan newRoom = new Ruangan(namaRuangan, rumah);
                 if (pilihan.equals("Atas")) {
                     ruangan.setIDRuanganAtas(newRoom.getIDRuangan());
@@ -1220,10 +1179,7 @@ public class Sim {
         
 
         Furniture barang = new Furniture(namaFurniture);
-
-        ArrayList<Sim> daftarSim = new ArrayList<Sim>();
-        daftarSim.add(this);
-        ruangan.printRuanganWithCoordinate(this);
+        ruangan.printRuanganWithCoordinate();
         System.out.println("(Posisi yang dimasukkan akan menjadi titik terkiri-bawah dari "+ namaFurniture + ") ");
     
         int x = -1;
@@ -1268,17 +1224,7 @@ public class Sim {
         if (jawaban.equals("y")) {
             barang.rotateFurniture();
         } 
-        AtomicBoolean isPlaced = new AtomicBoolean(false);
-        ruangan.insertObjectToRuangan(namaFurniture, new Point(x, y), isPlaced);
-        if (isPlaced.get()) {
-            System.out.println("Furniture berhasil dipasang!");
-            barang.setXFurniture(x);
-            barang.setYFurniture(y);
-            inventory.decreaseItem(namaFurniture, 1);
-        } else {
-            System.out.println("Furniture gagal dipasang!");
-        }
-       
+        ruangan.insertObjectToRuangan(namaFurniture, new Point(x, y), inventory);    
     }
 
     public void lihatWaktu() {
@@ -1403,7 +1349,7 @@ public class Sim {
         Map <Rumah, Sim> daftarRumah = world.getDaftarRumah();
         for (Map.Entry<Rumah, Sim> entry : daftarRumah.entrySet()) {
             Rumah rumah = entry.getKey();
-            ArrayList<Ruangan> daftarRuangan = rumah.getDaftarRuangan();
+            List<Ruangan> daftarRuangan = rumah.getDaftarRuangan();
             for (Ruangan ruangan : daftarRuangan) {
                 //ruangan.printRuangan(world.getDaftarSim());
                 //ruangan.printRuangan(this);
@@ -1436,8 +1382,44 @@ public class Sim {
         System.out.println();
     }
 
-    //harus buat 7 aksi lain yang dapat berhubungan dengan objek sesuai dengan kreasi masing-masing.
-    // pake objek komputer (3x3, harga 250)
+    public void efekTidakTidur() {
+        addKesehatan(-5);
+        addMood(-5);
+    }
+
+    public void efekTidakBuangAir() {
+        addKesehatan(-5);
+        addMood(-5);
+    }
+
+    public void checkSudahTidur() {
+        if (isSudahTidur) {
+            timeTidur = Clock.convertToSeconds(Clock.getTime());
+            isSudahTidur = false;
+            jumlahTidakTidur = 0;
+        }
+        else {
+            if (Clock.getDiffTimeInSeconds(timeTidur) >= (jumlahTidakTidur+1)*10*60) {
+                efekTidakTidur();
+                jumlahTidakTidur++;
+            }
+        }
+    }
+
+    public void checkSudahBuangAir() {
+        if (isSudahBuangAir) {
+            timeTidur = Clock.convertToSeconds(Clock.getTime());
+            isSudahBuangAir = false;
+            jumlahTidakBuangAir = 0;
+        }
+        else {
+            if (!isSudahMakan) {
+                if (Clock.getDiffTimeInSeconds(timeBuangAir) >= (jumlahTidakBuangAir+1)*4*60) efekTidakBuangAir();
+            }
+        }
+    }
+    
+    /*** 7 Aksi Tambahan ***/
     public void mainGame() {
         // mood bertambah 15 dan kesehatan berkurang 5 setiap 30 detik
         System.out.println("Daftar rekomendasi game:");
@@ -1560,7 +1542,6 @@ public class Sim {
         isThreadFinished = false;
     }
 
-    // pake objek komputer
     public void belajarCoding() {
         // mood bertambah 10 setiap 30 detik
         // kesehatan berkurang 10 setiap 30 detik
@@ -1600,7 +1581,6 @@ public class Sim {
         isThreadFinished = false;
     } 
 
-    // pake objek komputer
     public void bukaSosmed() {
         // mood bertambah 20 setiap 30 detik
         // kesehatan berkurang 5 setiap 30 detik
@@ -1640,7 +1620,6 @@ public class Sim {
         isThreadFinished = false;
     }
 
-    // pake objek komputer atau TV (3x2, harga 200)
     public void nontonNetflix() {
         // mood bertambah 15 setiap 30 detik
         // kasih daftar rekomendasi film, durasinya 30/60/90 detik ajaa
@@ -1734,58 +1713,18 @@ public class Sim {
 
         if (random == 0) {
             System.out.println("Selamat! Anda mendapatkan 5 rupiah!");
-            uang += 5;
-            setUang(uang);
+            addUang(5);
         } else if (random == 1) {
             System.out.println("Selamat! Anda mendapatkan 10 rupiah!");
-            uang += 10;
-            setUang(uang);
+            addUang(10);
         } else if (random == 2) {
             System.out.println("Selamat! Anda mendapatkan 15 rupiah1");
-            uang += 15;
-            setUang(uang);
+            addUang(15);
         } else {
             System.out.println("ZONK!!! Nice Try:(");
-            setUang(uang);
         }
 
         isThreadFinished = false;
     }
 
-    public void efekTidakTidur() {
-        addKesehatan(-5);
-        addMood(-5);
-    }
-
-    public void efekTidakBuangAir() {
-        addKesehatan(-5);
-        addMood(-5);
-    }
-
-    public void checkSudahTidur() {
-        if (isSudahTidur) {
-            timeTidur = Clock.convertToSeconds(Clock.getTime());
-            isSudahTidur = false;
-            jumlahTidakTidur = 0;
-        }
-        else {
-            if (Clock.getDiffTimeInSeconds(timeTidur) >= (jumlahTidakTidur+1)*10*60) {
-                efekTidakTidur();
-                jumlahTidakTidur++;
-            }
-        }
-    }
-
-    public void checkSudahBuangAir() {
-        if (isSudahBuangAir) {
-            timeTidur = Clock.convertToSeconds(Clock.getTime());
-            isSudahBuangAir = false;
-            jumlahTidakBuangAir = 0;
-        }
-        else {
-            if (!isSudahMakan) {
-                if (Clock.getDiffTimeInSeconds(timeBuangAir) >= (jumlahTidakBuangAir+1)*4*60) efekTidakBuangAir();
-            }
-        }
-    }
 }

@@ -1,8 +1,6 @@
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class SimDriver {
     public static void main(String[] args) throws Exception {
-        World world = new World();
+        World world = World.getInstance();
         Sim sim = new Sim("Sim");
         Point point = new Point(0, 0);
         sim.setPosisiSim(point);
@@ -27,8 +25,11 @@ public class SimDriver {
         // //sim.kerja();
         // sim.printSimAttribute();
         //sim.upgradeRumah(rumah, ruangan);
-        sim.beliBarang();
-        Save.save(world);
+        // sim.beliBarang();
+        // Save.save(world);
+        sim.getInventory().addItem("Shower");
+        Furniture shower = new Furniture("Shower");
+        sim.pasangBarang(ruangan);
         // Ruangan kamarMandi = new Ruangan("Kamar Mandi", rumah);
         // kamarMandi.setPosisiRuangan(new Point(6, 0));
         // Ruangan dapur = new Ruangan("Dapur", rumah);

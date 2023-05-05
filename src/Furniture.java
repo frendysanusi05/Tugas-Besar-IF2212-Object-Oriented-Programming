@@ -5,7 +5,6 @@ public class Furniture extends ObjectType<Furniture> implements Purchasable{
     private int harga;
     private String[] aksi = new String[4];
     private Point posisiFurniture = new Point();
-    //atribut nya gw ubah jadi private yakk
     
     public Furniture(String nama) throws Exception {
         super("Furniture");
