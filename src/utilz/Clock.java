@@ -7,7 +7,6 @@ import java.time.Duration;
 public class Clock {
     private static int day = 0;
     private static int stop = 0; /* in seconds */
-    // final static LocalTime firstTime = LocalTime.now();
     static LocalTime startTime = convertToLocalTime(0);
     private static LocalTime currTime = startTime;
     static boolean firstTimeClock = true;
@@ -105,9 +104,47 @@ public class Clock {
         stop = seconds;
     }
 
+    /* Getter */
     public static int getDay() {
         countDay(); /* Meng-update day */
         return day;
+    }
+
+    public static int getStop() {
+        return stop;
+    }
+
+    public static LocalTime getStartTime() {
+        return startTime;
+    }
+
+    public static LocalTime getCurrTime() {
+        return currTime;
+    }
+
+    public static boolean getFirstTimeClock() {
+        return firstTimeClock;
+    }
+
+    /* Setter */
+    public static void setDay(int param) {
+        day = param;
+    }
+
+    public static void setStop(int param) {
+        stop = param;
+    }
+
+    public static void setStartTime(LocalTime param) {
+        startTime = param;
+    }
+
+    public static void setCurrTime(LocalTime param) {
+        currTime = param;
+    }
+
+    public static void setFirstTimeClock(boolean param) {
+        firstTimeClock = param;
     }
 
     public static void countDay() {

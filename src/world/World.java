@@ -8,7 +8,7 @@ public class World {
     private Map<Rumah, Sim> daftarRumah = new HashMap<Rumah, Sim>();
     private List<Sim> daftarSim = new ArrayList<Sim>();
     private boolean[][] isAvailable = new boolean[64][64];
-    private static World instance = new World ();
+    private static World instance = new World();
 
     /*** Constructor ***/
     private World() {

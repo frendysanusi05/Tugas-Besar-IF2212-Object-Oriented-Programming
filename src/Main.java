@@ -134,7 +134,7 @@ public class Main {
         Save.save(world);
     }
     public static World load() {
-        return Load.load("data/data.json");
+        return Load.load("data/data.json", "data/clock.json");
     }
 
 

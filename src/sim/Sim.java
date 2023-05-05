@@ -427,8 +427,7 @@ public class Sim {
             try {
                 System.out.print("Masukkan durasi olahraga: ");
                 durasi = scan.nextDouble();
-                while (durasi % 2 != 0) {
-                // while (durasi % 20 != 0) {
+                while (durasi % 20 != 0) {
                     System.out.println("Durasi olahraga harus merupakan kelipatan 20");
                     System.out.print("Masukkan kembali durasi olahraga: ");
                     durasi = scan.nextDouble();
