@@ -1,9 +1,11 @@
+import java.nio.charset.CharsetEncoder;
 import java.util.*;
 
 import saveload.Load;
 import saveload.Save;
 import sim.Sim;
 import utilz.Clock;
+import utilz.Keyboard;
 import utilz.Point;
 import world.Ruangan;
 import world.Rumah;
@@ -72,7 +74,6 @@ public class Main {
                             help();
                             break;
                         case 4:
-                            System.out.println("Exit");
                             exitMainMenu = true;
                             break;
                     }
@@ -137,6 +138,26 @@ public class Main {
         return Load.load("data/data.json", "data/clock.json");
     }
 
+    public static void cheat(Sim sim) {
+        System.out.println("Kriptografi itu mudah, tahu gak tentang ROT13?\nPurngGhorfBBC");
+        Scanner scan = new Scanner(System.in);
+        System.out.println("\nMasukkan password: ");
+        String passwd = scan.nextLine();
+        if (passwd.equals("CheatTubesOOP")) {
+            System.out.println("\nRetailer mana yang menggunakan IP address 54.239.28.85?");
+            System.out.println("\nMasukkan password: ");
+            passwd = scan.nextLine();
+            if (passwd.equals("Amazon Inc.")) {
+                sim.addKekenyangan(100);
+                sim.addKesehatan(100);
+                sim.addMood(100);
+                sim.addUang(999999);
+                System.out.println("Cheat berhasil digunakan. Anda hacker sejati :))");
+            }
+            else System.out.println("\nPassword salah. NT NT :D\n");
+        }
+        else System.out.println("\nPassword salah. NT NT :D\n");
+    }
 
     public static void clearConsole() {
         try {
@@ -182,52 +203,6 @@ public class Main {
         // Ini cuma animasi loading
         
         System.out.println(" Generating World...\n");
-        // Ini cuma animasi loading
-
-        // System.out.println("Generating World");
-        // Thread.sleep(1000);
-        // System.out.println("Generating World");
-        // Thread.sleep(1000);
-        // System.out.print("[                ]");
-        // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // Thread.sleep(1000);
-        // Thread.sleep(1000);
-        // System.out.print("[===             ]");
-        // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // Thread.sleep(1000);
-        // Thread.sleep(1000);
-        // System.out.print("[======          ]");
-        // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // Thread.sleep(1000);
-        // Thread.sleep(1000);
-        // System.out.print("[==========      ]");
-        // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // Thread.sleep(1000);
-        // Thread.sleep(1000);
-        // System.out.print("[================]");
-        // Thread.sleep(1000);
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // for (int i = 0; i < 18; i++) {
-        //     System.out.print("\b");
-        // }
-        // Thread.sleep(1000);
-        // System.out.println();
-
-        // End of animasi loading (Gausah dihirauikan)
 
         while (!exitGame) {
             if (!sim.isAlive()) {
@@ -275,6 +250,9 @@ public class Main {
 
             // Mengecek furniture di sekitarnya yang bisa diinteract
             sim.checkFurniture(ruangan);
+
+            /* Add cheat */
+            sim.addDaftarAksi("Cheat");
 
             // Tambah opsi save dan exit supaya bisa keluar sama save game
             sim.addDaftarAksi("Save");
@@ -410,6 +388,9 @@ public class Main {
                         save(world);
                     }
                     exitGame = true;
+                    break;
+                case "cheat":
+                    cheat(sim);
                     break;
                 
                 //masih ada beberapa aksi yang belum, nanti ditambahin lagi
