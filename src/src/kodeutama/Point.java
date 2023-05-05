@@ -1,3 +1,4 @@
+package src.kodeutama;
 public class Point implements Cloneable {
     private int x;
     private int y;

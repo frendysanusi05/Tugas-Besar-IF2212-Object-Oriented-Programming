@@ -41,40 +41,40 @@ public class Game implements Runnable {
 	}
 
 	public void update() {
-		switch (Gamestate.state) {
+			switch (Gamestate.state) {
+				case MENU:
+					menu.update();
+					break;
+				case PLAYING:
+					Main.newGameSim();
+					break;
+				case HELP:
+					Main.help();
+					menu.update();
+					break;
+				case QUIT:
+				default:
+					System.exit(0);
+					break;
+		}
+	}
+
+	public void render(Graphics g) {
+			switch (Gamestate.state) {
 			case MENU:
-				menu.update();
+				menu.draw(g);
 				break;
 			case PLAYING:
 				Main.newGameSim();
 				break;
 			case HELP:
 				Main.help();
-				menu.update();
+				menu.draw(g);
 				break;
 			case QUIT:
 			default:
 				System.exit(0);
 				break;
-
-		}
-	}
-
-	public void render(Graphics g) {
-		switch (Gamestate.state) {
-		case MENU:
-			menu.draw(g);
-			break;
-		case PLAYING:
-			Main.newGameSim();
-			break;
-		case HELP:
-			Main.help();
-			break;
-		case QUIT:
-		default:
-			System.exit(0);
-			break;
 		}
 	}
 

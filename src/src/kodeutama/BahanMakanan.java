@@ -1,3 +1,4 @@
+package src.kodeutama;
 public class BahanMakanan extends ObjectType<BahanMakanan> implements Edible, Purchasable {
     public String nama;
     public int harga;

@@ -1,6 +1,15 @@
 import java.util.*;
 import java.util.List;
 
+import src.kodeutama.Clock;
+import src.kodeutama.Load;
+import src.kodeutama.Point;
+import src.kodeutama.Ruangan;
+import src.kodeutama.Rumah;
+import src.kodeutama.Save;
+import src.kodeutama.Sim;
+import src.kodeutama.World;
+
 public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
     public static void main(String[] args) throws Exception {

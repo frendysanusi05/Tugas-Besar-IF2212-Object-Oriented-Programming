@@ -1,3 +1,4 @@
+package src.kodeutama;
 public class Pekerjaan {
     private String nama;
     private int gaji = 0;

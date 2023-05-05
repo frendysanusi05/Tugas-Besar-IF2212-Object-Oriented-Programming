@@ -8,7 +8,7 @@ public class Menu extends State implements Statemethods {
 	private MenuButton[] buttons = new MenuButton[3];
 	private BufferedImage backgroundImg;
 	private int menuX, menuY, menuWidth, menuHeight;
-
+	
 	public Menu(Game game) {
 		super(game);
 		loadButtons();
@@ -107,5 +107,4 @@ public class Menu extends State implements Statemethods {
 		// TODO Auto-generated method stub
 
 	}
-
 }

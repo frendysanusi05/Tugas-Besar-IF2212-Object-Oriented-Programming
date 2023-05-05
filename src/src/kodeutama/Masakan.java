@@ -1,3 +1,5 @@
+package src.kodeutama;
+
 public class Masakan extends ObjectType<Masakan> implements Edible {
     private String nama;
     private String[] daftarBahanMakanan;

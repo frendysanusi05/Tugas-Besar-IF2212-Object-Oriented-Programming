@@ -1,3 +1,4 @@
+package src.kodeutama;
 public class ObjectType<T> {
     private String type;
 
