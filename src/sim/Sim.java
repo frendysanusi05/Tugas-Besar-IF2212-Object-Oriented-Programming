@@ -1,3 +1,5 @@
+package sim;
+
 /**
  * Sim.java
  * Kelas yang memodelkan Sim dalam game Sim-Plicity
@@ -9,6 +11,17 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import obj.BahanMakanan;
+import obj.Furniture;
+import obj.Inventory;
+import obj.Masakan;
+import utilz.Clock;
+import utilz.Point;
+import world.Ruangan;
+import world.Rumah;
+import world.World;
+
 import java.time.LocalTime;
 
 public class Sim {

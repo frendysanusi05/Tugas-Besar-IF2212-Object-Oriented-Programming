@@ -1,3 +1,5 @@
+package utilz;
+
 public class ObjectType<T> {
     private String type;
 

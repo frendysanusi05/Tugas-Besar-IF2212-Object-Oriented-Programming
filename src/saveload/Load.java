@@ -1,8 +1,12 @@
+package saveload;
+
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.google.gson.Gson;
+
+import world.World;
 
 public class Load {
     public static World load(String path) {

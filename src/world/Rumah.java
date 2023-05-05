@@ -1,5 +1,9 @@
+package world;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import obj.Inventory;
+import utilz.Point;
 
 public class Rumah {
     private String IDRumah;

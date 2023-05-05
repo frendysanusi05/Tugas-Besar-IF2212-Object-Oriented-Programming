@@ -1,3 +1,9 @@
+package obj;
+
+import utilz.ObjectType;
+import interfaces.Edible;
+import interfaces.Purchasable;
+
 public class BahanMakanan extends ObjectType<BahanMakanan> implements Edible, Purchasable {
     public String nama;
     public int harga;

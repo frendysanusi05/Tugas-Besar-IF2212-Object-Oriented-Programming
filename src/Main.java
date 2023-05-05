@@ -1,5 +1,14 @@
 import java.util.*;
 
+import saveload.Load;
+import saveload.Save;
+import sim.Sim;
+import utilz.Clock;
+import utilz.Point;
+import world.Ruangan;
+import world.Rumah;
+import world.World;
+
 public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
     public static void main(String[] args) throws Exception {

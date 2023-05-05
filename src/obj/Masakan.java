@@ -1,3 +1,8 @@
+package obj;
+
+import interfaces.Edible;
+import utilz.ObjectType;
+
 public class Masakan extends ObjectType<Masakan> implements Edible {
     private String nama;
     private String[] daftarBahanMakanan;

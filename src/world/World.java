@@ -1,4 +1,7 @@
+package world;
 import java.util.*;
+
+import sim.Sim;
 
 public class World {
     /*** Atribut ***/

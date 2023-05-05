@@ -1,4 +1,10 @@
+package world;
 import java.util.*;
+
+import obj.Furniture;
+import obj.Inventory;
+import sim.Sim;
+import utilz.Point;
 
 
 public class Ruangan extends Rumah {

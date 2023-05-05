@@ -26,7 +26,6 @@ Setelah itu, klik ```run``` pada ```main``` file.
 
 ### Cara 2: Melalui Command Line (CMD) Windows
 ```
-javac -cp lib/gson-2.8.6.jar src/*.java
-
+javac -cp lib/gson-2.8.6.jar src/interfaces/*.java src/obj/*.java src/saveload/*.java src/sim/*.java src/utilz/*.java src/world/*.java src/*.java
 java -classpath "lib\gson-2.8.6.jar;src" Main
 ```

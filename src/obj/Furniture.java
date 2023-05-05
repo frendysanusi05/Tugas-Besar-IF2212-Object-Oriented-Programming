@@ -1,3 +1,9 @@
+package obj;
+
+import utilz.ObjectType;
+import utilz.Point;
+import interfaces.Purchasable;
+
 public class Furniture extends ObjectType<Furniture> implements Purchasable{
     private String nama;
     private int panjang;
