@@ -82,7 +82,6 @@ public class Sim {
         daftarAksi.add("Beli Barang");
         daftarAksi.add("Pindah Ruang");
         daftarAksi.add("Lihat Inventory");
-        daftarAksi.add("Lihat Waktu");
         daftarAksi.add("Pasang Barang");
         daftarAksi.add("Bergerak ke Objek");
         daftarAksi.add("Ganti Sim");
@@ -165,8 +164,6 @@ public class Sim {
     /*** Setter ***/
     public void addUang(int uangTambahan) {
         uang += uangTambahan;
-        if (uang > 100) uang = 100;
-        else if (uang < 0) uang = 0;
     }
 
     public void addKekenyangan(int kekenyanganTambahan) {
@@ -1169,6 +1166,9 @@ public class Sim {
 
     public void lihatInventory(){
         //berisi dengan makanan, barang-barang yang sedang tidak terpasang pada ruangan, dan objek-objek lainnya.
+        if (inventory.isEmpty()) {
+            System.out.println("Inventory Kosong\n\nKamu dapat mengunjungi Indimaret Online untuk membeli barang");
+        }
         inventory.printItem();
     }
 
@@ -1332,10 +1332,10 @@ public class Sim {
 
     public void checkFurniture(Ruangan ruangan) {
         List<Furniture> daftarFurniture = ruangan.getDaftarFurniture();
-        if (daftarAksi.size() > 11) {
+        if (daftarAksi.size() > 10) {
             int size = daftarAksi.size();
-            for (int i = 11; i < size; i++) {
-                daftarAksi.remove(11);
+            for (int i = 10; i < size; i++) {
+                daftarAksi.remove(10);
             }
         }
 
@@ -1364,7 +1364,7 @@ public class Sim {
                 //ruangan.printRuangan(world.getDaftarSim());
                 //ruangan.printRuangan(this);
                 if (getCurrentRuangan().getIDRuangan().equals(ruangan.getIDRuangan())) {
-                    System.out.println("\nRuang " + ruangan.getNamaRuangan() + " (Rumah " + entry.getValue().getNama() + ")");
+                    System.out.println("\n   Ruang " + ruangan.getNamaRuangan() + " (Rumah " + entry.getValue().getNama() + ")");
                     break;
                 }
             }

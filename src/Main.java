@@ -221,7 +221,7 @@ public class Main {
             Thread.sleep(1000);
             if (world.getDaftarSim().size() > 1) {
                 for (Sim s : world.getDaftarSim()) {
-                    if (s.getCurrentRuangan().equals(ruangan) && !s.equals(sim)) {
+                    if (s.getCurrentRuangan().getIDRuangan().equals(ruangan.getIDRuangan()) && !s.getNama().equals(sim)) {
                         System.out.println("웃 : Anda");
                         System.out.println("유 : Teman Anda");
                         break;
@@ -229,7 +229,7 @@ public class Main {
                 }
             } 
 
-            System.out.println("\nBermain Sebagai " + sim.getNama());
+            System.out.println("\n\nBermain Sebagai " + sim.getNama());
 
             // Mengecek furniture di sekitarnya yang bisa diinteract
             sim.checkFurniture(ruangan);
@@ -270,6 +270,9 @@ public class Main {
                 case "berkunjung" :
                     sim.berkunjung(world);
                     break;
+                case "pulang":
+                    sim.pulang(world);
+                    break;
                 case "upgrade rumah":
                     sim.upgradeRumah(rumah, ruangan);
                     break;
@@ -282,7 +285,7 @@ public class Main {
                 case "lihat inventory" :
                     sim.lihatInventory();
                     break;
-                case "lihat waktu":
+                case "melihat waktu":
                     sim.lihatWaktu();
                     break;
                 case "pasang barang" :
