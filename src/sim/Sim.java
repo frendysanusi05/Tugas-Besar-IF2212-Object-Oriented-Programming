@@ -758,8 +758,6 @@ public class Sim {
         if (jawaban.equals("n")) {
             return;
         }
-        /**** Buat Testing ****/
-        // double waktuBerkunjung = 0;
 
         System.out.println("Mengunjungi rumah " + temanSim.getNama() + "...");
 

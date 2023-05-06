@@ -32,7 +32,7 @@ public class Gui implements ActionListener {
         System.out.println("   |\\_________\\|__|\\|__|     \\|__|               \\|__|     \\|_______|\\|__|\\|_______|\\|__|    \\|__|\\___/ /           ___ ");
         System.out.println("   \\|_________|                                                                                  \\|___|/           |\\__\\");
         System.out.println("                                                                                                                   \\|__|\n");
-        System.out.print("\033[0m");
+        System.out.println("\033[0m");
         System.out.println("Silahkan pilih menu dibawah ini:");                                                                                                                                        
         System.out.println("1. New Game");
         System.out.println("2. Load Game");

@@ -299,13 +299,15 @@ public class Main {
                 else sim = world.getDaftarSim().get(world.getDaftarSim().size()-1);
             }
             else {
-                /* Cek apakah dalam sehari sim sudah makan */
-                if (Clock.checkChangeDay()) sim.setIsSudahMakan(false);
-                /* Cek apakah sudah 10 menit tanpa tidur */
-                sim.checkSudahTidur();
+                for (Sim sims : world.getDaftarSim()) {
+                    /* Cek apakah dalam sehari sim sudah makan */
+                    if (Clock.checkChangeDay()) sims.setIsSudahMakan(false);
+                    /* Cek apakah sudah 10 menit tanpa tidur */
+                    sims.checkSudahTidur();
 
-                /* Cek apakah sudah 4 menit setelah makan tanpa buang air */
-                sim.checkSudahBuangAir();
+                    /* Cek apakah sudah 4 menit setelah makan tanpa buang air */
+                    sims.checkSudahBuangAir();
+                }
                 
                 // Get current ruangan dan rumah dari sim
                 Rumah rumah = world.getCurrentRumah(sim);
@@ -478,15 +480,11 @@ public class Main {
                     case "cheat":
                         cheat(sim);
                         break;
-                    
-                    //masih ada beberapa aksi yang belum, nanti ditambahin lagi
                 }
             }
             System.out.println("\nTekan enter untuk melanjutkan");
             input.nextLine();
             clearConsole();
-        }
-        
-        
+        } 
     }
 }
