@@ -22,7 +22,7 @@ public class Save {
 		Path clockPath = Paths.get(clockFile);
 
 		/* Serialize Clock */
-		ClockSerializer clock = new ClockSerializer(Clock.getDay(), Clock.getStop(), Clock.convertToSeconds(Clock.getStartTime()), Clock.convertToSeconds(Clock.getCurrTime()), Clock.getFirstTimeClock());
+		ClockSerializer clock = new ClockSerializer(Clock.getDay(), Clock.convertToSeconds(Clock.getStartTime()), Clock.convertToSeconds(Clock.getCurrTime()), Clock.getFirstTimeClock());
 
 		/* Save World */
 		try (Writer dataWriter = Files.newBufferedWriter(dataPath, StandardCharsets.UTF_8)) {
