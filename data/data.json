@@ -4,8 +4,8 @@
       {
         "IDRumah": "R1",
         "posisi": {
-          "x": 7,
-          "y": 18
+          "x": 56,
+          "y": 6
         },
         "daftarRuangan": [
           {
@@ -159,10 +159,10 @@
         "jumlahRuangan": 2
       },
       {
-        "nama": "F",
+        "nama": "Ariq",
         "pekerjaan": {
-          "nama": "Dokter",
-          "gaji": 50
+          "nama": "Polisi",
+          "gaji": 35
         },
         "uang": 100,
         "kekenyangan": 80,
@@ -362,10 +362,10 @@
   ],
   "daftarSim": [
     {
-      "nama": "F",
+      "nama": "Ariq",
       "pekerjaan": {
-        "nama": "Dokter",
-        "gaji": 50
+        "nama": "Polisi",
+        "gaji": 35
       },
       "uang": 100,
       "kekenyangan": 80,
