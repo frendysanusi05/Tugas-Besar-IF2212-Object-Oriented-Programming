@@ -182,7 +182,7 @@ public class Main {
         boolean exitGame = false;
 
         System.out.print("Generating Sim");
-        Animasi, hiraukan
+        
         Thread.sleep(1000);
         System.out.print(".");
         System.out.print(".");
