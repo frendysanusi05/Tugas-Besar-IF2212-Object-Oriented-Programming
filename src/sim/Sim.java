@@ -241,7 +241,7 @@ public class Sim {
         System.out.printf("Sedang makan %s...\n", namaMakanan);
 
         isAksiAktif = true;
-        Clock.wait(durasi);
+        Clock.wait(durasi, isAksiAktif);
         isAksiAktif = false;
         inventory.decreaseItem(namaMakanan, 1);
         switch(namaMakanan){
@@ -314,11 +314,12 @@ public class Sim {
         System.out.println();
         System.out.println("Sedang bekerja...");
         
+        isAksiAktif = true;
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
                 isThreadFinished = false;
-                Clock.wait(durasi);
+                Clock.wait(durasi, isAksiAktif);
                 isThreadFinished = true;
             }
         });
@@ -328,7 +329,7 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 30;
-                isAksiAktif = true;
+                
                 while (!isThreadFinished) {
                     /*
                     -10 kekenyangan / 30 detik
@@ -427,11 +428,11 @@ public class Sim {
             try {
                 System.out.print("Masukkan durasi olahraga: ");
                 durasi = scan.nextDouble();
-                while (durasi % 20 != 0) {
-                    System.out.println("Durasi olahraga harus merupakan kelipatan 20");
-                    System.out.print("Masukkan kembali durasi olahraga: ");
-                    durasi = scan.nextDouble();
-                }
+                // while (durasi % 20 != 0) {
+                //     System.out.println("Durasi olahraga harus merupakan kelipatan 20");
+                //     System.out.print("Masukkan kembali durasi olahraga: ");
+                //     durasi = scan.nextDouble();
+                // }
                 isInputDouble = true;
             }
             catch (Exception e) {
@@ -446,7 +447,9 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Clock.wait(durasi);
+                isAksiAktif = true;
+                Clock.wait(durasi, isAksiAktif);
+                isAksiAktif = false;
                 isThreadFinished = true;
             }
         });
@@ -457,7 +460,6 @@ public class Sim {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 20;
                 
-                isAksiAktif = true;
                 while (!isThreadFinished) {
                     /*
                     +5 kesehatan/20 detik
@@ -478,7 +480,6 @@ public class Sim {
                         }
                     }
                 }
-                isAksiAktif = false;
             }
         });
 
@@ -493,7 +494,6 @@ public class Sim {
         catch (InterruptedException e) {
             e.printStackTrace();
         }
-        System.out.println("\nSelesai berolahraga");
         isThreadFinished = false;
     }
 
@@ -522,8 +522,10 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Clock.wait(durasi);
+                isAksiAktif = true;
+                Clock.wait(durasi, isAksiAktif);
                 isThreadFinished = true;
+                isAksiAktif = false;
             }
         });
 
@@ -532,7 +534,7 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 3*60;
-                isAksiAktif = true;
+                
                 while (!isThreadFinished) {
                     /*
                     +30 mood / 4 menit
@@ -551,7 +553,6 @@ public class Sim {
                         }
                     }
                 }
-                isAksiAktif = false;
             }
         });
 
@@ -652,7 +653,7 @@ public class Sim {
                 @Override
                 public void run() {
                     isAksiAktif = true;
-                    Clock.wait(durasi);
+                    Clock.wait(durasi, isAksiAktif);
                     isAksiAktif = false;
                     isThreadFinished = true;
                 }
@@ -748,8 +749,7 @@ public class Sim {
             @Override
             public void run() {
                 isAksiAktif = true;
-                //isThreadFinished = false;
-                Clock.wait(waktuBerkunjung);
+                Clock.wait(waktuBerkunjung, isAksiAktif);
                 isThreadFinished = true;
                 isAksiAktif = false;
             }
@@ -760,7 +760,6 @@ public class Sim {
             public void run() {
                 int timeInSeconds = LocalTime.now().toSecondOfDay();
                 int duration = 30;
-                isAksiAktif = true;
                 while (!isThreadFinished) {
                     if (Clock.isEqualDuration(timeInSeconds, duration)) {
                         addMood(10);
@@ -815,7 +814,7 @@ public class Sim {
         }
         System.out.println("Pulang ke rumah...");
         isAksiAktif = true;
-        Clock.wait(durasi);
+        Clock.wait(durasi, isAksiAktif);
         isAksiAktif = false;
         isOutside = false;
     }
@@ -824,7 +823,7 @@ public class Sim {
         durasi = (double)10;
         System.out.println("\nSedang buang air...");
         isAksiAktif = true;
-        Clock.wait(durasi);
+        Clock.wait(durasi, isAksiAktif);
         isAksiAktif = false;
         System.out.println("\nSelesai buang air");
         addKekenyangan(-20);
@@ -903,7 +902,7 @@ public class Sim {
                         isUpgradeRumah = true;
                         if (!stopTimeBeliBarang) stopTimeUpgradeRumah = true;
                         durasi = (double) lamaUpgradeRumah;
-                        Clock.wait(durasi);
+                        Clock.wait(durasi, isAksiAktif);
                         isUpgradeRumah = false;
                         stopTimeUpgradeRumah = false;
                     }
@@ -1078,7 +1077,8 @@ public class Sim {
             }
             
             if (konfirmasi.equals("y")) {
-                lamaBeliBarang = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
+                lamaBeliBarang = 2;
+                // lamaBeliBarang = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
                 System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, lamaBeliBarang);
                 timeBeliBarang = Clock.convertToSeconds(Clock.getTime());
                 statusBeliBarang = "Sedang Beli Barang";
@@ -1087,7 +1087,7 @@ public class Sim {
                     public void run() {
                         isBeliBarang = true;
                         if (!stopTimeUpgradeRumah) stopTimeBeliBarang = true;
-                        Clock.wait((double)lamaBeliBarang);
+                        Clock.wait((double)lamaBeliBarang, isAksiAktif);
                         isBeliBarang = false;
                         stopTimeBeliBarang = false;
                     }
@@ -1105,14 +1105,15 @@ public class Sim {
                                     e.printStackTrace();
                                 }
                             }
-                            else Clock.setStopTime(0);
+                            else {
+                                Clock.setStopTime(0);
+                            }
                         }
                     }
                 });
 
                 t2.start();
                 t1.start();
-                // System.out.printf("%s telah diterima\n", item);
 
                 if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
                 else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
@@ -1462,7 +1463,9 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Clock.wait(durasi);
+                isAksiAktif = true;
+                Clock.wait(durasi, isAksiAktif);
+                isAksiAktif = false;
                 isThreadFinished = true;
             }
         });
@@ -1497,7 +1500,9 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Clock.wait(durasi);
+                isAksiAktif = true;
+                Clock.wait(durasi, isAksiAktif);
+                isAksiAktif = false;
                 isThreadFinished = true;
             }
         });
@@ -1534,7 +1539,9 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Clock.wait(durasi);
+                isAksiAktif = true;
+                Clock.wait(durasi, isAksiAktif);
+                isAksiAktif = false;
                 isThreadFinished = true;
             }
         });
@@ -1573,7 +1580,9 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Clock.wait(durasi);
+                isAksiAktif = true;
+                Clock.wait(durasi, isAksiAktif);
+                isAksiAktif = false;
                 isThreadFinished = true;
             }
         });
@@ -1612,7 +1621,9 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Clock.wait(durasi);
+                isAksiAktif = true;
+                Clock.wait(durasi, isAksiAktif);
+                isAksiAktif = false;
                 isThreadFinished = true;
             }
         });
@@ -1670,7 +1681,9 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Clock.wait(durasi);
+                isAksiAktif = true;
+                Clock.wait(durasi, isAksiAktif);
+                isAksiAktif = false;
                 isThreadFinished = true;
             }
         });
@@ -1708,7 +1721,9 @@ public class Sim {
         Thread t1 = new Thread(new Runnable() {
             @Override
             public void run() {
-                Clock.wait(durasi);
+                isAksiAktif = true;
+                Clock.wait(durasi, isAksiAktif);
+                isAksiAktif = false;
                 isThreadFinished = true;
             }
         });
