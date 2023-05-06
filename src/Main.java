@@ -50,10 +50,10 @@ public class Main {
             while (!isPilihanValid) {
                 System.out.print("\u001B[103m");
                 System.out.print("Pilihan: ");
-                pilihan = input.nextInt();
+                pilihan = input.getIntKeyboard();
                 System.out.print("\u001B[0m");
                 if ((pilihan < 1 || pilihan > 4) && (pilihan != -999)) {
-                    System.out.println("Pilihan tidak tersedia\n");
+                    System.out.println("\nPilihan tidak tersedia\n");
                 }
                 else isPilihanValid = true;
             }
@@ -68,7 +68,7 @@ public class Main {
                     exitMainMenu = true;
                     break;
                 case 3:
-                    System.out.println("Help");
+                    System.out.println("Help\n");
                     help();
                     break;
                 case 4:
@@ -76,6 +76,7 @@ public class Main {
                     break;
             }
         }
+        clearConsole();
         System.out.println("Terima kasih telah bermain!");
         System.exit(0);
     }
@@ -178,11 +179,11 @@ public class Main {
             }
             System.out.print("=> ");
             Keyboard input = Keyboard.getInstance();
-            int pilihan = input.nextInt();
+            int pilihan = input.getIntKeyboard();
             while (pilihan < 1 || pilihan > world.getDaftarSim().size()) {
                 System.out.println("Pilihan tidak tersedia");
                 System.out.print("Pilihan: ");
-                pilihan = input.nextInt();
+                pilihan = input.getIntKeyboard();
             }
             sim = world.getDaftarSim().get(pilihan-1);
         }
@@ -268,6 +269,9 @@ public class Main {
             // Mengecek furniture di sekitarnya yang bisa diinteract
             sim.checkFurniture(ruangan);
 
+            /* Add change pekerjaan */
+            sim.addDaftarAksi("Ganti Pekerjaan");
+
             /* Add cheat */
             sim.addDaftarAksi("Cheat");
 
@@ -347,11 +351,11 @@ public class Main {
                             System.out.println((i+1) + ". " + world.getDaftarSim().get(i).getNama());
                         }
                         System.out.print("=> ");
-                        int pilihan = input.nextInt();
+                        int pilihan = input.getIntKeyboard();
                         while (pilihan < 0 || pilihan > world.getDaftarSim().size()) {
                             System.out.println("Pilihan tidak tersedia");
                             System.out.print("Pilihan: ");
-                            pilihan = input.nextInt();
+                            pilihan = input.getIntKeyboard();
                         }
                         if (pilihan == 0) {
                             generateSim(world);
@@ -359,6 +363,9 @@ public class Main {
                             sim = world.getDaftarSim().get(pilihan-1);
                         }
                     }
+                    break;
+                case "ganti pekerjaan":
+                    sim.changePekerjaan();
                     break;
                 case "makan":
                     sim.makan();

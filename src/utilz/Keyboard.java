@@ -1,6 +1,5 @@
 package utilz;
 
-import java.util.InputMismatchException;
 import java.util.Scanner;
 
 import exceptions.WrongInputsException;
@@ -13,28 +12,28 @@ public class Keyboard {
         return instance;
     }
 
-    public int nextInt() {
-        int input = -999;
+    private int nextInt() {
+        String input;
+        int num = -999;
         try {
-            input = scan.nextInt();
-        } catch (InputMismatchException e) {
-            System.out.print("\u001B[0m");
-            System.out.println("\nMasukan harus bernilai integer!\n");
+            input = scan.nextLine();
+            num = Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            throw new WrongInputsException("Masukan harus bernilai integer!\n");
         }
-        scan.nextLine();
-        return input;
+        return num;
     }
 
-    public double nextDouble() {
-        double input = -999d;
+    private double nextDouble() {
+        String input;
+        double num = -999d;
         try {
-            input = scan.nextDouble();
-        } catch (InputMismatchException e) {
-            System.out.print("\u001B[0m");
-            System.out.println("\nMasukan harus bernilai double!\n");
+            input = scan.nextLine();
+            num = Double.parseDouble(input);
+        } catch (NumberFormatException e) {
+            throw new WrongInputsException("Masukan harus bernilai double!\n");
         }
-        scan.nextLine();
-        return input;
+        return num;
     }
 
     public String nextLine() {
@@ -45,11 +44,25 @@ public class Keyboard {
         return scan.next();
     }
 
-    public String getKeyboard(String message) throws WrongInputsException {
-        String input = nextLine();
-        if (input.equals("")) {
-            throw new WrongInputsException(message);
+    public int getIntKeyboard() throws WrongInputsException {
+        int input = -999;
+        try {
+            input = nextInt();
+        } catch (WrongInputsException e) {
+            System.out.println("\u001B[0m");
+            System.out.println(e.getMessage());
         }
-        else return input;
+        return input;
+    }
+
+    public double getDoubleKeyboard() throws WrongInputsException {
+        double input = -999;
+        try {
+            input = nextDouble();
+        } catch (WrongInputsException e) {
+            System.out.println("\u001B[0m");
+            System.out.println(e.getMessage());
+        }
+        return input;
     }
 }
