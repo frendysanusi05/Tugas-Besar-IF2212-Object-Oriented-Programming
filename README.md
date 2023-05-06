@@ -48,6 +48,6 @@ java -classpath "lib\gson-2.8.6.jar;src" Gui
 Biar jago adu mekanik, pemain perlu baca ini <p>
  
 <p align="Center">
-  <a href=https://www.canva.com/design/DAFhgXddUWE/khi6madk4jAK1ZI0Ow68zA/view?utm_content=DAFhgXddUWE&utm_campaign=designshare&utm_medium=link&utm_source=publishsharelink>Visit Buku Jago Sim-Plicity!!!
+  <a href="https://drive.google.com/file/d/1dyYOLU3-h1LqloacXss6tXnuM2qr9Meb/view?usp=share_link">Visit Buku Jago Sim-Plicity!!!
   <a>
 <p>
