@@ -10,13 +10,13 @@ import java.util.Random;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import obj.BahanMakanan;
 import obj.Furniture;
 import obj.Inventory;
 import obj.Masakan;
 import utilz.Clock;
+import utilz.Keyboard;
 import utilz.Point;
 import world.Ruangan;
 import world.Rumah;
@@ -62,7 +62,7 @@ public class Sim {
     int timeUpgradeRumah = 0;
     int lamaUpgradeRumah = 0;
 
-    private volatile boolean isAksiAktif = false;
+    private static volatile boolean isAksiAktif = false;
     volatile boolean stopTimeUpgradeRumah = false;
     volatile boolean stopTimeBeliBarang = false;
 
@@ -226,7 +226,7 @@ public class Sim {
     
         System.out.print("Masukkan makanan yang ingin dimakan: ");
         
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         String namaMakanan = input.nextLine();
 
         while (!inventory.containsItem(namaMakanan)) {
@@ -291,7 +291,7 @@ public class Sim {
     }
     
     public void kerja() {
-        Scanner scan = new Scanner(System.in);
+        Keyboard scan = Keyboard.getInstance();
         
         boolean isInputDouble = false;
         while (!isInputDouble) {
@@ -422,17 +422,17 @@ public class Sim {
     }
 
     public void olahraga() {
-        Scanner scan = new Scanner(System.in);
+        Keyboard scan = Keyboard.getInstance();
         boolean isInputDouble = false;
         while (!isInputDouble) {
             try {
                 System.out.print("Masukkan durasi olahraga: ");
                 durasi = scan.nextDouble();
-                // while (durasi % 20 != 0) {
-                //     System.out.println("Durasi olahraga harus merupakan kelipatan 20");
-                //     System.out.print("Masukkan kembali durasi olahraga: ");
-                //     durasi = scan.nextDouble();
-                // }
+                while (durasi % 20 != 0) {
+                    System.out.println("Durasi olahraga harus merupakan kelipatan 20");
+                    System.out.print("Masukkan kembali durasi olahraga: ");
+                    durasi = scan.nextDouble();
+                }
                 isInputDouble = true;
             }
             catch (Exception e) {
@@ -498,7 +498,7 @@ public class Sim {
     }
 
     public void tidur() {
-        Scanner scan = new Scanner(System.in);
+        Keyboard scan = Keyboard.getInstance();
         boolean isInputDouble = false;
         while (!isInputDouble) {
             try {
@@ -615,7 +615,7 @@ public class Sim {
 
 
         System.out.print("Masukkan nama masakan yang ingin dimasak: ");
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         String namaMasakan = input.nextLine(); 
 
         boolean found = false;
@@ -710,7 +710,7 @@ public class Sim {
         }
 
         System.out.print("Masukkan nama teman yang ingin dikunjungi: ");
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         String namaTeman = input.nextLine();
         if (nama.equals(namaTeman)) {
             System.out.println("Kamu tidak bisa mengunjungi dirimu sendiri");
@@ -802,7 +802,7 @@ public class Sim {
         double durasi = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
         System.out.println("Waktu pulang: " + durasi + " detik");
         System.out.println("Apakah kamu yakin akan pulang? (y/n)");
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         String jawaban = input.nextLine();
         while (!jawaban.equals("y") && !jawaban.equals("n")) {
             System.out.println("Masukan invalid");
@@ -865,7 +865,7 @@ public class Sim {
                 for (int i = 0; i < expandable.size(); i++) {
                     System.out.println((i + 1) + ". " + expandable.get(i));
                 }
-                Scanner input = new Scanner(System.in);
+                Keyboard input = Keyboard.getInstance();
                 String pilihan = "";
                 boolean isInputValid = false;
                 while (!isInputValid) {
@@ -875,19 +875,17 @@ public class Sim {
                         while (!expandable.contains(pilihan)) {
                             System.out.println("Pilihan tidak valid");
                             System.out.println("Ke mana kamu ingin menambah ruangan?");
-                            input = new Scanner(System.in);
                             pilihan = input.nextLine();
                         }
                         isInputValid = true;
                     }
                     catch (Exception e) {
                         System.out.println("Masukan harus String");
-                        input.next();
+                        input.nextLine();
                     }
                 }
 
                 System.out.print("Apa nama ruangan baru itu? ");
-                input = new Scanner(System.in);
                 String namaRuangan = input.nextLine();
 
                 // Point point = available.get(pilihan - 1);
@@ -1015,7 +1013,7 @@ public class Sim {
                 +-----+----------------------------+--------------------------+
             """);
 
-            Scanner scan = new Scanner(System.in);
+            Keyboard scan = Keyboard.getInstance();
             System.out.print("Masukkan nama barang yang ingin dibeli: ");
             String item = scan.nextLine();
             System.out.println();
@@ -1077,8 +1075,7 @@ public class Sim {
             }
             
             if (konfirmasi.equals("y")) {
-                lamaBeliBarang = 2;
-                // lamaBeliBarang = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
+                lamaBeliBarang = (new Random().nextInt(4) + 1) /* between (1,5) */ * 30;
                 System.out.printf("%s akan segera dikirim dalam waktu %d detik\n", item, lamaBeliBarang);
                 timeBeliBarang = Clock.convertToSeconds(Clock.getTime());
                 statusBeliBarang = "Sedang Beli Barang";
@@ -1126,7 +1123,7 @@ public class Sim {
     }
 
     public void pindahRuang(Rumah rumah){
-        Scanner scan = new Scanner(System.in);
+        Keyboard scan = Keyboard.getInstance();
         Ruangan ruangan = currentRuangan;
         ruangan.printRuanganNextTo();
         ArrayList<String> nextTo = new ArrayList<String>();
@@ -1182,7 +1179,7 @@ public class Sim {
         }
         inventory.printSpecificItem("Furniture");
         System.out.println("Masukkan nama furniture yang ingin dipasang (contoh: Meja Makan) ");
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         String namaFurniture = input.nextLine();
 
         if (!inventory.containsItem(namaFurniture)) {
@@ -1269,7 +1266,7 @@ public class Sim {
         System.out.println("Berikut ini adalah daftar furniture yang ada di ruangan: ");
         ruangan.printDaftarFurniture();
         System.out.print("Masukkan nama furniture yang ingin dituju: ");
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         String namaFurniture = input.nextLine();
 
         if (!ruangan.isFurnitureInRuangan(namaFurniture)) {
@@ -1440,7 +1437,7 @@ public class Sim {
         System.out.println("2. Faloran "); // 60 detik
         System.out.println("3. EmEl "); // 90 detik
         System.out.print("Pilih game yang ingin dimainkan (Masukkan angka): ");
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         int pilihan = input.nextInt();
         
         if (pilihan < 1 || pilihan > 3) {
@@ -1526,7 +1523,7 @@ public class Sim {
         // mood bertambah 5 dan kesehatan bertambah 5 setiap 10 detik
         System.out.println("Durasi rebahan harus kelipatan 10");
         System.out.print("Masukkan durasi belajar coding: ");
-        Scanner sc = new Scanner(System.in);
+        Keyboard sc = Keyboard.getInstance();
         int lamaRebahan = sc.nextInt();
 
         if (lamaRebahan % 10 != 0) {
@@ -1567,7 +1564,7 @@ public class Sim {
 
         System.out.println("Durasi belajar coding harus kelipatan 30");
         System.out.print("Masukkan durasi belajar coding: ");
-        Scanner sc = new Scanner(System.in);
+        Keyboard sc = Keyboard.getInstance();
         int lamaBelajarCoding = sc.nextInt();
 
         if (lamaBelajarCoding % 30 != 0) {
@@ -1608,7 +1605,7 @@ public class Sim {
 
         System.out.println("Durasi buka sosmed harus kelipatan 20");
         System.out.print("Masukkan durasi buka sosmed: ");
-        Scanner sc = new Scanner(System.in);
+        Keyboard sc = Keyboard.getInstance();
         int lamaBukaSosmed = sc.nextInt();
 
         if (lamaBukaSosmed % 20 != 0) {
@@ -1658,7 +1655,7 @@ public class Sim {
         System.out.println("2. Cek Kelompok Sebelah "); // 60 detik
         System.out.println("3. Pengabdi Tubes 3 "); // 90 detik
         System.out.print("Pilih film yang ingin ditonton (Masukkan angka): ");
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         int pilihan = input.nextInt();
         
         if (pilihan < 1 || pilihan > 3) {
@@ -1714,7 +1711,7 @@ public class Sim {
 
         System.out.println("Selamat Datang di Undian Berhadiah!");
         System.out.println("Tekan tombol apapun untuk memulai undian!");
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         input.nextLine();
         System.out.println("Menguji peruntungan Anda...");
 

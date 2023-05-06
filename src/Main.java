@@ -1,4 +1,3 @@
-import java.nio.charset.CharsetEncoder;
 import java.util.*;
 
 import saveload.Load;
@@ -40,49 +39,41 @@ public class Main {
         System.out.println("3. Help");
         System.out.println("4. Exit\n");
 
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         boolean exitMainMenu = false;
 
         while (!exitMainMenu) {
-            int pilihan = 0;
+            int pilihan = -999;
             boolean isPilihanValid = false;
 
             while (!isPilihanValid) {
                 System.out.print("\u001B[103m");
                 System.out.print("Pilihan: ");
-                try {
-                    pilihan = input.nextInt();
-                    System.out.print("\u001B[0m");
-                    if (pilihan < 0 || pilihan > 4) {
-                        System.out.println("Pilihan tidak tersedia\n");
-                    }
-                    else isPilihanValid = true;
-
-                    switch (pilihan) {
-                        case 1:
-                            newGameSim();
-                            exitMainMenu = true;
-                            break;
-                        case 2:
-                            World world = load();
-                            playSim(world);
-                            load();
-                            exitMainMenu = true;
-                            break;
-                        case 3:
-                            System.out.println("Help");
-                            help();
-                            break;
-                        case 4:
-                            exitMainMenu = true;
-                            break;
-                    }
+                pilihan = input.nextInt();
+                System.out.print("\u001B[0m");
+                if ((pilihan < 1 || pilihan > 4) && (pilihan != -999)) {
+                    System.out.println("Pilihan tidak tersedia\n");
                 }
-                catch (InputMismatchException e) {
-                    System.out.print("\u001B[0m");
-                    System.out.println("\nMasukan harus bernilai integer\n");
-                    input.nextLine();
-                }
+                else isPilihanValid = true;
+            }
+            switch (pilihan) {
+                case 1:
+                    newGameSim();
+                    exitMainMenu = true;
+                    break;
+                case 2:
+                    World world = load();
+                    playSim(world);
+                    load();
+                    exitMainMenu = true;
+                    break;
+                case 3:
+                    System.out.println("Help");
+                    help();
+                    break;
+                case 4:
+                    exitMainMenu = true;
+                    break;
             }
         }
         System.out.println("Terima kasih telah bermain!");
@@ -92,7 +83,7 @@ public class Main {
     public static void generateSim (World world) throws Exception {
         // World world = new World();
         System.out.print("\nMasukkan nama pemain: ");
-        Scanner input = new Scanner(System.in);
+        Keyboard input = Keyboard.getInstance();
         String namaSim = input.nextLine();
         while (world.isSimInWorld(namaSim)) {
             System.out.println("Nama sudah digunakan, silahkan masukkan nama lain");
@@ -140,21 +131,14 @@ public class Main {
 
     public static void cheat(Sim sim) {
         System.out.println("Kriptografi itu mudah, tahu gak tentang ROT13?\nPurngGhorfBBC");
-        Scanner scan = new Scanner(System.in);
+        Keyboard scan = Keyboard.getInstance();
         System.out.println("\nMasukkan password: ");
         String passwd = scan.nextLine();
         if (passwd.equals("CheatTubesOOP")) {
-            System.out.println("\nRetailer mana yang menggunakan IP address 54.239.28.85?");
-            System.out.println("\nMasukkan password: ");
-            passwd = scan.nextLine();
-            if (passwd.equals("Amazon Inc.")) {
-                sim.addKekenyangan(100);
-                sim.addKesehatan(100);
-                sim.addMood(100);
-                sim.addUang(999999);
-                System.out.println("Cheat berhasil digunakan. Anda hacker sejati :))");
-            }
-            else System.out.println("\nPassword salah. NT NT :D\n");
+            sim.addKekenyangan(100);
+            sim.addKesehatan(100);
+            sim.addMood(100);
+            sim.addUang(999999);
         }
         else System.out.println("\nPassword salah. NT NT :D\n");
     }
@@ -185,7 +169,7 @@ public class Main {
                 System.out.println((i+1) + ". " + world.getDaftarSim().get(i).getNama());
             }
             System.out.print("=> ");
-            Scanner input = new Scanner(System.in);
+            Keyboard input = Keyboard.getInstance();
             int pilihan = input.nextInt();
             while (pilihan < 1 || pilihan > world.getDaftarSim().size()) {
                 System.out.println("Pilihan tidak tersedia");
@@ -266,7 +250,7 @@ public class Main {
 
             // Minta masukan user buat aksi yang mau dilakukan
             System.out.print("\nApa yang ingin kamu lakukan? ");
-            Scanner input = new Scanner(System.in);
+            Keyboard input = Keyboard.getInstance();
             String aksi = input.nextLine();
 
             while (!sim.getDaftarAksi().contains(aksi)) {
