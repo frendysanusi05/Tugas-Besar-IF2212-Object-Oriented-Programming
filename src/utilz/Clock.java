@@ -13,7 +13,7 @@ public class Clock {
 
     /* Menjalankan durasi waktu */
     /* Jika ingin menjalankan 2 menit, maka gunakan Clock.wait(2*60) */
-    public static void wait(Double duration) {
+    public static void wait(Double duration, boolean isAksiAktif) {
         LocalTime localTime = getRealTime();
         int seconds = localTime.toSecondOfDay();
         if (firstTimeClock) {
@@ -31,8 +31,10 @@ public class Clock {
             //     e.printStackTrace();
             // }
         }
-        Duration durationInDuration = Duration.ofSeconds(duration.intValue());
-        currTime = currTime.plus(durationInDuration);
+        if (isAksiAktif) {
+            Duration durationInDuration = Duration.ofSeconds(duration.intValue());
+            currTime = currTime.plus(durationInDuration);
+        }
     }
 
     /* Mengecek durasi waktu == duration */

@@ -5,17 +5,25 @@ import java.util.Scanner;
 import exceptions.WrongInputsException;
 
 public class Keyboard {
-    private static final Scanner scan = new Scanner(System.in);
+    private static Scanner scan = new Scanner(System.in);
 
-    public static int getScan() throws WrongInputsException {
-        int input = 0;
-        try {
-            input = scan.nextInt();
+    public static Scanner getInstance() {
+        return scan;
+    }
+
+    public int nextInt() {
+        return scan.nextInt();
+    }
+
+    public String nextLine() {
+        return scan.nextLine();
+    }
+
+    public String getKeyboard(String message) throws WrongInputsException {
+        String input = nextLine();
+        if (input.equals("")) {
+            throw new WrongInputsException(message);
         }
-        catch (WrongInputsException e) {
-            System.out.print("\u001B[0m");
-            System.out.println("Masukan harus bernilai integer!\n");
-        }
-        return input;
+        else return input;
     }
 }
