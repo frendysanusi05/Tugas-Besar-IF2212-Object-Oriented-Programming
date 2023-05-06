@@ -245,6 +245,9 @@ public class Main {
             // Mengecek furniture di sekitarnya yang bisa diinteract
             sim.checkFurniture(ruangan);
 
+            /* Add change pekerjaan */
+            sim.addDaftarAksi("Ganti Pekerjaan");
+
             /* Add cheat */
             sim.addDaftarAksi("Cheat");
 
@@ -336,6 +339,9 @@ public class Main {
                             sim = world.getDaftarSim().get(pilihan-1);
                         }
                     }
+                    break;
+                case "ganti pekerjaan":
+                    sim.changePekerjaan();
                     break;
                 case "makan":
                     sim.makan();

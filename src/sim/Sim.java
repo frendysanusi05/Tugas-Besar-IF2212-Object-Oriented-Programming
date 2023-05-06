@@ -15,6 +15,7 @@ import obj.BahanMakanan;
 import obj.Furniture;
 import obj.Inventory;
 import obj.Masakan;
+import obj.Pekerjaan;
 import utilz.Clock;
 import utilz.Keyboard;
 import utilz.Point;
@@ -27,7 +28,8 @@ import java.time.LocalTime;
 public class Sim {
     /*** Atribut ***/
     private String nama;
-    private String pekerjaan;
+    // private String pekerjaan;
+    private Pekerjaan pekerjaan;
     private int uang;
     private int kekenyangan;
     private int mood;
@@ -66,6 +68,10 @@ public class Sim {
     volatile boolean stopTimeUpgradeRumah = false;
     volatile boolean stopTimeBeliBarang = false;
 
+    private static int lamaWaktuBekerja = 0;
+    boolean isPekerjaanBaru = false;
+    int timeGantiKerja;
+
     /*** Constructor ***/
     public Sim(String nama) {
         this.nama = nama;
@@ -74,7 +80,7 @@ public class Sim {
         this.mood = 80;
         this.kesehatan = 80;
         this.inventory = new Inventory();
-        this.pekerjaan = daftarPekerjaan[new Random().nextInt(daftarPekerjaan.length)];
+        this.pekerjaan = new Pekerjaan(daftarPekerjaan[new Random().nextInt(daftarPekerjaan.length)]);
         daftarAksi.add("Kerja");
         daftarAksi.add("Olahraga");
         daftarAksi.add("Berkunjung");
@@ -92,7 +98,7 @@ public class Sim {
         return nama;
     }
 
-    public String getPekerjaan() {
+    public Pekerjaan getPekerjaan() {
         return pekerjaan;
     }
 
@@ -286,136 +292,146 @@ public class Sim {
         System.out.println("Selesai Makan");
         isSudahMakan = true;
     }
+
+    public void changePekerjaan() {
+        if (lamaWaktuBekerja < 12*60) {
+            System.out.println("Ada apa dengan pekerjaan saat ini? Masih newbie loh, kerja duluuu\n");
+        }
+        else {
+            System.out.println("""
+            List pekerjaan
+            +------------+
+            """);
+            int i = 1;
+            for (String pekerjaan : daftarPekerjaan) {
+                System.out.println(i + ". " + pekerjaan);
+                i++;
+            }
+
+            System.out.println("Masukkan nama pekerjaan baru yang Anda ingin\n");
+            Keyboard scan = Keyboard.getInstance();
+            String pilihan = scan.nextLine();
+
+            for (String pekerjaan : daftarPekerjaan) {
+                if (pekerjaan.equals(pilihan)) {
+                    this.pekerjaan = new Pekerjaan(pilihan);
+                    uang -= 0.5*this.pekerjaan.getGaji();
+                    isPekerjaanBaru = true;
+                    lamaWaktuBekerja = 0;
+                    timeGantiKerja = Clock.convertToSeconds(Clock.getTime());
+                    System.out.println("Ciee dapat pekerjaan baru. Awas gak kerja •`_´•\n");
+                }
+            }
+        }
+    }
     
     public void kerja() {
-        Keyboard scan = Keyboard.getInstance();
-        
-        boolean isInputDouble = false;
-        while (!isInputDouble) {
-            try {
-                System.out.print("Masukkan durasi kerja: ");
-                durasi = scan.getDoubleKeyboard();
-                while (durasi % 120 != 0) {
-                    System.out.println("Durasi kerja harus kelipatan 120");
-                    System.out.print("Masukkan kembali durasi kerja: ");
+        if (isPekerjaanBaru) {
+            if (Clock.getDiffTimeInSeconds(timeGantiKerja) >= 12*60) {
+                isPekerjaanBaru = false;
+            }
+        }
+        else {
+            Keyboard scan = Keyboard.getInstance();
+            
+            boolean isInputDouble = false;
+            while (!isInputDouble) {
+                try {
+                    System.out.print("Masukkan durasi kerja: ");
                     durasi = scan.getDoubleKeyboard();
+                    while (durasi % 120 != 0 || durasi <= 0) {
+                        System.out.println("\nDurasi kerja harus kelipatan 120");
+                        System.out.print("Masukkan kembali durasi kerja: ");
+                        durasi = scan.getDoubleKeyboard();
+                    }
+                    lamaWaktuBekerja = durasi.intValue();
+                    isInputDouble = true;
                 }
-                isInputDouble = true;
+                catch (Exception e) {
+                    System.out.println("Masukan harus double");
+                    scan.next();
+                }
             }
-            catch (Exception e) {
-                System.out.println("Masukan harus double");
-                scan.next();
-            }
-        }
 
-        System.out.println();
-        System.out.println("Sedang bekerja...");
-        
-        isAksiAktif = true;
-        Thread t1 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                isThreadFinished = false;
-                Clock.wait(durasi, isAksiAktif);
-                isThreadFinished = true;
-            }
-        });
+            System.out.println();
+            System.out.println("Sedang bekerja...");
+            
+            isAksiAktif = true;
+            Thread t1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    isThreadFinished = false;
+                    Clock.wait(durasi, isAksiAktif);
+                    isThreadFinished = true;
+                }
+            });
 
-        Thread t2 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int timeInSeconds = LocalTime.now().toSecondOfDay();
-                int duration = 30;
-                
-                while (!isThreadFinished) {
-                    /*
-                    -10 kekenyangan / 30 detik
-                    -10 mood / 30 detik
-                     */
+            Thread t2 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int timeInSeconds = LocalTime.now().toSecondOfDay();
+                    int duration = 30;
+                    
+                    while (!isThreadFinished) {
+                        /*
+                        -10 kekenyangan / 30 detik
+                        -10 mood / 30 detik
+                        */
 
-                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
-                        addKekenyangan(-10);
-                        addMood(-10);
+                        if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                            addKekenyangan(-10);
+                            addMood(-10);
 
-                        timeInSeconds = LocalTime.now().toSecondOfDay();
-                        try {
-                            Thread.sleep(1000);
+                            timeInSeconds = LocalTime.now().toSecondOfDay();
+                            try {
+                                Thread.sleep(1000);
+                            }
+                            catch (InterruptedException e) {
+
+                            }
                         }
-                        catch (InterruptedException e) {
+                    }
+                    isAksiAktif = false;
+                }
+            });
 
+            Thread t3 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    int timeInSeconds = LocalTime.now().toSecondOfDay();
+                    int duration = 4 * 60;
+
+                    while (!isThreadFinished) {
+                        if (Clock.isEqualDuration(timeInSeconds, duration)) {
+                            addUang(pekerjaan.getGaji());
+
+                            timeInSeconds = LocalTime.now().toSecondOfDay();
+                            try {
+                                Thread.sleep(1000);
+                            }
+                            catch (InterruptedException e) {
+
+                            }
                         }
                     }
                 }
-                isAksiAktif = false;
+            });
+
+            t1.start();
+            t2.start();
+            t3.start();
+
+            try {
+                t1.join();
+                t2.join();
+                t3.join();
             }
-        });
-
-        Thread t3 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                int timeInSeconds = LocalTime.now().toSecondOfDay();
-                int duration = 4 * 60;
-
-                while (!isThreadFinished) {
-                    if (Clock.isEqualDuration(timeInSeconds, duration)) {
-                        if (pekerjaan.equals("Badut Sulap")) 
-                        {
-                            addUang(15);
-                        }
-                        else if(pekerjaan.equals("Koki"))
-                        {
-                            addUang(30);
-                        }
-                        else if(pekerjaan.equals("Polisi"))
-                        {
-                            addUang(35);
-                        }
-                        else if(pekerjaan.equals("Programmer"))
-                        {
-                            addUang(45);
-                        }
-                        else if(pekerjaan.equals("Dokter"))
-                        {
-                            addUang(50);
-                        } 
-                        else if(pekerjaan.equals("Dosen")) 
-                        {
-                            addUang(40);
-                        }
-                        else if(pekerjaan.equals("Penyanyi")) 
-                        {
-                            addUang(60);
-                        }
-                        else if(pekerjaan.equals("Streamer")) {
-                            addUang(55);
-                        }
-
-                        timeInSeconds = LocalTime.now().toSecondOfDay();
-                        try {
-                            Thread.sleep(1000);
-                        }
-                        catch (InterruptedException e) {
-
-                        }
-                    }
-                }
+            catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        });
-
-        t1.start();
-        t2.start();
-        t3.start();
-
-        try {
-            t1.join();
-            t2.join();
-            t3.join();
+            System.out.println("\nSelesai bekerja");
+            isThreadFinished = false;
         }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("\nSelesai bekerja");
-        isThreadFinished = false;
     }
 
     public void olahraga() {
@@ -425,7 +441,7 @@ public class Sim {
             try {
                 System.out.print("Masukkan durasi olahraga: ");
                 durasi = scan.getDoubleKeyboard();
-                while (durasi % 20 != 0) {
+                while (durasi % 20 != 0 || durasi <= 0) {
                     System.out.println("Durasi olahraga harus merupakan kelipatan 20");
                     System.out.print("Masukkan kembali durasi olahraga: ");
                     durasi = scan.getDoubleKeyboard();
@@ -1376,7 +1392,7 @@ public class Sim {
         System.out.println("+------------------+----------+----------+----------------+----------------+");
         System.out.println("| Pekerjaan        | Uang     | Mood     | Kesehatan      | Kekenyangan    |");
         System.out.println("+------------------+----------+----------+----------------+----------------+");
-        System.out.printf("| %-16s | %-8d | %-8d | %-14d | %-14d |\n", pekerjaan, uang, mood, kesehatan, kekenyangan);
+        System.out.printf("| %-16s | %-8d | %-8d | %-14d | %-14d |\n", pekerjaan.getNama(), uang, mood, kesehatan, kekenyangan);
         System.out.println("+------------------+----------+----------+----------------+----------------+");
         System.out.println();
     }
