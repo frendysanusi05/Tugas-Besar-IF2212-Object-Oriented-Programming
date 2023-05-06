@@ -64,7 +64,6 @@ public class Main {
                 case 2:
                     World world = load();
                     playSim(world);
-                    load();
                     exitMainMenu = true;
                     break;
                 case 3:

@@ -7,9 +7,9 @@ public class ClockSerializer {
     private int currTime;
     private boolean firstTimeClock;
 
-    public ClockSerializer(int day, int stop, int startTime, int currTime, boolean firstTimeClock) {
+    public ClockSerializer(int day, int startTime, int currTime, boolean firstTimeClock) {
         this.day = day;
-        this.stop = stop;
+        stop = 0;
         this.startTime = startTime;
         this.currTime = currTime;
         this.firstTimeClock = firstTimeClock;
