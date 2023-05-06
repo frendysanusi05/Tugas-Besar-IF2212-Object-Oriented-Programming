@@ -150,6 +150,10 @@ public class Sim {
         return isSudahMakan;
     }
 
+    public void setMood(int mood) {
+        this.mood = mood;
+    }
+
     /*** Functions ***/
     public boolean isAlive() {
         return matiDepresi() && matiKelaparan() && matiSakit();
