@@ -1458,17 +1458,9 @@ public class Sim {
             status += "Idle";
             System.out.println("Status : " + status);
         } else {
-            if (statusBeliBarang != null && statusBeliBarang.equals("Sedang Beli Barang")) {
-                status += "Sedang Beli Barang";
-            } else if (statusUpgradeRumah != null && statusUpgradeRumah.equals("Sedang Upgrade Rumah")) {
-                status += "Sedang Upgrade Rumah";
-            } else {
-                status += "Idle";
-            }
-            System.out.println("Status : " + status);
             if (statusBeliBarang != null && statusUpgradeRumah != null && statusBeliBarang.equals("Sedang Beli Barang") && statusUpgradeRumah.equals("Sedang Upgrade Rumah")) {
                 status += "Sedang Beli Barang dan Sedang Upgrade Rumah";
-                System.out.println(status);
+                System.out.println("Status : " + status);
             } else {
                 if (statusBeliBarang != null && statusBeliBarang.equals("Sedang Beli Barang")) {
                     status += "Sedang Beli Barang";

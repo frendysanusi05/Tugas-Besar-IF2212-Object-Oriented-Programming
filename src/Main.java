@@ -176,7 +176,7 @@ public class Main {
             sim.addMood(100);
             sim.addUang(999999);
 
-            sim.setMood(0);
+            // sim.setMood(0);
 
             System.out.println("Calon hacker...");
         }
