@@ -2,6 +2,6 @@
   "day": 1,
   "stop": 0,
   "startTime": 0,
-  "currTime": 0,
-  "firstTimeClock": true
+  "currTime": 12,
+  "firstTimeClock": false
 }
