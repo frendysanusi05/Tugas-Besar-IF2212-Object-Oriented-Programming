@@ -177,13 +177,23 @@ public class Main {
             }
             sim = world.getDaftarSim().get(pilihan-1);
         }
-        /*** For Testing ***/
-        //sim.setUang(10000);
 
         // Set boolean ke false supaya ga exit dari game
         boolean exitGame = false;
 
-        // Ini cuma animasi loading
+        System.out.print("Generating Sim");
+        Animasi, hiraukan
+        Thread.sleep(1000);
+        System.out.print(".");
+        System.out.print(".");
+        Thread.sleep(1000);
+        System.out.print(".");
+        System.out.print(".");
+        Thread.sleep(1000);
+        System.out.println(".");
+        System.out.println(".");
+        Thread.sleep(1000);
+
         
         System.out.println(" Generating World...\n");
 
