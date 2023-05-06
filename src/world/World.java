@@ -11,7 +11,7 @@ public class World {
     private static World instance = new World();
 
     /*** Constructor ***/
-    private World() {
+    public World() {
         /* Inisiasi nilai di dalam cekPosisi dengan false */
         for (int i = 0; i < 64; i++) {
             for (int j = 0; j < 64; j++) {
