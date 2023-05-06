@@ -25,12 +25,12 @@ public class Clock {
         while ((convertToSeconds(getRealTime()) - stop) - seconds + 1 <= duration) {
             /*** for debugging ***/
             // System.out.println("stop: " + stop);
-            System.out.println((convertToSeconds(getRealTime()) - stop) - seconds + 1);
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
+            // System.out.println((convertToSeconds(getRealTime()) - stop) - seconds + 1);
+            // try {
+            //     Thread.sleep(1000);
+            // } catch (InterruptedException e) {
+            //     e.printStackTrace();
+            // }
         }
         if (isAksiAktif) {
             Duration durationInDuration = Duration.ofSeconds(duration.intValue());

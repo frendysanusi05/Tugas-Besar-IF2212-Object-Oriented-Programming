@@ -297,11 +297,11 @@ public class Sim {
         while (!isInputDouble) {
             try {
                 System.out.print("Masukkan durasi kerja: ");
-                durasi = scan.nextDouble();
+                durasi = scan.getDoubleKeyboard();
                 while (durasi % 120 != 0) {
                     System.out.println("Durasi kerja harus kelipatan 120");
                     System.out.print("Masukkan kembali durasi kerja: ");
-                    durasi = scan.nextDouble();
+                    durasi = scan.getDoubleKeyboard();
                 }
                 isInputDouble = true;
             }
@@ -427,11 +427,11 @@ public class Sim {
         while (!isInputDouble) {
             try {
                 System.out.print("Masukkan durasi olahraga: ");
-                durasi = scan.nextDouble();
+                durasi = scan.getDoubleKeyboard();
                 while (durasi % 20 != 0) {
                     System.out.println("Durasi olahraga harus merupakan kelipatan 20");
                     System.out.print("Masukkan kembali durasi olahraga: ");
-                    durasi = scan.nextDouble();
+                    durasi = scan.getDoubleKeyboard();
                 }
                 isInputDouble = true;
             }
@@ -503,11 +503,11 @@ public class Sim {
         while (!isInputDouble) {
             try {
                 System.out.print("Masukkan durasi tidur: ");
-                durasi = scan.nextDouble();
+                durasi = scan.getDoubleKeyboard();
                 while (durasi < 3*60) {
                     System.out.println("Durasi tidur harus lebih dari sama dengan 3 menit");
                     System.out.print("Masukkan durasi tidur: ");
-                    durasi = scan.nextDouble();
+                    durasi = scan.getDoubleKeyboard();
                 }
                 isInputDouble = true;
             }
@@ -1198,19 +1198,19 @@ public class Sim {
         while (!isInputInt) {
             try {
                 System.out.print("Masukkan posisi x furniture: ");
-                x = input.nextInt();
+                x = input.getIntKeyboard();
                 System.out.println();
                 System.out.print("Masukkan posisi y furniture: ");
-                y = input.nextInt();
+                y = input.getIntKeyboard();
                 System.out.println();
 
                 while (x > 5 && y > 5 && x < 0 && y < 0) {
                     System.out.println("Posisi tidak valid!");
                     System.out.print("Masukkan posisi x furniture: ");
-                    x = input.nextInt();
+                    x = input.getIntKeyboard();
                     System.out.println();
                     System.out.print("Masukkan posisi y furniture: ");
-                    y = input.nextInt();
+                    y = input.getIntKeyboard();
                     System.out.println();
                 }
                 isInputInt = true;
@@ -1291,11 +1291,11 @@ public class Sim {
                 boolean isInputInt = false;
                 while (!isInputInt) {
                     try {
-                        pilihan = input.nextInt();
+                        pilihan = input.getIntKeyboard();
                         while (pilihan < 1 || pilihan > count) {
                             System.out.println("Pilihan tidak valid!");
                             System.out.print("Pilih salah satu " + namaFurniture + " yang ingin dituju (Masukkan angka): ");
-                            pilihan = input.nextInt();
+                            pilihan = input.getIntKeyboard();
                         }
                         isInputInt = true;
                     }
@@ -1438,7 +1438,7 @@ public class Sim {
         System.out.println("3. EmEl "); // 90 detik
         System.out.print("Pilih game yang ingin dimainkan (Masukkan angka): ");
         Keyboard input = Keyboard.getInstance();
-        int pilihan = input.nextInt();
+        int pilihan = input.getIntKeyboard();
         
         if (pilihan < 1 || pilihan > 3) {
             System.out.println("Pilihan tidak valid");
@@ -1524,7 +1524,7 @@ public class Sim {
         System.out.println("Durasi rebahan harus kelipatan 10");
         System.out.print("Masukkan durasi belajar coding: ");
         Keyboard sc = Keyboard.getInstance();
-        int lamaRebahan = sc.nextInt();
+        int lamaRebahan = sc.getIntKeyboard();
 
         if (lamaRebahan % 10 != 0) {
             System.out.println("Durasi rebahan harus kelipatan 10!");
@@ -1565,7 +1565,7 @@ public class Sim {
         System.out.println("Durasi belajar coding harus kelipatan 30");
         System.out.print("Masukkan durasi belajar coding: ");
         Keyboard sc = Keyboard.getInstance();
-        int lamaBelajarCoding = sc.nextInt();
+        int lamaBelajarCoding = sc.getIntKeyboard();
 
         if (lamaBelajarCoding % 30 != 0) {
             System.out.println("Durasi belajar coding harus kelipatan 30!");
@@ -1606,7 +1606,7 @@ public class Sim {
         System.out.println("Durasi buka sosmed harus kelipatan 20");
         System.out.print("Masukkan durasi buka sosmed: ");
         Keyboard sc = Keyboard.getInstance();
-        int lamaBukaSosmed = sc.nextInt();
+        int lamaBukaSosmed = sc.getIntKeyboard();
 
         if (lamaBukaSosmed % 20 != 0) {
             System.out.println("Durasi buka sosmed harus kelipatan 20!");
@@ -1656,7 +1656,7 @@ public class Sim {
         System.out.println("3. Pengabdi Tubes 3 "); // 90 detik
         System.out.print("Pilih film yang ingin ditonton (Masukkan angka): ");
         Keyboard input = Keyboard.getInstance();
-        int pilihan = input.nextInt();
+        int pilihan = input.getIntKeyboard();
         
         if (pilihan < 1 || pilihan > 3) {
             System.out.println("Pilihan tidak valid");
