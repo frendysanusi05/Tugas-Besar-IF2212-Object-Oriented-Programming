@@ -829,6 +829,8 @@ public class Sim {
         System.out.println("Pulang ke rumah...");
         isAksiAktif = true;
         Clock.wait(durasi, isAksiAktif);
+        currentRuangan = rumahSim.getRuangan("Kamar");
+        setPosisiSim(new Point(3,3));
         isAksiAktif = false;
         isOutside = false;
     }
