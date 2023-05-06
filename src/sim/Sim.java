@@ -603,7 +603,8 @@ public class Sim {
                     daftar += bahanMakanan;
                 } else {
                     daftar += bahanMakanan + ", ";
-                }   
+                }
+                i++;   
             }
             System.out.printf("%-33s", daftar);
             System.out.println("|");
@@ -1522,7 +1523,7 @@ public class Sim {
     public void rebahan() {
         // mood bertambah 5 dan kesehatan bertambah 5 setiap 10 detik
         System.out.println("Durasi rebahan harus kelipatan 10");
-        System.out.print("Masukkan durasi belajar coding: ");
+        System.out.print("Masukkan durasi rebahan: ");
         Keyboard sc = Keyboard.getInstance();
         int lamaRebahan = sc.nextInt();
 
@@ -1530,6 +1531,8 @@ public class Sim {
             System.out.println("Durasi rebahan harus kelipatan 10!");
             return;
         }
+
+        System.out.println("Sedang rebahan...");
 
         durasi = (double) lamaRebahan;
    

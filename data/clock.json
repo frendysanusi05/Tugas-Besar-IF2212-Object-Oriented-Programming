@@ -2,6 +2,10 @@
   "day": 1,
   "stop": 0,
   "startTime": 0,
+<<<<<<< Updated upstream
   "currTime": 19,
+=======
+  "currTime": 10,
+>>>>>>> Stashed changes
   "firstTimeClock": false
 }

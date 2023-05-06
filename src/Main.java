@@ -12,6 +12,7 @@ import world.World;
 
 public class Main {
     List<Sim> daftarSim = new ArrayList<Sim>();
+    static boolean exitGame;
     public static void main(String[] args) throws Exception {
         clearConsole();
         System.out.println("\033[1;32m");
@@ -101,10 +102,18 @@ public class Main {
         world.placeRumah(rumah);
 
         // Animasi, biarin dulu aja
-        System.out.println(" Generating Sim...\n");
+        System.out.print("Generating Sim");
+        
+        Thread.sleep(1000);
+        System.out.print(".");
+        Thread.sleep(1000);
+        System.out.print(".");
+        Thread.sleep(1000);
+        System.out.println(".");
+        Thread.sleep(1000);
 
         System.out.println("\n\nWelcome to the game, " + namaSim + "!\n");
-        //Thread.sleep(1000);
+        Thread.sleep(1000);
         playSim(world);
     }
 
@@ -179,23 +188,38 @@ public class Main {
         }
 
         // Set boolean ke false supaya ga exit dari game
-        boolean exitGame = false;
-
-        System.out.print("Generating Sim");
-        
-        Thread.sleep(1000);
-        System.out.print(".");
-        System.out.print(".");
-        Thread.sleep(1000);
-        System.out.print(".");
-        System.out.print(".");
-        Thread.sleep(1000);
-        System.out.println(".");
-        System.out.println(".");
-        Thread.sleep(1000);
+        exitGame = false;
 
         
-        System.out.println(" Generating World...\n");
+        System.out.println("Generating World");
+        Thread.sleep(1000);
+        System.out.print("[                ]");
+        Thread.sleep(1000);
+        for (int i = 0; i < 18; i++) {
+            System.out.print("\b");
+        }
+        System.out.print("[===             ]");
+        Thread.sleep(1000);
+        for (int i = 0; i < 18; i++) {
+            System.out.print("\b");
+        }
+        System.out.print("[======          ]");
+        Thread.sleep(1000);
+        for (int i = 0; i < 18; i++) {
+            System.out.print("\b");
+        }
+        System.out.print("[==========      ]");
+        Thread.sleep(1000);
+        for (int i = 0; i < 18; i++) {
+            System.out.print("\b");
+        }
+        System.out.print("[================]");
+        Thread.sleep(1000);
+        for (int i = 0; i < 18; i++) {
+            System.out.print("\b");
+        }
+        Thread.sleep(1000);
+        System.out.println();
 
         while (!exitGame) {
             if (!sim.isAlive()) {
