@@ -1,12 +1,12 @@
 import java.nio.charset.CharsetEncoder;
 import java.util.*;
 
-import saveload.Load;
-import saveload.Save;
 import sim.Sim;
 import utilz.Clock;
 import utilz.Keyboard;
 import utilz.Point;
+import utilz.saveload.Load;
+import utilz.saveload.Save;
 import world.Ruangan;
 import world.Rumah;
 import world.World;
@@ -66,7 +66,6 @@ public class Main {
                         case 2:
                             World world = load();
                             playSim(world);
-                            load();
                             exitMainMenu = true;
                             break;
                         case 3:
