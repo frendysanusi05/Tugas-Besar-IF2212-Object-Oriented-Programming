@@ -130,7 +130,7 @@ public class Main {
         world.placeRumah(rumah);
 
         // Animasi, biarin dulu aja
-        System.out.print("Generating Sim");
+        System.out.print("\nGenerating Sim");
         
         Thread.sleep(1000);
         System.out.print(".");

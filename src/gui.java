@@ -12,8 +12,7 @@ import javax.swing.JPanel;
 
 import world.World;
 
-public class gui implements ActionListener {
-    
+public class Gui implements ActionListener {
     public static void main(String[] args) {
         System.out.println("\033[1;32m");
         System.out.println("     :::       ::: :::::::::: :::        ::::::::   ::::::::    :::   :::   ::::::::::      ::::::::::: ::::::::"); 
@@ -33,7 +32,7 @@ public class gui implements ActionListener {
         System.out.println("   |\\_________\\|__|\\|__|     \\|__|               \\|__|     \\|_______|\\|__|\\|_______|\\|__|    \\|__|\\___/ /           ___ ");
         System.out.println("   \\|_________|                                                                                  \\|___|/           |\\__\\");
         System.out.println("                                                                                                                   \\|__|\n");
-        System.out.println("\033[0m");
+        System.out.print("\033[0m");
         System.out.println("Silahkan pilih menu dibawah ini:");                                                                                                                                        
         System.out.println("1. New Game");
         System.out.println("2. Load Game");
@@ -48,7 +47,7 @@ public class gui implements ActionListener {
         panel.setLayout(new GridBagLayout());
 
         // tambahkan background
-        ImageIcon imageIcon = new ImageIcon("src/res/menu_background.png"); // ganti dengan path file gambar yang diinginkan
+        ImageIcon imageIcon = new ImageIcon("res/menu_background.png"); // ganti dengan path file gambar yang diinginkan
         JLabel background = new JLabel(imageIcon);
         background.setBounds(0, 0, 800, 600); // ganti dengan ukuran gambar yang digunakan
 

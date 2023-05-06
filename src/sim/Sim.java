@@ -746,7 +746,7 @@ public class Sim {
         double y1 = rumahSim.getYRumah();
         double x2 = rumahTemanSim.getXRumah();
         double y2 = rumahTemanSim.getYRumah();
-        double waktuBerkunjung = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
+        double waktuBerkunjung = Math.round(Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2)) * 100.0) / 100.0;
         System.out.println("Waktu berkunjung: " + waktuBerkunjung + " detik");
         System.out.println("Apakah kamu yakin akan berkunjung ke rumah " + temanSim.getNama() + "? (y/n)");
         String jawaban = input.nextLine();
