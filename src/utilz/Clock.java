@@ -22,9 +22,9 @@ public class Clock {
             firstTimeClock = false;
         }
         // Changed "... + 1 < duration" to "... <= duration"
-        while ((convertToSeconds(getRealTime()) - stop) - seconds + 1 <= duration) {
+        while ((convertToSeconds(getRealTime()) - stop) - seconds <= duration) {
             /*** for debugging ***/
-            // System.out.println("stop: " + stop);
+            // System.out.println("stop : " + stop);
             // System.out.println((convertToSeconds(getRealTime()) - stop) - seconds + 1);
             // try {
             //     Thread.sleep(1000);

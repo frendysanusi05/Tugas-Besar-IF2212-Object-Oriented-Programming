@@ -147,7 +147,7 @@ public class Ruangan extends Rumah {
                 } else {
                     boolean filled = false;
                     for (Sim s: daftarSim) {
-                        if (s.getXSim() == i && s.getYSim() == j && !s.getNama().equals(sim.getNama()) && s.getCurrentRuangan().equals(this)) {
+                        if (s.getXSim() == i && s.getYSim() == j && !s.getNama().equals(sim.getNama()) && s.getCurrentRuangan().getIDRuangan().equals(IDRuangan)) {
                             System.out.print("유| ");
                             filled = true;
                             break;
