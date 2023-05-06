@@ -223,7 +223,7 @@ public class Main {
         exitGame = false;
 
         
-        System.out.println("Generating World");
+        System.out.println("\nGenerating World");
         Thread.sleep(1000);
         System.out.print("[                ]");
         Thread.sleep(1000);
@@ -357,6 +357,7 @@ public class Main {
 
                 aksi = aksi.toLowerCase();
 
+<<<<<<< Updated upstream
                 switch (aksi) {
                     case "kerja" :
                         sim.kerja();
@@ -403,6 +404,12 @@ public class Main {
                             if (pilihan.equals("y")) {
                                 generateSim(world);;
                             }
+=======
+            sim.printStatus();
+
+            // Mengecek furniture di sekitarnya yang bisa diinteract
+            sim.checkFurniture(ruangan);
+>>>>>>> Stashed changes
 
                         } else {
                             System.out.println("Pilih sim yang ingin dimainkan (masukkan angka)\n(Masukkan angka 0 jika ingin menambahkan Sim)");

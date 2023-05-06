@@ -378,9 +378,9 @@
         "x": 3,
         "y": 3
       },
-      "isOutside": false,
+      "isOutside": true,
       "currentRuangan": {
-        "IDRuangan": "R1_1",
+        "IDRuangan": "R2_1",
         "namaRuangan": "Kamar",
         "titikRuangan": {
           "x": 0,
@@ -538,12 +538,13 @@
         "Pasang Barang",
         "Bergerak ke Objek",
         "Ganti Sim",
+        "Pulang",
         "Ganti Pekerjaan",
         "Cheat",
         "Save",
         "Exit"
       ],
-      "isThreadFinished": false,
+      "isThreadFinished": true,
       "timeTidur": 0,
       "isSudahTidur": false,
       "jumlahTidakTidur": 0,

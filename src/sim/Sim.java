@@ -55,12 +55,12 @@ public class Sim {
     int jumlahTidakBuangAir = 0;
 
     volatile boolean isBeliBarang = false;
-    String statusBeliBarang;
+    String statusBeliBarang = "";
     int timeBeliBarang = 0;
     int lamaBeliBarang = 0;
 
     volatile boolean isUpgradeRumah = false;
-    String statusUpgradeRumah;
+    String statusUpgradeRumah = "";
     int timeUpgradeRumah = 0;
     int lamaUpgradeRumah = 0;
 
@@ -1452,6 +1452,36 @@ public class Sim {
         }
     }
     
+    public void printStatus() {
+        String status = "";
+        if (statusBeliBarang == null && statusUpgradeRumah == null) {
+            status += "Idle";
+            System.out.println("Status : " + status);
+        } else {
+            if (statusBeliBarang != null && statusBeliBarang.equals("Sedang Beli Barang")) {
+                status += "Sedang Beli Barang";
+            } else if (statusUpgradeRumah != null && statusUpgradeRumah.equals("Sedang Upgrade Rumah")) {
+                status += "Sedang Upgrade Rumah";
+            } else {
+                status += "Idle";
+            }
+            System.out.println("Status : " + status);
+            if (statusBeliBarang != null && statusUpgradeRumah != null && statusBeliBarang.equals("Sedang Beli Barang") && statusUpgradeRumah.equals("Sedang Upgrade Rumah")) {
+                status += "Sedang Beli Barang dan Sedang Upgrade Rumah";
+                System.out.println(status);
+            } else {
+                if (statusBeliBarang != null && statusBeliBarang.equals("Sedang Beli Barang")) {
+                    status += "Sedang Beli Barang";
+                } else if (statusUpgradeRumah != null && statusUpgradeRumah.equals("Sedang Upgrade Rumah")) {
+                    status += "Sedang Upgrade Rumah";
+                } else {
+                    status += "Idle";
+                }
+                System.out.println("Status : " + status);
+            }
+        }
+    }
+
     /*** 7 Aksi Tambahan ***/
     public void mainGame() {
         // mood bertambah 15 dan kesehatan berkurang 5 setiap 30 detik
