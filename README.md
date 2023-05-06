@@ -2,7 +2,7 @@
 
 ## Deskripsi
 <div align="center">
-<img src="https://github.com/devinaarr/lala/blob/main/unnamed.jpg">
+![image](https://user-images.githubusercontent.com/92145413/236626218-de7f513b-4601-47f6-9180-4075b3c964c0.png)
 </div>
 
 <p align="justify"> Sim-Plicity adalah permainan yang dapat dimainkan oleh pemain sebanyak jumlah sim yang dibuat dalam permainan. Tujuan dari permainan ini adalah menjaga kesejahteraan sim yang telah dibuat agar tidak depresi dan mati. Untuk mewujudkan hal tersebut, ada beberapa aksi yang perlu dilakukan. Agar kamu, mengetahuin lebih jauh apa itu Sim-plicity. Let's just play the game!! <p>
@@ -39,7 +39,7 @@ Setelah itu, klik ```run``` pada ```main``` file.
 
 ```
 javac -cp lib/gson-2.8.6.jar src/interfaces/*.java src/obj/*.java src/saveload/*.java src/sim/*.java src/utilz/*.java src/world/*.java src/*.java src/exceptions/*.java
-java -classpath "lib\gson-2.8.6.jar;src" Main
+java -classpath "lib\gson-2.8.6.jar;src" Gui
 ```
 
 ## Buku Petunjuk Sim-Plicity
