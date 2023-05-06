@@ -1,4 +1,4 @@
-package utilz.saveload;
+package saveload;
 
 import java.io.Reader;
 import java.nio.file.Files;

@@ -1,4 +1,4 @@
-package utilz.saveload;
+package saveload;
 
 import java.io.Writer;
 import java.nio.charset.StandardCharsets;

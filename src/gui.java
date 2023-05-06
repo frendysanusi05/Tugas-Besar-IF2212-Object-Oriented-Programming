@@ -11,8 +11,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import world.World;
-import utilz.saveload.Load;
-import utilz.saveload.Save;
 
 public class gui implements ActionListener {
     
