@@ -55,12 +55,12 @@ public class Sim {
     int jumlahTidakBuangAir = 0;
 
     volatile boolean isBeliBarang = false;
-    String statusBeliBarang = "";
+    String statusBeliBarang;
     int timeBeliBarang = 0;
     int lamaBeliBarang = 0;
 
     volatile boolean isUpgradeRumah = false;
-    String statusUpgradeRumah = "";
+    String statusUpgradeRumah;
     int timeUpgradeRumah = 0;
     int lamaUpgradeRumah = 0;
 
@@ -923,6 +923,7 @@ public class Sim {
                         Clock.wait(durasi, isAksiAktif);
                         isUpgradeRumah = false;
                         stopTimeUpgradeRumah = false;
+                        statusUpgradeRumah = "Selesai Upgrade Rumah";
                     }
                 });
 
@@ -968,7 +969,6 @@ public class Sim {
                 }
 
                 newRoom.checkSurrounding(rumah);
-                statusUpgradeRumah = "Selesai Upgrade Rumah";
             } else {
                 if (expandable.size() == 0) {
                     System.out.println("Space di world tidak cukup");
@@ -1107,6 +1107,7 @@ public class Sim {
                         Clock.wait((double)lamaBeliBarang, isAksiAktif);
                         isBeliBarang = false;
                         stopTimeBeliBarang = false;
+                        statusBeliBarang = "Barang telah diterima";
                     }
                 });
 
@@ -1134,7 +1135,6 @@ public class Sim {
 
                 if (barang instanceof Furniture) uang -= ((Furniture) barang).getHarga();
                 else if (barang instanceof BahanMakanan) uang -= ((BahanMakanan) barang).getHarga();
-                statusBeliBarang = "Barang telah diterima";
                 inventory.addItem(item);
             } else {
                 System.out.println("Pembelian dibatalkan");
@@ -1469,6 +1469,8 @@ public class Sim {
                 } else {
                     status += "Idle";
                 }
+                System.out.println(statusBeliBarang);
+                System.out.println(statusUpgradeRumah);
                 System.out.println("Status : " + status);
             }
         }

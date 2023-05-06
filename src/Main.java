@@ -438,7 +438,7 @@ public class Main {
                     case "buang air":
                         sim.buangAir();
                         break;
-                    case "main game":
+                    case "bermain game":
                         sim.mainGame();
                         break;
                     case "mandi":
