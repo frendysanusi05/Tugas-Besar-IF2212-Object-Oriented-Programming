@@ -7,7 +7,7 @@ public class Game implements Runnable {
 	private Thread gameThread;
 	// private final int FPS_SET = 120;
 	// private final int UPS_SET = 200;
-
+	
 	// private Playing playing;
 	private Menu menu;
 
@@ -56,7 +56,8 @@ public class Game implements Runnable {
 				default:
 					System.exit(0);
 					break;
-		}
+			}
+
 	}
 
 	public void render(Graphics g) {
@@ -135,4 +136,8 @@ public class Game implements Runnable {
 	// public Playing getPlaying() {
 	// 	return playing;
 	// }
+
+	public static void main(String[] args) {
+		new Game();
+	}
 }
