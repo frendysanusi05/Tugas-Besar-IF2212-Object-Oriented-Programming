@@ -326,6 +326,8 @@ public class Main {
 
                 System.out.println("\n\nBermain Sebagai " + sim.getNama());
 
+                sim.printStatus();
+
                 // Mengecek furniture di sekitarnya yang bisa diinteract
                 sim.checkFurniture(ruangan);
 
@@ -356,8 +358,6 @@ public class Main {
                 }
 
                 aksi = aksi.toLowerCase();
-
-<<<<<<< Updated upstream
                 switch (aksi) {
                     case "kerja" :
                         sim.kerja();
@@ -404,13 +404,6 @@ public class Main {
                             if (pilihan.equals("y")) {
                                 generateSim(world);;
                             }
-=======
-            sim.printStatus();
-
-            // Mengecek furniture di sekitarnya yang bisa diinteract
-            sim.checkFurniture(ruangan);
->>>>>>> Stashed changes
-
                         } else {
                             System.out.println("Pilih sim yang ingin dimainkan (masukkan angka)\n(Masukkan angka 0 jika ingin menambahkan Sim)");
                             for (int i = 0; i < world.getDaftarSim().size(); i++) {
