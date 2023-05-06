@@ -221,7 +221,7 @@ public class Main {
             Thread.sleep(1000);
             if (world.getDaftarSim().size() > 1) {
                 for (Sim s : world.getDaftarSim()) {
-                    if (s.getCurrentRuangan().getIDRuangan().equals(ruangan.getIDRuangan()) && !s.getNama().equals(sim)) {
+                    if (s.getCurrentRuangan().getIDRuangan().equals(ruangan.getIDRuangan()) && !s.getNama().equals(sim.getNama())) {
                         System.out.println("웃 : Anda");
                         System.out.println("유 : Teman Anda");
                         break;
