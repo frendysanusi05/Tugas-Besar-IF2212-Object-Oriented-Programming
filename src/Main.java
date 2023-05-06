@@ -176,7 +176,7 @@ public class Main {
             sim.addMood(100);
             sim.addUang(999999);
 
-            sim.setMood(0);
+            // sim.setMood(0);
 
             System.out.println("Calon hacker...");
         }
@@ -223,7 +223,7 @@ public class Main {
         exitGame = false;
 
         
-        System.out.println("Generating World");
+        System.out.println("\nGenerating World");
         Thread.sleep(1000);
         System.out.print("[                ]");
         Thread.sleep(1000);
@@ -326,6 +326,8 @@ public class Main {
 
                 System.out.println("\n\nBermain Sebagai " + sim.getNama());
 
+                sim.printStatus();
+
                 // Mengecek furniture di sekitarnya yang bisa diinteract
                 sim.checkFurniture(ruangan);
 
@@ -356,7 +358,6 @@ public class Main {
                 }
 
                 aksi = aksi.toLowerCase();
-
                 switch (aksi) {
                     case "kerja" :
                         sim.kerja();
@@ -403,7 +404,6 @@ public class Main {
                             if (pilihan.equals("y")) {
                                 generateSim(world);;
                             }
-
                         } else {
                             System.out.println("Pilih sim yang ingin dimainkan (masukkan angka)\n(Masukkan angka 0 jika ingin menambahkan Sim)");
                             for (int i = 0; i < world.getDaftarSim().size(); i++) {
