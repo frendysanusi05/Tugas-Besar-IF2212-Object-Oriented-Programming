@@ -54,7 +54,7 @@ public class World {
         // Locate the house based on the location of the sim
         for (Rumah rumah: daftarRumah.keySet()) {
             for (Ruangan ruangan: rumah.getDaftarRuangan()) {
-                if (sim.getCurrentRuangan().equals(ruangan)) {
+                if (sim.getCurrentRuangan().getIDRuangan().equals(ruangan.getIDRuangan())) {
                     return rumah;
                 }
             }
