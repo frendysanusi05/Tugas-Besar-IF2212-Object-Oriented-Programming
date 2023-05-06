@@ -1,9 +1,13 @@
+package world;
 import java.util.*;
+
+import obj.Inventory;
+import utilz.Point;
 
 public class Rumah {
     private String IDRumah;
     private Point posisi;
-    private ArrayList<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
+    private List<Ruangan> daftarRuangan = new ArrayList<Ruangan>();
     //private Ruangan R1;
     private int jumlahRuangan;
     private static int jumlahRumah = 0;
@@ -17,42 +21,34 @@ public class Rumah {
 
         //inisiasi Ruangan pada Rumah
         jumlahRuangan++;
-        Ruangan kamar = new Ruangan("Kamar", this, posisi); 
+        Ruangan kamar = new Ruangan("Kamar", this); 
+        kamar.setPosisiRuangan(new Point(0, 0));
 
-        // daftarRuangan.add(R1);
+        // Diset (0,4)
+        kamar.insertObjectToRuangan("Kasur Single", new Point (0,4), new Inventory());
 
-        // addRuangan(R1);
-        // inisiasi furniture apa saja yg perlu ada di dalam Rumah (Ruangan 1)
-        // Random rand = new Random();
-        // List<String> givenList = new ArrayList<String>();
-        // givenList.add("Kasur Single");
-        // givenList.add("Kasur Queen Size");
-        // givenList.add("Kasur King Size");
-        // String randomElmt = givenList.get(rand.nextInt(givenList.size()));
-        // R1.addObject(randomElmt);
-        // R1.addObject("Toilet");
-        
-        // List<String> givenList2 = new ArrayList<String>();
-        // givenList2.add("Kompor Gas");
-        // givenList2.add("Kompor Listrik");
-        // randomElmt = givenList2.get(rand.nextInt(givenList2.size()));
-        // R1.addObject(randomElmt);
-        // R1.addObject("Meja dan Kursi");
-        // R1.addObject("Jam");
+        // Diset (5,5)
+        kamar.insertObjectToRuangan("Toilet", new Point (5, 5), new Inventory());
 
-        String[] furnitureStarter = {"Kasur Single", "Toilet", "Kompor Gas", "Meja dan Kursi", "Jam"};
-        for(String furniture : furnitureStarter) {
-            kamar.insertObjectRandomly(furniture);
-        }
+        // Diset (4,0)
+        kamar.insertObjectToRuangan("Kompor Gas", new Point (4, 0), new Inventory());
+
+        // Diset (0,0)
+        kamar.insertObjectToRuangan("Meja dan Kursi", new Point (0, 0), new Inventory());
+
+        // Diset (5,3)
+        kamar.insertObjectToRuangan("Jam", new Point (5, 3), new Inventory());
     }
 
     public Rumah() {}
 
     //methods
     public void printDaftarRuangan(){
+        int i = 1;
         for (Ruangan ruangan : daftarRuangan){
             //ini sbenernya gua masi kurang ngerti, konstruktor ruangan mau dibentuk kek gmn wkwk
-            System.out.println("IDRuangan: " + ruangan.getIDRuangan() + ", Nama Ruangan: " + ruangan.getNamaRuangan());
+            System.out.println(i + ") " + ruangan.getNamaRuangan());
+            i++;
         }
     }
 
@@ -75,7 +71,7 @@ public class Rumah {
         return posisi.getY();
     }
 
-    public ArrayList<Ruangan> getDaftarRuangan(){
+    public List<Ruangan> getDaftarRuangan(){
         return daftarRuangan;
     }
 
@@ -88,15 +84,14 @@ public class Rumah {
         return null;
     }
 
-    public Ruangan getCurrentRuanganSim(Sim sim) {
+    public Ruangan getRuanganBasedOnID (String IDRuangan) {
         for (Ruangan ruangan : daftarRuangan) {
-            if (ruangan.getXRuangan() == sim.getPosisiSim().getX() && ruangan.getYRuangan() == sim.getPosisiSim().getY()) {
+            if (ruangan.getIDRuangan().equals(IDRuangan)) {
                 return ruangan;
             }
         }
         return null;
     }
-
     public int getJumlahRuangan(){
         return jumlahRuangan;
     }
@@ -104,4 +99,6 @@ public class Rumah {
     public int getJumlahRumah(){
         return jumlahRumah;
     }
+
+    
 }

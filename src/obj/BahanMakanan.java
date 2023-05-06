@@ -1,3 +1,9 @@
+package obj;
+
+import utilz.ObjectType;
+import interfaces.Edible;
+import interfaces.Purchasable;
+
 public class BahanMakanan extends ObjectType<BahanMakanan> implements Edible, Purchasable {
     public String nama;
     public int harga;
@@ -51,22 +57,17 @@ public class BahanMakanan extends ObjectType<BahanMakanan> implements Edible, Pu
         }
     }
 
+    @Override
     public int getKekenyangan() {
         return kekenyangan;
     }
 
+    @Override
     public String getName() {
         return nama;
     }
 
     public int getHarga() {
         return harga;
-    }
-
-    public void addKekenyangan(int kekenyangan) {
-        this.kekenyangan += kekenyangan;
-    }
-
-    public void addHarga() {
     }
 }
